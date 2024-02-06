@@ -10,7 +10,21 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": null
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/getProjects",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"getProjects"
+					]
+				}
 			},
 			"response": []
 		},
@@ -19,34 +33,118 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"url": null
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/getProject/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"getProject",
+						"1"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Save Project",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
-				"url": null
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Proyecto 2 de prueba\",\r\n    \"year_from\" : 2020,\r\n    \"year_to\" : 2022,\r\n    \"sceneries\": [\"escenario1p2\",\"escenario2p2\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/saveProject",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"saveProject"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Save Scenery",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
-				"url": null
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"escenario4\",\r\n    \"node_id\": 1,\r\n    \"years\": {\"2020\":5,\"2021\":6,\"2022\":7,\"2023\":8,\"2024\":9}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/saveScenery",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"saveScenery"
+					]
+				}
 			},
 			"response": []
 		},
 		{
 			"name": "Save Node",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
-				"url": null
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"project_id\":1,\r\n    \"name\":\"nodo5\",\r\n    \"description\":\"nodo5\",\r\n    \"type\":1,\r\n    \"distribution_shape\":1,\r\n    \"formula\":null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/saveNode",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"saveNode"
+					]
+				}
 			},
 			"response": []
 		}
