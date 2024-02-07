@@ -160,7 +160,7 @@ class ApiController extends Controller
         $s = Scenery::find($id);
         // $s->name = $r->name;
         $s->years = $r->years;
-        $n->status = $r->status ? $r->status : $s->status;
+        $s->status = $r->status ? $r->status : $s->status;
         $s->save();
     }
 }
