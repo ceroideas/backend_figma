@@ -44,6 +44,7 @@ class ApiController extends Controller
     {
         $n = new Node;
         $n->project_id = $r->project_id;
+        $n->node_id = $r->node_id;
         $n->name = $r->name;
         $n->description = $r->description;
         $n->type = $r->type;

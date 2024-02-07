@@ -27,6 +27,7 @@ class ProjectSeeder extends Seeder
         DB::table('nodes')->insert([
             'name' => 'nodo1',
             'project_id' => 1,
+            'node_id' => null,
             'description' => 'nodo1',
             'type' => 1, // constante
             'distribution_shape' => 1,
@@ -39,6 +40,7 @@ class ProjectSeeder extends Seeder
         DB::table('nodes')->insert([
             'name' => 'nodo2',
             'project_id' => 1,
+            'node_id' => 1,
             'description' => 'nodo2',
             'type' => 1, // constante
             'distribution_shape' => 1,
@@ -51,6 +53,7 @@ class ProjectSeeder extends Seeder
         DB::table('nodes')->insert([
             'name' => 'nodo3',
             'project_id' => 1,
+            'node_id' => 2,
             'description' => 'nodo3',
             'type' => 2, // variable
             'distribution_shape' => 1,
@@ -63,6 +66,7 @@ class ProjectSeeder extends Seeder
         DB::table('nodes')->insert([
             'name' => 'nodo4',
             'project_id' => 1,
+            'node_id' => 2,
             'description' => 'nodo4',
             'type' => 2, // variable
             'distribution_shape' => 1,

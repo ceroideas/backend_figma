@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('nodes', function (Blueprint $table) {
             $table->id();
             $table->integer('project_id')->nullable();
+            $table->integer('node_id')->nullable();
             $table->string('name')->nullable();
             $table->text('description')->nullable();
             $table->integer('type')->nullable();
