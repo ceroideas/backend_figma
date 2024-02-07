@@ -127,33 +127,30 @@ class ApiController extends Controller
     {
         $p = Project::find($id);
         $p->name = $r->name;
-        $p->year_from = $r->year_from;
-        $p->year_to = $r->year_to;
-        $p->sceneries = $r->sceneries;
-        $p->status = 1;
+        // $p->year_from = $r->year_from;
+        // $p->year_to = $r->year_to;
+        // $p->sceneries = $r->sceneries;
+        $p->status = $r->status ? $r->status : $p->status;
         $p->save();
     }
 
     public function updateNode($id, Request $r)
     {
         $n = Node::find($id);
-        // $n->project_id = $r->project_id;
-        // $n->node_id = $r->node_id;
-        // $n->tier = $r->tier;
         $n->name = $r->name;
         $n->description = $r->description;
-        // $n->type = $r->type;
         $n->distribution_shape = $r->distribution_shape;
         $n->formula = $r->formula;
-        $n->status = 1;
+        $n->status = $r->status ? $r->status : $n->status;
         $n->save();
     }
 
     public function updateScenery($id, Request $r)
     {
         $s = Scenery::find($id);
+        // $s->name = $r->name;
         $s->years = $r->years;
-        $s->status = 1;
+        $n->status = $r->status ? $r->status : $s->status;
         $s->save();
     }
 }
