@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('project_id')->nullable();
             $table->integer('node_id')->nullable();
+            $table->integer('tier')->nullable();
             $table->string('name')->nullable();
             $table->text('description')->nullable();
             $table->integer('type')->nullable();

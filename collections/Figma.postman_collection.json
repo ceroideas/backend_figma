@@ -123,7 +123,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"project_id\":1,\r\n    \"name\":\"nodo5\",\r\n    \"description\":\"nodo5\",\r\n    \"type\":1,\r\n    \"distribution_shape\":1,\r\n    \"formula\":null\r\n}",
+					"raw": "{\r\n    \"project_id\":1,\r\n    \"node_id\":null,\r\n    \"tier\":0,\r\n    \"name\":\"nodo5\",\r\n    \"description\":\"nodo5\",\r\n    \"type\":1,\r\n    \"distribution_shape\":1,\r\n    \"formula\":null\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
