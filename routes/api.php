@@ -23,6 +23,10 @@ Route::get('migrar', [ApiController::class, 'migrar']);
 
 Route::get('getProjects', [ApiController::class, 'getProjects']);
 Route::get('getProject/{id}', [ApiController::class, 'getProject']);
+
+Route::get('getNode/{id}', [ApiController::class, 'getNode']);
+Route::get('getScenery/{id}', [ApiController::class, 'getScenery']);
+
 Route::post('saveProject', [ApiController::class, 'saveProject']);
 Route::post('saveNode', [ApiController::class, 'saveNode']);
 Route::post('saveScenery', [ApiController::class, 'saveScenery']);

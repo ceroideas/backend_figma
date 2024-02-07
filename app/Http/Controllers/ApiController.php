@@ -26,6 +26,16 @@ class ApiController extends Controller
         return Project::with('nodes','nodes.sceneries')->where('id',$id)->first();
     }
 
+    public function getNode($id)
+    {
+        return Node::with('sceneries')->where('id',$id)->first();
+    }
+
+    public function getScenery($id)
+    {
+        return Scenery::find($id);
+    }
+
     public function saveProject(Request $r)
     {
         $p = new Project;
