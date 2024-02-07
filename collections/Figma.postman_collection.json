@@ -147,6 +147,105 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Update Project",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Proyecto 1 editado\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/updateProject/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"updateProject",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Node",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"nodo1\",\r\n    \"description\":\"nodo1\",\r\n    \"distribution_shape\":1,\r\n    \"formula\":null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/updateNode/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"updateNode",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Scenery",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"years\": {\"2020\":5,\"2021\":6,\"2022\":7,\"2023\":8,\"2024\":9}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/updateScenery/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"updateScenery",
+						"1"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
