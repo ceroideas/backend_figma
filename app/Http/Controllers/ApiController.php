@@ -12,7 +12,7 @@ class ApiController extends Controller
 {
     //
     public function migrar()
-    {
+    {        
         return Project::with('nodes','nodes.sceneries')->first();
     }
 
@@ -162,5 +162,51 @@ class ApiController extends Controller
         $s->years = $r->years;
         $s->status = $r->status ? $r->status : $s->status;
         $s->save();
+    }
+
+    public function deleteProject($id)
+    {
+        Project::find($id)->delete();
+        $nodes = Node::where('project_id',$id);
+        foreach ($nodes->get() as $key => $n) {
+            Scenery::where('node_id',$n->id)->delete();
+        }
+        $nodes->delete();
+    }
+
+    public function deleteNode($id)
+    {
+        Node::find($id)->delete();
+        Scenery::where('node_id',$id)->delete();
+
+        function deleteNodes($n)
+        {
+            foreach ($n->nodes as $key => $node) {
+                if ($node->nodes) {
+                    deleteNodes($node);
+                }
+                $node->delete();
+                Scenery::where('node_id',$node->id)->delete();
+            }
+        }
+
+        $nodes = Node::where('node_id','!=',null)->doesntHave('node')->get();
+
+        foreach ($nodes as $key => $n) {
+            if ($n->nodes) {
+                deleteNodes($n);
+            }
+            $n->delete();
+            Scenery::where('node_id',$n->id)->delete();
+        }
+    }
+
+    public function deleteScenery($id)
+    {
+        $sc = Scenery::find($id);
+        $n = Node::find($sc->node_id);
+        $p = Project::find($n->project_id);
+
+        // falta
     }
 }

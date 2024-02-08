@@ -20,6 +20,16 @@ class Node extends Model
         return $this->hasMany('App\Models\Scenery');
     }
 
+    public function nodes()
+    {
+        return $this->hasMany('App\Models\Node');
+    }
+
+    public function node()
+    {
+        return $this->belongsTo('App\Models\Node');
+    }
+
     private function recursiveCalculated($formula,$sc,$start)
     {
         $calculo = "";
