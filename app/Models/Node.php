@@ -13,7 +13,7 @@ class Node extends Model
         'formula' => 'array'
     ];
 
-    protected $appends = ['calculated'];
+    protected $appends = ['calculated','new_formula'];
 
     public function sceneries()
     {
@@ -30,6 +30,24 @@ class Node extends Model
         return $this->belongsTo('App\Models\Node');
     }
 
+    public function getNewFormulaAttribute()
+    {
+        $new_formula = [];
+        if (!$this->formula) {
+            return null;
+        }
+        foreach ($this->formula as $key => $f) {
+            if (gettype($f) == 'integer') {
+                $n = Node::find($f);
+                $new_formula[] = $n ? $n->name : 'NULL';
+            }else{
+                $new_formula[] = $f;
+            }
+        }
+
+        return $new_formula;
+    }
+
     private function recursiveCalculated($formula,$sc,$start)
     {
         $calculo = "";
@@ -39,25 +57,30 @@ class Node extends Model
 
                 $node = Node::find($value);
 
-                if (count($node->sceneries)) {
+                if (!$node) {
+                    $calculo .= "0";
+                }else{
+                    if (count($node->sceneries)) {
 
-                    foreach ($node->sceneries as $key => $n_sc) {
+                        foreach ($node->sceneries as $key => $n_sc) {
 
-                        if ($n_sc->name == $sc) {
+                            if ($n_sc->name == $sc) {
 
-                            foreach ($n_sc->years as $k_year => $v_year) {
+                                foreach ($n_sc->years as $k_year => $v_year) {
 
-                                if ($k_year == $start) {
+                                    if ($k_year == $start) {
 
-                                    $calculo .= $v_year;
+                                        $calculo .= $v_year;
 
+                                    }
                                 }
                             }
                         }
+                    }else{
+                        $calculo .= $this->recursiveCalculated($node->formula,$sc,$start);
                     }
-                }else{
-                    $calculo .= $this->recursiveCalculated($node->formula,$sc,$start);
                 }
+
             }else{
                 $calculo .= $value;
             }
@@ -92,25 +115,30 @@ class Node extends Model
 
                             $node = Node::find($value);
 
-                            if (count($node->sceneries)) {
+                            if (!$node) {
+                                $calculo .= "0";
+                            }else{
+                                if (count($node->sceneries)) {
 
-                                foreach ($node->sceneries as $key => $n_sc) {
+                                    foreach ($node->sceneries as $key => $n_sc) {
 
-                                    if ($n_sc->name == $sc) {
+                                        if ($n_sc->name == $sc) {
 
-                                        foreach ($n_sc->years as $k_year => $v_year) {
+                                            foreach ($n_sc->years as $k_year => $v_year) {
 
-                                            if ($k_year == $start) {
+                                                if ($k_year == $start) {
 
-                                                $calculo .= $v_year;
+                                                    $calculo .= $v_year;
 
+                                                }
                                             }
                                         }
                                     }
+                                }else{
+                                    $calculo .= '('.$this->recursiveCalculated($node->formula,$sc,$start).')';
                                 }
-                            }else{
-                                $calculo .= '('.$this->recursiveCalculated($node->formula,$sc,$start).')';
                             }
+
                         }else{
                             $calculo .= $value;
                         }
