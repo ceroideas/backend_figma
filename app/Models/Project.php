@@ -14,7 +14,7 @@ class Project extends Model
     ];
 
     protected $appends = [
-        'years'
+        'years','clean_sceneries'
     ];
 
     public function nodes()
@@ -25,11 +25,30 @@ class Project extends Model
     public function getYearsAttribute()
     {
         $years = [];
-        while ($this->year_from <= $this->year_to) {
-            $years[] = $this->year_from;
-            $this->year_from++;
+        $start = $this->year_from;
+        while ($start <= $this->year_to) {
+            $years[] = $start;
+            $start++;
         }
 
         return $years;
+    }
+
+    public function getCleanSceneriesAttribute()
+    {
+        $sceneries = [];
+        foreach ($this->sceneries as $key => $sc) {
+            $years = [];
+            $start = $this->year_from;
+            
+            while ($start <= $this->year_to) {
+                $years[$start] = 0;
+                $start++;
+            }
+            $sceneries[] = ["name"=>$sc, "years"=>$years];
+        }
+
+        return $sceneries;
+
     }
 }
