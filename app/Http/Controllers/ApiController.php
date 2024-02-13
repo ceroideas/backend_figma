@@ -85,6 +85,8 @@ class ApiController extends Controller
             $s->status = 1;
             $s->save();
         }
+
+        return $n;
     }
 
     public function saveScenery(Request $r)
