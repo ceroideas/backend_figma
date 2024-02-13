@@ -94,6 +94,9 @@ class Node extends Model
         $patron = "/([0-9]+)\\(([^)]+)\\)/";
         $reemplazo = "$1*($2)";
 
+        $patron2 = "/\\)(?=\\()/";
+        $reemplazo2 = ")*";
+
         if ($this->formula != null) {
 
             $sceneries = [];
@@ -104,12 +107,14 @@ class Node extends Model
 
                 $years = [];
                 $start = $proj->year_from;
+                $count = 0;
 
                 while($start <= $proj->year_to) {
 
                     $calculo = "";
 
                     foreach ($this->formula as $key => $value) {
+                        $count++;
 
                         if (gettype($value) == 'integer') {
 
@@ -145,6 +150,14 @@ class Node extends Model
 
                     }
                     $str = preg_replace($patron, $reemplazo, $calculo);
+
+                    $st = 0;
+
+                    while($st != $count) {
+                        $str = preg_replace($patron, $reemplazo, $str);
+                        $str = preg_replace($patron2, $reemplazo2, $str);
+                        $st++;
+                    }
                     $years[$start] = eval("return $str;");
                     // $years[$start] = $str;
 

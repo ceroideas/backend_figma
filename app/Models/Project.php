@@ -13,8 +13,23 @@ class Project extends Model
         'sceneries' => 'array'
     ];
 
+    protected $appends = [
+        'years'
+    ];
+
     public function nodes()
     {
         return $this->hasMany('App\Models\Node');
+    }
+
+    public function getYearsAttribute()
+    {
+        $years = [];
+        while ($this->year_from <= $this->year_to) {
+            $years[] = $this->year_from;
+            $this->year_from++;
+        }
+
+        return $years;
     }
 }
