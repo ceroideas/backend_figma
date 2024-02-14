@@ -96,10 +96,10 @@ class Node extends Model
 
         $patron2 = "/\\)(?=\\()/";
         $reemplazo2 = ")*";
+        
+        $sceneries = [];
 
-        if ($this->formula != null) {
-
-            $sceneries = [];
+        if ($this->formula != null && $this->type == 2) {
 
             $proj = Project::find($this->project_id);
 

@@ -151,6 +151,7 @@ class ApiController extends Controller
         $n = Node::find($id);
         $n->name = $r->name;
         $n->description = $r->description;
+        $n->type = $r->type;
         $n->distribution_shape = $r->distribution_shape;
         $n->formula = $r->formula;
         $n->status = $r->status ? $r->status : $n->status;
