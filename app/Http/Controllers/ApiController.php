@@ -86,7 +86,7 @@ class ApiController extends Controller
             $s->save();
         }
 
-        return $n;
+        return redirect('api/getNode/'.$n->id);
     }
 
     public function saveScenery(Request $r)
