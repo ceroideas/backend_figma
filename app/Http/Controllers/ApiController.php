@@ -110,7 +110,7 @@ class ApiController extends Controller
             $p->save();
         }
 
-        $nodes = Node::where('project_id',$p->id)->where('type',1)->get();
+        $nodes = Node::where('project_id',$p->id)/*->where('type',1)*/->get();
 
         $years = [];
 
