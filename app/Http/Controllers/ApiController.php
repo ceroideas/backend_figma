@@ -52,6 +52,15 @@ class ApiController extends Controller
 
     public function saveNode(Request $r)
     {
+        if (!$r->distribution_shape) {
+            $r->distribution_shape = [
+                "name" => "Normal",
+                "max" => "0",
+                "stDev" => "0",
+                "min" => "0",
+                "type" => "static"
+            ];
+        }
         $n = new Node;
         $n->project_id = $r->project_id;
         $n->node_id = $r->node_id;
@@ -60,11 +69,18 @@ class ApiController extends Controller
         $n->description = $r->description;
         $n->type = $r->type;
         $n->distribution_shape = $r->distribution_shape;
+        $n->unite = $r->unite;
         $n->formula = $r->formula;
         $n->status = 1;
         $n->save();
 
         $p = Project::find($r->project_id);
+
+        $default = 0;
+
+        if ($r->unite) {
+            $default = $r->unite;
+        }
 
         foreach ($p->sceneries as $key => $sc) {
 
@@ -74,7 +90,7 @@ class ApiController extends Controller
 
             while($start <= $p->year_to)
             {
-                $years[$start] = 0;
+                $years[$start] = $default;
                 $start++;
             }
 
@@ -113,6 +129,12 @@ class ApiController extends Controller
         $nodes = Node::where('project_id',$p->id)/*->where('type',1)*/->get();
 
         $years = [];
+
+        $default = 0;
+
+        if ($n->unite) {
+            $default = $n->unite;
+        }
 
         while($p->year_from <= $p->year_to)
         {

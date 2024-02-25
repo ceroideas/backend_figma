@@ -10,7 +10,8 @@ class Node extends Model
     use HasFactory;
 
     protected $casts = [
-        'formula' => 'array'
+        'formula' => 'array',
+        'distribution_shape' => 'array'
     ];
 
     protected $appends = ['calculated','new_formula'];
