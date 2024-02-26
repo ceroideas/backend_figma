@@ -176,7 +176,27 @@ class ApiController extends Controller
         $n->type = $r->type;
         $n->distribution_shape = $r->distribution_shape;
         $n->formula = $r->formula;
+        $n->unite = $r->unite;
         $n->status = $r->status ? $r->status : $n->status;
+        
+        if ($n->isDirty('unite')) {
+
+            $p = Project::find($n->project_id);
+
+            foreach ($n->sceneries as $key => $value) {
+                $years = [];
+                $start = $p->year_from;
+                while($start <= $p->year_to)
+                {
+                    $years[$start] = $n->getDirty()['unite'];
+                    $start++;
+                }
+                $value->years = $years;
+                $value->save();
+            }
+
+        }
+
         $n->save();
     }
 
