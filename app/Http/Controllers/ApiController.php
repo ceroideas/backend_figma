@@ -179,7 +179,7 @@ class ApiController extends Controller
         $n->unite = $r->unite;
         $n->status = $r->status ? $r->status : $n->status;
         
-        if ($n->isDirty('unite')) {
+        /*if ($n->isDirty('unite')) {
 
             $p = Project::find($n->project_id);
 
@@ -194,8 +194,7 @@ class ApiController extends Controller
                 $value->years = $years;
                 $value->save();
             }
-
-        }
+        }*/
 
         $n->save();
     }
