@@ -128,25 +128,28 @@ class ApiController extends Controller
 
         $nodes = Node::where('project_id',$p->id)/*->where('type',1)*/->get();
 
-        $years = [];
-
-        $default = 0;
-
-        if ($n->unite) {
-            $default = $n->unite;
-        }
-
-        while($p->year_from <= $p->year_to)
-        {
-            $years[$p->year_from] = $default;
-            $p->year_from++;
-        }
-
         foreach ($nodes as $key => $n) {
             
             $scen = Scenery::where(['node_id' => $n->id, 'name' => $r->name])->count();
 
             if ($scen == 0) {
+
+                $years = [];
+
+                $default = 0;
+
+                if ($n->unite) {
+                    $default = $n->unite;
+                }
+
+                $start = $p->year_from;
+
+                while($start <= $p->year_to)
+                {
+                    $years[$start] = $default;
+                    $start++;
+                }
+
                 $s = new Scenery;
                 $s->node_id = $n->id;
                 $s->name = $r->name;
