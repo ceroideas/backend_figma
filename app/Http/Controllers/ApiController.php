@@ -138,7 +138,7 @@ class ApiController extends Controller
 
         while($p->year_from <= $p->year_to)
         {
-            $years[$p->year_from] = 0;
+            $years[$p->year_from] = $default;
             $p->year_from++;
         }
 
