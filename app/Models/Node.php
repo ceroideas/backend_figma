@@ -69,7 +69,7 @@ class Node extends Model
                 if (!$node) {
                     $calculo .= "0";
                 }else{
-                    if (count($node->sceneries)) {
+                    if (count($node->sceneries) && $node->type == 1) {
 
                         foreach ($node->sceneries as $key => $n_sc) {
 
@@ -132,7 +132,7 @@ class Node extends Model
                             if (!$node) {
                                 $calculo .= "0";
                             }else{
-                                if (count($node->sceneries)) {
+                                if (count($node->sceneries) && $node->type == 1) {
 
                                     foreach ($node->sceneries as $key => $n_sc) {
 
