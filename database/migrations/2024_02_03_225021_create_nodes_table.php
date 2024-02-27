@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('type')->nullable();
             $table->json('distribution_shape')->nullable();
-            $table->integer('unite')->nullable();
+            $table->string('unite')->nullable();
             $table->json('formula')->nullable();
             $table->integer('status')->nullable();
             $table->timestamps();

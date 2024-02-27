@@ -31,6 +31,14 @@ class Node extends Model
         return $this->belongsTo('App\Models\Node');
     }
 
+    public function getUniteAttribute()
+    {
+        if (strpos($this->unite, '%')) {
+            return intval($this->unite) / 100;
+        }
+        return $this->unite;
+    }
+
     public function getNewFormulaAttribute()
     {
         $new_formula = [];
