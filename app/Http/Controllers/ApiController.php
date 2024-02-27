@@ -79,7 +79,7 @@ class ApiController extends Controller
         $default = 0;
 
         if ($r->unite) {
-            $default = $r->unite;
+            $default = strpos($r->unite, '%') ? (intval($r->unite) / 100) : $r->unite;
         }
 
         foreach ($p->sceneries as $key => $sc) {
