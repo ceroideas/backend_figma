@@ -167,8 +167,8 @@ class Node extends Model
                         $str = preg_replace($patron2, $reemplazo2, $str);
                         $st++;
                     }
-                    // $years[$start] = eval("return $str;");
-                    $years[$start] = $str;
+                    $years[$start] = eval("return $str;");
+                    // $years[$start] = $str;
 
                     $start++;
                 }
