@@ -31,12 +31,12 @@ class Node extends Model
         return $this->belongsTo('App\Models\Node');
     }
 
-    public function getUniteAttribute()
+    public function getUniteAttribute($val)
     {
-        if (strpos($this->unite, '%')) {
-            return intval($this->unite) / 100;
+        if (strpos($val, '%')) {
+            return intval($val) / 100;
         }
-        return $this->unite;
+        return $val;
     }
 
     public function getNewFormulaAttribute()
