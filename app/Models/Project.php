@@ -19,7 +19,7 @@ class Project extends Model
 
     public function nodes()
     {
-        return $this->hasMany('App\Models\Node');
+        return $this->hasMany('App\Models\Node')->orderBy('id','desc');
     }
 
     public function getYearsAttribute()

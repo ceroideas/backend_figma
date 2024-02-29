@@ -18,7 +18,7 @@ class ApiController extends Controller
 
     public function getProjects()
     {
-        return Project::get();
+        return Project::orderBy('id','desc')->get();
     }
 
     public function getProject($id)
