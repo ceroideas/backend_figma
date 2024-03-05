@@ -38,3 +38,6 @@ Route::put('updateScenery/{id}', [ApiController::class, 'updateScenery']);
 Route::delete('deleteProject/{id}', [ApiController::class, 'deleteProject']);
 Route::delete('deleteNode/{id}', [ApiController::class, 'deleteNode']);
 Route::delete('deleteScenery/{id}', [ApiController::class, 'deleteScenery']);
+
+Route::put('savePosition/{id}', [ApiController::class, 'savePosition']);
+Route::put('saveUnite/{id}', [ApiController::class, 'saveUnite']);

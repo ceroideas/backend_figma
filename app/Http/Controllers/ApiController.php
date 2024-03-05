@@ -55,9 +55,11 @@ class ApiController extends Controller
         if (!$r->distribution_shape) {
             $r->distribution_shape = [
                 "name" => "Normal",
+                "min" => "0",
                 "max" => "0",
                 "stDev" => "0",
-                "min" => "0",
+                "rate" => "0",
+                "mean" => "0",
                 "type" => "static"
             ];
         }
@@ -255,5 +257,19 @@ class ApiController extends Controller
         $p = Project::find($n->project_id);
 
         // falta
+    }
+
+    public function savePosition(Request $r,$id)
+    {
+        $p = Project::find($id);
+        $p->position = $r->position;
+        $p->save();
+    }
+
+    public function saveUnite(Request $r,$id)
+    {
+        $n = Node::find($id);
+        $n->unite = $r->unite;
+        $n->save();
     }
 }

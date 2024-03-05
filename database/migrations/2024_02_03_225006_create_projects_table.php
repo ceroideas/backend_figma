@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('year_to')->nullable();
             $table->json('sceneries')->nullable();
             $table->integer('status')->nullable();
+            $table->string('position')->nullable();
             $table->timestamps();
         });
     }
