@@ -8,11 +8,17 @@ use App\Models\Node;
 use App\Models\Scenery;
 use DB;
 
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
 class ApiController extends Controller
 {
     //
     public function migrar()
-    {        
+    {
+        /*Schema::table('projects', function(Blueprint $table) {
+            $table->string('zoom')->nullable();
+        });*/
         return Project::with('nodes','nodes.sceneries')->first();
     }
 
@@ -191,17 +197,31 @@ class ApiController extends Controller
             foreach ($n->sceneries as $key => $value) {
                 $years = [];
                 $start = $p->year_from;
-                while($start <= $p->year_to)
-                {
-                    $years[$start] = $n->getDirty()['unite'];
-                    $start++;
+                $contador = 0;
+
+                while ($start <= $p->year_to) {
+                    if ($years[$start] != 0) {
+                        $contador++;
+                    }
                 }
-                $value->years = $years;
-                $value->save();
+                
+                $start = $p->year_from;
+
+                if ($contador == 0) {
+                    while($start <= $p->year_to)
+                    {
+                        $years[$start] = $n->getDirty()['unite'];
+                        $start++;
+                    }
+                    $value->years = $years;
+                    $value->save();
+                }
+                echo $contador.' ';
             }
         }*/
 
         $n->save();
+
     }
 
     public function updateScenery($id, Request $r)
@@ -266,10 +286,45 @@ class ApiController extends Controller
         $p->save();
     }
 
+    public function saveZoom(Request $r,$id)
+    {
+        $p = Project::find($id);
+        $p->zoom = $r->zoom;
+        $p->save();
+    }
+
     public function saveUnite(Request $r,$id)
     {
         $n = Node::find($id);
         $n->unite = $r->unite;
         $n->save();
+
+
+        $p = Project::find($n->project_id);
+
+        foreach ($n->sceneries as $key => $value) {
+            $years = [];
+            $start = $p->year_from;
+            $contador = 0;
+
+            while ($start <= $p->year_to) {
+                if ($value['years'][$start] != 0) {
+                    $contador++;
+                }
+                $start++;
+            }
+            
+            $start = $p->year_from;
+
+            if ($contador == 0) {
+                while($start <= $p->year_to)
+                {
+                    $years[$start] = $n->unite;
+                    $start++;
+                }
+                $value->years = $years;
+                $value->save();
+            }
+        }
     }
 }

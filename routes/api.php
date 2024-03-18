@@ -40,4 +40,5 @@ Route::delete('deleteNode/{id}', [ApiController::class, 'deleteNode']);
 Route::delete('deleteScenery/{id}', [ApiController::class, 'deleteScenery']);
 
 Route::put('savePosition/{id}', [ApiController::class, 'savePosition']);
+Route::put('saveZoom/{id}', [ApiController::class, 'saveZoom']);
 Route::put('saveUnite/{id}', [ApiController::class, 'saveUnite']);

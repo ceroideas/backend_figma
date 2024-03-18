@@ -20,6 +20,7 @@ return new class extends Migration
             $table->json('sceneries')->nullable();
             $table->integer('status')->nullable();
             $table->string('position')->nullable();
+            $table->string('zoom')->nullable();
             $table->timestamps();
         });
     }

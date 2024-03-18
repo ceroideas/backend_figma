@@ -31,6 +31,11 @@ class Node extends Model
         return $this->belongsTo('App\Models\Node');
     }
 
+    public function project()
+    {
+        return $this->belongsTo('App\Models\Project');
+    }
+
     public function getUniteAttribute($val)
     {
         if (strpos($val, '%')) {
@@ -94,7 +99,22 @@ class Node extends Model
                 $calculo .= $value;
             }
         }
+        if (!$calculo) {
+            return 0;
+        }
         return $calculo;
+    }
+
+    private function evaluarExpresion($expresion) {
+        try {
+            $resultado = eval($expresion);
+            if ($resultado === false) {
+                return null;
+            }
+            return $resultado;
+        } catch (Exception $e) {
+            return null;
+        }
     }
 
     public function getCalculatedAttribute()
@@ -167,7 +187,13 @@ class Node extends Model
                         $str = preg_replace($patron2, $reemplazo2, $str);
                         $st++;
                     }
-                    $years[$start] = eval("return $str;");
+                    /*$valor = $this->evaluarExpresion("return $str;");
+                    if ($valor !== null) {
+                        $years[$start] = $valor;
+                    } else {
+                        $years[$start] = 0;
+                    }*/
+                    $years[$start] = eval("return number_format($str,2);");
                     // $years[$start] = $str;
 
                     $start++;
@@ -180,5 +206,7 @@ class Node extends Model
 
             return $sceneries;
         }
+
+        return $this->project->clean_sceneries;
     }
 }
