@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Node;
 use App\Models\Scenery;
+use App\Models\Simulation;
 use DB;
 
 use Illuminate\Database\Schema\Blueprint;
@@ -16,10 +17,20 @@ class ApiController extends Controller
     //
     public function migrar()
     {
-        /*Schema::table('projects', function(Blueprint $table) {
-            $table->string('zoom')->nullable();
-        });*/
-        return Project::with('nodes','nodes.sceneries')->first();
+        Schema::dropIfExists('simulations');
+        Schema::create('simulations', function (Blueprint $table) {
+            $table->id();
+            $table->integer('project_id')->nullable();
+            $table->string('name')->nullable();
+            $table->text('description')->nullable();
+            $table->integer('steps')->nullable();
+            $table->string('color')->nullable();
+
+            $table->string('nodes')->nullable();
+            $table->longText('samples')->nullable();
+
+            $table->timestamps();
+        });
     }
 
     public function getProjects()
@@ -326,5 +337,46 @@ class ApiController extends Controller
                 $value->save();
             }
         }
+    }
+
+    public function getSimulations($id)
+    {
+        return Simulation::where('project_id',$id)->get();
+    }
+
+    public function getSimulation($id)
+    {
+        return Simulation::find($id);
+    }
+
+    public function saveSimulation(Request $r)
+    {
+        $s = new Simulation;
+        $s->project_id = $r->project_id;
+        $s->name = $r->name;
+        $s->description = $r->description;
+        $s->steps = $r->steps;
+        $s->color = $r->color;
+        $s->nodes = $r->nodes;
+        $s->samples = $r->samples;
+        $s->save();
+    }
+
+    public function updateSimulation(Request $r, $id)
+    {
+        $s = Simulation::find($id);
+
+        $s->name = $r->name;
+        $s->description = $r->description;
+        $s->steps = $r->steps;
+        $s->color = $r->color;
+        $s->nodes = $r->nodes;
+        $s->samples = $r->samples;
+        $s->save();
+    }
+
+    public function deleteSimulation($id)
+    {
+        Simulation::find($id)->delete();
     }
 }

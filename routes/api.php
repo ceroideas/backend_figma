@@ -42,3 +42,9 @@ Route::delete('deleteScenery/{id}', [ApiController::class, 'deleteScenery']);
 Route::put('savePosition/{id}', [ApiController::class, 'savePosition']);
 Route::put('saveZoom/{id}', [ApiController::class, 'saveZoom']);
 Route::put('saveUnite/{id}', [ApiController::class, 'saveUnite']);
+
+Route::get('getSimulations/{id}', [ApiController::class, 'getSimulations']);
+Route::get('getSimulation/{id}', [ApiController::class, 'getSimulation']);
+Route::post('saveSimulation', [ApiController::class, 'saveSimulation']);
+Route::put('updateSimulation/{id}', [ApiController::class, 'updateSimulation']);
+Route::delete('deleteSimulation/{id}', [ApiController::class, 'deleteSimulation']);
