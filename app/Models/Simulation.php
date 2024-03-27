@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Simulation extends Model
 {
     use HasFactory;
+
+    protected $casts = [
+        'nodes' => 'array',
+        'samples' => 'array'
+    ];
 }

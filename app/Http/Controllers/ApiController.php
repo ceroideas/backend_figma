@@ -28,6 +28,7 @@ class ApiController extends Controller
 
             $table->string('nodes')->nullable();
             $table->longText('samples')->nullable();
+            $table->string('image')->nullable();
 
             $table->timestamps();
         });
@@ -360,6 +361,18 @@ class ApiController extends Controller
         $s->nodes = $r->nodes;
         $s->samples = $r->samples;
         $s->save();
+
+        $base64_image = $request->input('simulation'); 
+        $exploded = explode(',', $base64_image);
+
+        $decoded_image = base64_decode($exploded[1]);
+        $name = 'simulation-'.$s->id.'.jpg';
+        $path = public_path() . '/simulations/'.$name; 
+        
+        file_put_contents($path, $decoded_image);
+
+        $s->image = $name;
+        $s->save();
     }
 
     public function updateSimulation(Request $r, $id)
@@ -372,6 +385,18 @@ class ApiController extends Controller
         $s->color = $r->color;
         $s->nodes = $r->nodes;
         $s->samples = $r->samples;
+        $s->save();
+
+        $base64_image = $request->input('simulation'); 
+        $exploded = explode(',', $base64_image);
+
+        $decoded_image = base64_decode($exploded[1]);
+        $name = 'simulation-'.$s->id.'.jpg';
+        $path = public_path() . '/simulations/'.$name; 
+        
+        file_put_contents($path, $decoded_image);
+
+        $s->image = $name;
         $s->save();
     }
 
