@@ -28,7 +28,7 @@ class ApiController extends Controller
 
             $table->string('nodes')->nullable();
             $table->longText('samples')->nullable();
-            $table->string('image')->nullable();
+            $table->string('simulation')->nullable();
 
             $table->timestamps();
         });
@@ -371,7 +371,7 @@ class ApiController extends Controller
         
         file_put_contents($path, $decoded_image);
 
-        $s->image = $name;
+        $s->simulation = $name;
         $s->save();
     }
 
@@ -396,7 +396,7 @@ class ApiController extends Controller
         
         file_put_contents($path, $decoded_image);
 
-        $s->image = $name;
+        $s->simulation = $name;
         $s->save();
     }
 

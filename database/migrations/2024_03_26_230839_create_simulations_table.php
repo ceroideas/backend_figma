@@ -21,7 +21,7 @@ return new class extends Migration
 
             $table->string('nodes')->nullable();
             $table->longText('samples')->nullable();
-            $table->string('image')->nullable();
+            $table->string('simulation')->nullable();
 
             $table->timestamps();
         });
