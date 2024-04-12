@@ -48,3 +48,6 @@ Route::get('getSimulation/{id}', [ApiController::class, 'getSimulation']);
 Route::post('saveSimulation', [ApiController::class, 'saveSimulation']);
 Route::put('updateSimulation/{id}', [ApiController::class, 'updateSimulation']);
 Route::delete('deleteSimulation/{id}', [ApiController::class, 'deleteSimulation']);
+
+Route::put('setHiddenTable', [ApiController::class, 'setHiddenTable']);
+Route::put('setHiddenNode', [ApiController::class, 'setHiddenNode']);

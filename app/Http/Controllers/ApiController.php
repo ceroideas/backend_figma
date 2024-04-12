@@ -17,7 +17,12 @@ class ApiController extends Controller
     //
     public function migrar()
     {
-        Schema::dropIfExists('simulations');
+        Schema::table('nodes', function(Blueprint $table) {
+            //
+            // $table->integer('hidden_table')->nullable();
+            $table->integer('hidden_node')->nullable();
+        });
+        /*Schema::dropIfExists('simulations');
         Schema::create('simulations', function (Blueprint $table) {
             $table->id();
             $table->integer('project_id')->nullable();
@@ -31,7 +36,7 @@ class ApiController extends Controller
             $table->string('simulation')->nullable();
 
             $table->timestamps();
-        });
+        });*/
     }
 
     public function getProjects()
@@ -362,7 +367,7 @@ class ApiController extends Controller
         $s->samples = $r->samples;
         $s->save();
 
-        $base64_image = $request->input('simulation'); 
+        $base64_image = $r->input('simulation'); 
         $exploded = explode(',', $base64_image);
 
         $decoded_image = base64_decode($exploded[1]);
@@ -373,35 +378,59 @@ class ApiController extends Controller
 
         $s->simulation = $name;
         $s->save();
+
+        return $s;
     }
 
     public function updateSimulation(Request $r, $id)
     {
         $s = Simulation::find($id);
 
-        $s->name = $r->name;
-        $s->description = $r->description;
-        $s->steps = $r->steps;
-        $s->color = $r->color;
-        $s->nodes = $r->nodes;
-        $s->samples = $r->samples;
+        $s->name = $r->name ? $r->name : $s->name;
+        $s->description = $r->description ? $r->description : $s->description;
+        $s->steps = $r->steps ? $r->steps : $s->steps;
+        $s->color = $r->color ? $r->color : $s->color;
+        $s->nodes = $r->nodes ? $r->nodes : $s->nodes;
+        $s->samples = $r->samples ? $r->samples : $s->samples;
         $s->save();
 
-        $base64_image = $request->input('simulation'); 
-        $exploded = explode(',', $base64_image);
+        if ($r->simulation) {
+            $base64_image = $r->input('simulation'); 
+            $exploded = explode(',', $base64_image);
 
-        $decoded_image = base64_decode($exploded[1]);
-        $name = 'simulation-'.$s->id.'.jpg';
-        $path = public_path() . '/simulations/'.$name; 
-        
-        file_put_contents($path, $decoded_image);
+            $decoded_image = base64_decode($exploded[1]);
+            $name = 'simulation-'.$s->id.'.jpg';
+            $path = public_path() . '/simulations/'.$name; 
+            
+            file_put_contents($path, $decoded_image);
 
-        $s->simulation = $name;
-        $s->save();
+            $s->simulation = $name;
+            $s->save();
+        }
+
+        return $s;
     }
 
     public function deleteSimulation($id)
     {
         Simulation::find($id)->delete();
+    }
+
+    public function setHiddenTable(Request $r)
+    {
+        foreach ($r->ids as $key => $id) {
+            $n = Node::find($id);
+            $n->hidden_table = !$n->hidden_table;
+            $n->save();
+        }
+    }
+
+    public function setHiddenNode(Request $r)
+    {
+        foreach ($r->ids as $key => $id) {
+            $n = Node::find($id);
+            $n->hidden_node = !$n->hidden_node;
+            $n->save();
+        }
     }
 }

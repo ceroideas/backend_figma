@@ -13,4 +13,9 @@ class Simulation extends Model
         'nodes' => 'array',
         'samples' => 'array'
     ];
+
+    public function getSimulationAttribute($value)
+    {
+        return url('/simulations',$value);
+    }
 }
