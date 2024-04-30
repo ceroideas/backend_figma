@@ -17,11 +17,16 @@ class ApiController extends Controller
     //
     public function migrar()
     {
-        Schema::table('nodes', function(Blueprint $table) {
+        Schema::table('simulations', function(Blueprint $table) {
+            //
+            $table->longText('csvData')->nullable();
+        });
+
+        /*Schema::table('nodes', function(Blueprint $table) {
             //
             // $table->integer('hidden_table')->nullable();
             $table->integer('hidden_node')->nullable();
-        });
+        });*/
         /*Schema::dropIfExists('simulations');
         Schema::create('simulations', function (Blueprint $table) {
             $table->id();
@@ -365,6 +370,7 @@ class ApiController extends Controller
         $s->color = $r->color;
         $s->nodes = $r->nodes;
         $s->samples = $r->samples;
+        $s->csvData = $r->csvData;
         $s->save();
 
         $base64_image = $r->input('simulation'); 
@@ -392,6 +398,7 @@ class ApiController extends Controller
         $s->color = $r->color ? $r->color : $s->color;
         $s->nodes = $r->nodes ? $r->nodes : $s->nodes;
         $s->samples = $r->samples ? $r->samples : $s->samples;
+        $s->csvData = $r->csvData ? $r->csvData : $s->csvData;
         $s->save();
 
         if ($r->simulation) {
