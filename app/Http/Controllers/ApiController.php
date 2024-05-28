@@ -373,6 +373,10 @@ class ApiController extends Controller
         $s->csvData = $r->csvData;
         $s->save();
 
+        if (!file_exists(public_path() . '/simulations/')) {
+            mkdir(public_path() . '/simulations/', 0777, true);
+        }
+
         $base64_image = $r->input('simulation'); 
         $exploded = explode(',', $base64_image);
 
@@ -400,6 +404,10 @@ class ApiController extends Controller
         $s->samples = $r->samples ? $r->samples : $s->samples;
         $s->csvData = $r->csvData ? $r->csvData : $s->csvData;
         $s->save();
+
+        if (!file_exists(public_path() . '/simulations/')) {
+            mkdir(public_path() . '/simulations/', 0777, true);
+        }
 
         if ($r->simulation) {
             $base64_image = $r->input('simulation'); 
