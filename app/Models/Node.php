@@ -193,8 +193,12 @@ class Node extends Model
                     } else {
                         $years[$start] = 0;
                     }*/
-                    $years[$start] = eval("return number_format($str,2);");
+                    $tokens = $this->shuntingYard($str);
+                    $resultado = $this->evaluarRPN($tokens);
+
+                    // $years[$start] = eval("return number_format($str,2);");
                     // $years[$start] = $str;
+                    $years[$start] = $resultado;
 
                     $start++;
                 }
@@ -208,5 +212,57 @@ class Node extends Model
         }
 
         return $this->project->clean_sceneries;
+    }
+
+    public function shuntingYard($input) {
+        $output = [];
+        $stack = [];
+        $precedence = ['+' => 1, '-' => 1, '*' => 2, '/' => 2];
+        $tokens = preg_split('/\s*(\d+|\+|\-|\*|\/|\(|\))\s*/', $input, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+
+        foreach ($tokens as $token) {
+            if (is_numeric($token)) {
+                $output[] = $token;
+            } elseif (in_array($token, array_keys($precedence))) {
+                while (!empty($stack) && end($stack) != '(' && $precedence[$token] <= $precedence[end($stack)]) {
+                    $output[] = array_pop($stack);
+                }
+                $stack[] = $token;
+            } elseif ($token == '(') {
+                $stack[] = $token;
+            } elseif ($token == ')') {
+                while (end($stack) != '(') {
+                    $output[] = array_pop($stack);
+                }
+                array_pop($stack); // Remove the '('
+            }
+        }
+
+        while (!empty($stack)) {
+            $output[] = array_pop($stack);
+        }
+
+        return $output;
+    }
+
+    public function evaluarRPN($tokens) {
+        $stack = [];
+
+        foreach ($tokens as $token) {
+            if (is_numeric($token)) {
+                $stack[] = $token;
+            } else {
+                $right = array_pop($stack);
+                $left = array_pop($stack);
+                switch ($token) {
+                    case '+': $stack[] = $left + $right; break;
+                    case '-': $stack[] = $left - $right; break;
+                    case '*': $stack[] = $left * $right; break;
+                    case '/': $stack[] = $left / $right; break;
+                }
+            }
+        }
+
+        return array_pop($stack);
     }
 }
