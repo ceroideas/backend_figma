@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\ExpressionLanguage\SyntaxError;
+
+
 class Node extends Model
 {
     use HasFactory;
@@ -106,14 +110,11 @@ class Node extends Model
     }
 
     private function evaluarExpresion($expresion) {
+        $language = new ExpressionLanguage();
         try {
-            $resultado = eval($expresion);
-            if ($resultado === false) {
-                return null;
-            }
-            return $resultado;
-        } catch (Exception $e) {
-            return null;
+            return $language->evaluate($expresion);
+        } catch (SyntaxError $e) {
+            return 0;
         }
     }
 
@@ -127,6 +128,7 @@ class Node extends Model
         $reemplazo2 = ")*";
         
         $sceneries = [];
+
 
         if ($this->formula != null && $this->type == 2) {
 
@@ -187,18 +189,16 @@ class Node extends Model
                         $str = preg_replace($patron2, $reemplazo2, $str);
                         $st++;
                     }
-                    /*$valor = $this->evaluarExpresion("return $str;");
+                    $valor = $this->evaluarExpresion($str);
                     if ($valor !== null) {
                         $years[$start] = $valor;
+                        // $years[$start] = $language->evaluate($str);
                     } else {
                         $years[$start] = 0;
-                    }*/
-                    $tokens = $this->shuntingYard($str);
-                    $resultado = $this->evaluarRPN($tokens);
+                    }
 
                     // $years[$start] = eval("return number_format($str,2);");
-                    // $years[$start] = $str;
-                    $years[$start] = $resultado;
+                    // $years[$start] = $str ?? 0;
 
                     $start++;
                 }
@@ -212,57 +212,5 @@ class Node extends Model
         }
 
         return $this->project->clean_sceneries;
-    }
-
-    public function shuntingYard($input) {
-        $output = [];
-        $stack = [];
-        $precedence = ['+' => 1, '-' => 1, '*' => 2, '/' => 2];
-        $tokens = preg_split('/\s*(\d+|\+|\-|\*|\/|\(|\))\s*/', $input, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-
-        foreach ($tokens as $token) {
-            if (is_numeric($token)) {
-                $output[] = $token;
-            } elseif (in_array($token, array_keys($precedence))) {
-                while (!empty($stack) && end($stack) != '(' && $precedence[$token] <= $precedence[end($stack)]) {
-                    $output[] = array_pop($stack);
-                }
-                $stack[] = $token;
-            } elseif ($token == '(') {
-                $stack[] = $token;
-            } elseif ($token == ')') {
-                while (end($stack) != '(') {
-                    $output[] = array_pop($stack);
-                }
-                array_pop($stack); // Remove the '('
-            }
-        }
-
-        while (!empty($stack)) {
-            $output[] = array_pop($stack);
-        }
-
-        return $output;
-    }
-
-    public function evaluarRPN($tokens) {
-        $stack = [];
-
-        foreach ($tokens as $token) {
-            if (is_numeric($token)) {
-                $stack[] = $token;
-            } else {
-                $right = array_pop($stack);
-                $left = array_pop($stack);
-                switch ($token) {
-                    case '+': $stack[] = $left + $right; break;
-                    case '-': $stack[] = $left - $right; break;
-                    case '*': $stack[] = $left * $right; break;
-                    case '/': $stack[] = $left / $right; break;
-                }
-            }
-        }
-
-        return array_pop($stack);
     }
 }
