@@ -19,3 +19,4 @@ jobs:
         script: |
           cd /var/www/html/api
           git pull
+          composer install
