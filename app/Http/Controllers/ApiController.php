@@ -454,6 +454,7 @@ class ApiController extends Controller
 
     public function checkExpression($expression)
     {
+        $language = new ExpressionLanguage();
         try {
             return $language->evaluate($r->expresion);
         } catch (SyntaxError $e) {
@@ -463,7 +464,6 @@ class ApiController extends Controller
 
     public function definitelyNotEval(Request $r)
     {
-        $language = new ExpressionLanguage();
         if ($r->expression) {
             return $this->checkExpression($r->expression);
         }
