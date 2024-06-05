@@ -456,7 +456,7 @@ class ApiController extends Controller
     {
         $language = new ExpressionLanguage();
         try {
-            return $language->evaluate($r->expresion);
+            return $language->evaluate($expresion);
         } catch (SyntaxError $e) {
             return 0;
         }
