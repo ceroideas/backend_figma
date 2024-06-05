@@ -12,6 +12,9 @@ use DB;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\ExpressionLanguage\SyntaxError;
+
 class ApiController extends Controller
 {
     //
@@ -446,6 +449,16 @@ class ApiController extends Controller
             $n = Node::find($id);
             $n->hidden_node = !$n->hidden_node;
             $n->save();
+        }
+    }
+
+    public function definitelyNotEval(Request $r)
+    {
+        $language = new ExpressionLanguage();
+        try {
+            return $language->evaluate($r->expresion);
+        } catch (SyntaxError $e) {
+            return 0;
         }
     }
 }

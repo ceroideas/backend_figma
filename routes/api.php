@@ -51,3 +51,5 @@ Route::delete('deleteSimulation/{id}', [ApiController::class, 'deleteSimulation'
 
 Route::put('setHiddenTable', [ApiController::class, 'setHiddenTable']);
 Route::put('setHiddenNode', [ApiController::class, 'setHiddenNode']);
+
+Route::post('definitelyNotEval', [ApiController::class, 'definitelyNotEval']);
