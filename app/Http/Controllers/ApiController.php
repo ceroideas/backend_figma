@@ -452,13 +452,35 @@ class ApiController extends Controller
         }
     }
 
-    public function definitelyNotEval(Request $r)
+    public function checkExpression($expression)
     {
-        $language = new ExpressionLanguage();
         try {
             return $language->evaluate($r->expresion);
         } catch (SyntaxError $e) {
             return 0;
+        }
+    }
+
+    public function definitelyNotEval(Request $r)
+    {
+        $language = new ExpressionLanguage();
+
+        if ($r->expression) {
+            return $this->checkExpression($r->expression);
+        }
+
+        if ($r->expressions) {
+            $results = [];
+            foreach ($r->expressions as $key => $expression) {
+                $valor = $this->evaluarExpresion($str);
+                if ($valor !== null) {
+                    $results[] = $valor;
+                } else {
+                    $results[] = 0;
+                }
+            }
+
+            return $results;
         }
     }
 }
