@@ -464,22 +464,19 @@ class ApiController extends Controller
     public function definitelyNotEval(Request $r)
     {
         $language = new ExpressionLanguage();
-
         if ($r->expression) {
             return $this->checkExpression($r->expression);
         }
-
         if ($r->expressions) {
             $results = [];
             foreach ($r->expressions as $key => $expression) {
-                $valor = $this->evaluarExpresion($str);
+                $valor = $this->checkExpression($expression);
                 if ($valor !== null) {
                     $results[] = $valor;
                 } else {
                     $results[] = 0;
                 }
             }
-
             return $results;
         }
     }
