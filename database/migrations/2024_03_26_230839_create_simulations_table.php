@@ -23,6 +23,8 @@ return new class extends Migration
             $table->longText('samples')->nullable();
             $table->string('simulation')->nullable();
 
+            $table->longText('csvData')->nullable();
+
             $table->timestamps();
         });
     }

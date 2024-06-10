@@ -22,6 +22,10 @@ return new class extends Migration
             $table->json('distribution_shape')->nullable();
             $table->string('unite')->nullable();
             $table->json('formula')->nullable();
+            
+            $table->integer('hidden_table')->nullable();
+            $table->integer('hidden_node')->nullable();
+
             $table->integer('status')->nullable();
             $table->timestamps();
         });

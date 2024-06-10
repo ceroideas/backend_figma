@@ -20,17 +20,12 @@ class ApiController extends Controller
     //
     public function migrar()
     {
-        Schema::table('simulations', function(Blueprint $table) {
+        Schema::table('nodes', function(Blueprint $table) {
             //
-            $table->longText('csvData')->nullable();
-        });
-
-        /*Schema::table('nodes', function(Blueprint $table) {
-            //
-            // $table->integer('hidden_table')->nullable();
+            $table->integer('hidden_table')->nullable();
             $table->integer('hidden_node')->nullable();
-        });*/
-        /*Schema::dropIfExists('simulations');
+        });
+        Schema::dropIfExists('simulations');
         Schema::create('simulations', function (Blueprint $table) {
             $table->id();
             $table->integer('project_id')->nullable();
@@ -43,8 +38,10 @@ class ApiController extends Controller
             $table->longText('samples')->nullable();
             $table->string('simulation')->nullable();
 
+            $table->longText('csvData')->nullable();
+
             $table->timestamps();
-        });*/
+        });
     }
 
     public function getProjects()
