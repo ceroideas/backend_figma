@@ -20,6 +20,12 @@ class ApiController extends Controller
     //
     public function migrar()
     {
+        Schema::table('projects', function(Blueprint $table) {
+            //
+            $table->string('thumb')->nullable();
+        });
+
+        return;
         Schema::table('nodes', function(Blueprint $table) {
             //
             $table->integer('hidden_table')->nullable();
