@@ -199,12 +199,28 @@ class ApiController extends Controller
     public function updateProject($id, Request $r)
     {
         $p = Project::find($id);
-        $p->name = $r->name;
+
+        if (!file_exists(public_path() . '/projects/')) {
+            mkdir(public_path() . '/projects/', 0777, true);
+        }
+
+        $base64_image = $r->input('thumb'); 
+        $exploded = explode(',', $base64_image);
+
+        $decoded_image = base64_decode($exploded[1]);
+        $name = 'thumb-'.$s->id.'.jpg';
+        $path = public_path() . '/projects/'.$name; 
+        
+        file_put_contents($path, $decoded_image);
+
+        $p->thumb = $name;
+        $p->save();
+        
+        // $p->name = $r->name;
         // $p->year_from = $r->year_from;
         // $p->year_to = $r->year_to;
         // $p->sceneries = $r->sceneries;
-        $p->status = $r->status ? $r->status : $p->status;
-        $p->save();
+        // $p->status = $r->status ? $r->status : $p->status;
     }
 
     public function updateNode($id, Request $r)

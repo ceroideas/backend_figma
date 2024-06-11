@@ -51,4 +51,9 @@ class Project extends Model
         return $sceneries;
 
     }
+
+    public function getThumbAttribute($value)
+    {
+        return url('/projects',$value);
+    }
 }
