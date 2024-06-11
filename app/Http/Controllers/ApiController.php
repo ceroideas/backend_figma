@@ -208,7 +208,7 @@ class ApiController extends Controller
         $exploded = explode(',', $base64_image);
 
         $decoded_image = base64_decode($exploded[1]);
-        $name = 'thumb-'.$s->id.'.jpg';
+        $name = 'thumb-'.$p->id.'.jpg';
         $path = public_path() . '/projects/'.$name; 
         
         file_put_contents($path, $decoded_image);
