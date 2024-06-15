@@ -697,7 +697,8 @@ class ShapesController extends Controller
                         }
                     }else{
                         $formula2 = $this->recursiveCalculate($node);
-                        $formula[] = '(' . $formula2 . ')';
+                        print_r($formula2);
+                        // $formula[] = '(' . $formula2 . ')';
                     }
 
                 }else{
