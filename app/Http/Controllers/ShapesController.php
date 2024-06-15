@@ -15,6 +15,7 @@ class ShapesController extends Controller
     public function __construct()
     {
         $this->valoresPorNodo = [];
+        $this->nodesActive = [];
     }
     public function recursiveCalculate($node)
     {
@@ -28,7 +29,7 @@ class ShapesController extends Controller
                 $node = Node::find($nodeId);
                 // if (!isset($csvData[$j])) {$csvData[$j] = [];}
                 if ($node->type == 1) {
-                    if (!$node->isActive || $node->isActive == false) {
+                    if (!in_array($node->id, $nodesActive)) {
                       $value =
                         $node->unite == null || $node->unite == ""
                           ? '0'
@@ -359,7 +360,7 @@ class ShapesController extends Controller
     {
         $simulationNumber = $r->size;
         $project_id = $r->project_id;
-        $nodesActive = $r->nodes_active;
+        $this->nodesActive = $r->nodes_active;
         $simulationId = $r->simulationId;
 
         $project = Project::find($project_id);
@@ -380,7 +381,7 @@ class ShapesController extends Controller
                     // if (!isset($csvData[$j])) {$csvData[$j] = [];}
                     // $csvData[$j] = array_merge($csvData[$j], array("id" => $simulationId));
                     if ($node->type == 1) {
-                        if (!$node->isActive || $node->isActive == false) {
+                        if (!in_array($node->id, $nodesActive)) {
                           $value =
                             $node->unite == null || $node->unite == ""
                               ? '0'
