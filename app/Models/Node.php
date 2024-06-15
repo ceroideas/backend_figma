@@ -180,15 +180,15 @@ class Node extends Model
                         }
 
                     }
-                    $str = preg_replace($patron, $reemplazo, $calculo);
+                    /*$str = preg_replace($patron, $reemplazo, $calculo);*/
 
                     $st = 0;
 
-                    while($st != $count) {
+                    /*while($st != $count) {
                         $str = preg_replace($patron, $reemplazo, $str);
                         $str = preg_replace($patron2, $reemplazo2, $str);
                         $st++;
-                    }
+                    }*/
                     /*$valor = $this->evaluarExpresion($str);
                     if ($valor !== null) {
                         $years[$start] = $valor;
