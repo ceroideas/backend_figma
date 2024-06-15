@@ -7,10 +7,16 @@ use Illuminate\Http\Request;
 use App\Models\Project;
 use App\Models\Node;
 
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
+use Symfony\Component\ExpressionLanguage\SyntaxError;
+
 class ShapesController extends Controller
 {
     public function recursiveCalculate($node)
     {
+        $formula = [];
+        $aux = null;
+
         for ($i = 0; $i < count($node->formula); $i++) {
             $nodeId = $node->formula[$i];
             if (gettype($nodeId) == 'integer') {
@@ -330,6 +336,8 @@ class ShapesController extends Controller
                 array_push($formula, $nodeId);
             }
         }
+
+        return $formula;
     }
     public function generateSimulation(Request $r)
     {
@@ -342,6 +350,7 @@ class ShapesController extends Controller
         $valoresPorNodo = [];
         
         $formula = [];
+        $arrayToSee = [];
         $csvData = [];
         $aux = null;
 
@@ -660,19 +669,6 @@ class ShapesController extends Controller
                     }else{
                         $formula2 = $this->recursiveCalculate($node);
                         $formula[] = '(' . $formula2 . ')';
-                        /*$csvData[$j] = array_merge($csvData[$j], array($node->name => eval('return ' . implode('', array_map('strval', $formula2)) . ';')));
-
-                        if (Object.keys(data).length !== 0) {
-                          csvData[j] = {
-                            ...csvData[j],
-                            ...Object.keys(data).reduce((acc: any, key) => {
-                              if (!(key in csvData[j])) {
-                                acc[key] = data[key];
-                              }
-                              return acc;
-                            }, {}),
-                          };
-                        }*/
                     }
 
                 }else{
@@ -680,6 +676,21 @@ class ShapesController extends Controller
                 }
             }
 
+            $operation = evaluarExpresion(implode('', $formula));
+            $arrayToSee[] = number_format($operation,2);
+
+            $formula = [];
+        }
+
+        return $arrayToSee;
+    }
+
+    private function evaluarExpresion($expresion) {
+        $language = new ExpressionLanguage();
+        try {
+            return $language->evaluate($expresion);
+        } catch (SyntaxError $e) {
+            return 0;
         }
     }
     //
