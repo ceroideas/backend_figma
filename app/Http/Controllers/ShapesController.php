@@ -671,6 +671,8 @@ class ShapesController extends Controller
                                         $aux['values'] = $values;
                                       }
                                       $formula[] = '(' . $randomNumberNormal . ')';
+
+                                      print_r([$randomNumberNormal,$this->valoresPorNodo]);
                                       // if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                       // $csvData[$j] = array_merge($csvData[$j], array($node->name => $randomNumberNormal));
                                     break;
