@@ -291,6 +291,7 @@ class ShapesController extends Controller
                                   // $csvData[$j] = array_merge($csvData[$j], array($node->name => $poissonNumber));
                                 break;
                             case 'Normal':
+                                dd([$node->distribution_shape,$node->distribution_shape[0]['mean'],$node->distribution_shape[0]['stDev']]);
                                 $randomNumberNormal = $this->normalOperation(
                                     $node->distribution_shape[0]['mean'],
                                     $node->distribution_shape[0]['stDev'],
