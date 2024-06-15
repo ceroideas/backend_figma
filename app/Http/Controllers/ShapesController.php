@@ -23,10 +23,8 @@ class ShapesController extends Controller
     {
         $formula = [];
         $aux = null;
-
         for ($i = 0; $i < count($newNode->formula); $i++) {
             $nodeId = $newNode->formula[$i];
-
             if (gettype($nodeId) == 'integer') {
                 $node = $this->projectNodes->firstWhere('id', $nodeId);
                 // if (!isset($csvData[$j])) {$csvData[$j] = [];}
@@ -348,13 +346,14 @@ class ShapesController extends Controller
                     }
                 }else{
                     $formula2 = $this->recursiveCalculate($node);
-                    $formula[] = '(' . $formula2[0] . ')';
+                    $formula[] = '(' . implode('', $formula2) . ')';
                 }
 
             }else{
                 array_push($formula, $nodeId);
             }
         }
+        // print_r($formula);
         return $formula;
     }
     public function generateSimulation(Request $r)
@@ -702,7 +701,6 @@ class ShapesController extends Controller
                         }
                     }else{
                         $formula2 = $this->recursiveCalculate($node);
-
                         $formula[] = '(' . implode('', $formula2) . ')';
                     }
 
