@@ -388,6 +388,7 @@ class ShapesController extends Controller
                     $node = $this->projectNodes->firstWhere('id', $nodeId);
                     // if (!isset($csvData[$j])) {$csvData[$j] = [];}
                     // $csvData[$j] = array_merge($csvData[$j], array("id" => $simulationId));
+                    print_r($node);
                     if ($node->type == 1) {
                         if (!in_array($node->id, $this->nodesActive)) {
                           $value =
@@ -414,6 +415,7 @@ class ShapesController extends Controller
                             $aux['values'] = $values;
                           }
                         } else {
+                            echo $node->distribution_shape[0]['name'];
                             switch ($node->distribution_shape[0]['name']) {
                                 case 'Uniforme':
                                     $randomNumber = $this->uniformOperation(
