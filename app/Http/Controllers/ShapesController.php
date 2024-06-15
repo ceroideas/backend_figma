@@ -388,7 +388,6 @@ class ShapesController extends Controller
                     $node = $this->projectNodes->firstWhere('id', $nodeId);
                     // if (!isset($csvData[$j])) {$csvData[$j] = [];}
                     // $csvData[$j] = array_merge($csvData[$j], array("id" => $simulationId));
-                    print_r($node);
                     if ($node->type == 1) {
                         if (!in_array($node->id, $this->nodesActive)) {
                           $value =
