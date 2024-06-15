@@ -359,6 +359,7 @@ class ShapesController extends Controller
     }
     public function generateSimulation(Request $r)
     {
+        set_time_limit(0);
         $this->simulationNumber = $r->size;
         $project_id = $r->project_id;
         $this->nodesActive = $r->nodes_active;
