@@ -22,6 +22,7 @@ class ShapesController extends Controller
             if (gettype($nodeId) == 'integer') {
 
                 $node = Node::find($nodeId);
+                if (!isset($csvData[$j])) {$csvData[$j] = [];}
                 $csvData[$j] = array_merge($csvData[$j], array("id" => $this->simulationId));
                 if ($node->type == 1) {
                     if (!$node->isActive || $node->isActive == false) {
@@ -39,6 +40,7 @@ class ShapesController extends Controller
                         $aux = false;
                       }
                       // $csvData[$j] = array_merge($csvData[$j], array([$node->name] => $value));
+                      if (!isset($csvData[$j])) {$csvData[$j] = [];}
                       $csvData[$j] = array_merge($csvData[$j], array($node->name => $value));
                       if (!$aux) {
                         $valoresPorNodo[] = ["name" => $node->name, "values" => [$value]];
@@ -72,6 +74,7 @@ class ShapesController extends Controller
                                     $aux['values'] = $values;
                                   }
                                   $formula[] = '(' . $randomNumber . ')';
+                                  if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                   $csvData[$j] = array_merge($csvData[$j], array($node->name => $randomNumber));
                                 break;
                             case 'Triangular':
@@ -98,6 +101,7 @@ class ShapesController extends Controller
                                     $aux['values'] = $values;
                                   }
                                   $formula[] = '(' . $triangularNumber . ')';
+                                  if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                   $csvData[$j] = array_merge($csvData[$j], array($node->name => $triangularNumber));
                                 break;
                             case 'Binominal':
@@ -123,6 +127,7 @@ class ShapesController extends Controller
                                     $aux['values'] = $values;
                                   }
                                   $formula[] = '(' . $binomialNumber . ')';
+                                  if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                   $csvData[$j] = array_merge($csvData[$j], array($node->name => $binomialNumber));
                                 break;
                             case 'Lognormal':
@@ -148,6 +153,7 @@ class ShapesController extends Controller
                                     $aux['values'] = $values;
                                   }
                                   $formula[] = '(' . $lognormalNumber . ')';
+                                  if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                   $csvData[$j] = array_merge($csvData[$j], array($node->name => $lognormalNumber));
                                 break;
                             case 'Geometric':
@@ -172,6 +178,7 @@ class ShapesController extends Controller
                                     $aux['values'] = $values;
                                   }
                                   $formula[] = '(' . $geometricNumber . ')';
+                                  if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                   $csvData[$j] = array_merge($csvData[$j], array($node->name => $geometricNumber));
                                 break;
                             case 'Weibull':
@@ -197,6 +204,7 @@ class ShapesController extends Controller
                                     $aux['values'] = $values;
                                   }
                                   $formula[] = '(' . $weibullNumber . ')';
+                                  if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                   $csvData[$j] = array_merge($csvData[$j], array($node->name => $weibullNumber));
                                 break;
                             case 'Beta':
@@ -222,6 +230,7 @@ class ShapesController extends Controller
                                     $aux['values'] = $values;
                                   }
                                   $formula[] = '(' . $betaNumber . ')';
+                                  if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                   $csvData[$j] = array_merge($csvData[$j], array($node->name => $betaNumber));
                                 break;
                             case 'Hypergeometric':
@@ -248,6 +257,7 @@ class ShapesController extends Controller
                                     $aux['values'] = $values;
                                   }
                                   $formula[] = '(' . $hypergeometricNumber . ')';
+                                  if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                   $csvData[$j] = array_merge($csvData[$j], array($node->name => $hypergeometricNumber));
                                 break;
                             case 'Poisson':
@@ -272,6 +282,7 @@ class ShapesController extends Controller
                                     $aux['values'] = $values;
                                   }
                                   $formula[] = '(' . $poissonNumber . ')';
+                                  if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                   $csvData[$j] = array_merge($csvData[$j], array($node->name => $poissonNumber));
                                 break;
                             case 'Normal':
@@ -297,6 +308,7 @@ class ShapesController extends Controller
                                     $aux['values'] = $values;
                                   }
                                   $formula[] = '(' . $randomNumberNormal . ')';
+                                  if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                   $csvData[$j] = array_merge($csvData[$j], array($node->name => $randomNumberNormal));
                                 break;
                             case 'Exponencial':
@@ -321,6 +333,7 @@ class ShapesController extends Controller
                                     $aux['values'] = $values;
                                   }
                                   $formula[] = '(' . $randomNumberExponential . ')';
+                                  if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                   $csvData[$j] = array_merge($csvData[$j], array($node->name => $randomNumberExponential));
                                 break;
                             default:
@@ -411,6 +424,7 @@ class ShapesController extends Controller
                                         $aux['values'] = $values;
                                       }
                                       $formula[] = '(' . $randomNumber . ')';
+                                      if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                       $csvData[$j] = array_merge($csvData[$j], array($node->name => $randomNumber));
                                     break;
                                 case 'Triangular':
@@ -437,6 +451,7 @@ class ShapesController extends Controller
                                         $aux['values'] = $values;
                                       }
                                       $formula[] = '(' . $triangularNumber . ')';
+                                      if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                       $csvData[$j] = array_merge($csvData[$j], array($node->name => $triangularNumber));
                                     break;
                                 case 'Binominal':
@@ -462,6 +477,7 @@ class ShapesController extends Controller
                                         $aux['values'] = $values;
                                       }
                                       $formula[] = '(' . $binomialNumber . ')';
+                                      if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                       $csvData[$j] = array_merge($csvData[$j], array($node->name => $binomialNumber));
                                     break;
                                 case 'Lognormal':
@@ -487,6 +503,7 @@ class ShapesController extends Controller
                                         $aux['values'] = $values;
                                       }
                                       $formula[] = '(' . $lognormalNumber . ')';
+                                      if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                       $csvData[$j] = array_merge($csvData[$j], array($node->name => $lognormalNumber));
                                     break;
                                 case 'Geometric':
@@ -511,6 +528,7 @@ class ShapesController extends Controller
                                         $aux['values'] = $values;
                                       }
                                       $formula[] = '(' . $geometricNumber . ')';
+                                      if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                       $csvData[$j] = array_merge($csvData[$j], array($node->name => $geometricNumber));
                                     break;
                                 case 'Weibull':
@@ -536,6 +554,7 @@ class ShapesController extends Controller
                                         $aux['values'] = $values;
                                       }
                                       $formula[] = '(' . $weibullNumber . ')';
+                                      if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                       $csvData[$j] = array_merge($csvData[$j], array($node->name => $weibullNumber));
                                     break;
                                 case 'Beta':
@@ -561,6 +580,7 @@ class ShapesController extends Controller
                                         $aux['values'] = $values;
                                       }
                                       $formula[] = '(' . $betaNumber . ')';
+                                      if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                       $csvData[$j] = array_merge($csvData[$j], array($node->name => $betaNumber));
                                     break;
                                 case 'Hypergeometric':
@@ -587,6 +607,7 @@ class ShapesController extends Controller
                                         $aux['values'] = $values;
                                       }
                                       $formula[] = '(' . $hypergeometricNumber . ')';
+                                      if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                       $csvData[$j] = array_merge($csvData[$j], array($node->name => $hypergeometricNumber));
                                     break;
                                 case 'Poisson':
@@ -611,6 +632,7 @@ class ShapesController extends Controller
                                         $aux['values'] = $values;
                                       }
                                       $formula[] = '(' . $poissonNumber . ')';
+                                      if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                       $csvData[$j] = array_merge($csvData[$j], array($node->name => $poissonNumber));
                                     break;
                                 case 'Normal':
@@ -636,6 +658,7 @@ class ShapesController extends Controller
                                         $aux['values'] = $values;
                                       }
                                       $formula[] = '(' . $randomNumberNormal . ')';
+                                      if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                       $csvData[$j] = array_merge($csvData[$j], array($node->name => $randomNumberNormal));
                                     break;
                                 case 'Exponencial':
@@ -660,6 +683,7 @@ class ShapesController extends Controller
                                         $aux['values'] = $values;
                                       }
                                       $formula[] = '(' . $randomNumberExponential . ')';
+                                      if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                       $csvData[$j] = array_merge($csvData[$j], array($node->name => $randomNumberExponential));
                                     break;
                                 default:
