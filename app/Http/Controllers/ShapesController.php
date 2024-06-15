@@ -19,15 +19,15 @@ class ShapesController extends Controller
         $this->simulationNumber = null;
         $this->projectNodes = null;
     }
-    public function recursiveCalculate($node)
+    public function recursiveCalculate($newNode)
     {
         $formula = [];
         $aux = null;
 
-        for ($i = 0; $i < count($node->formula); $i++) {
-            $nodeId = $node->formula[$i];
-            if (gettype($nodeId) == 'integer') {
+        for ($i = 0; $i < count($newNode->formula); $i++) {
+            $nodeId = $newNode->formula[$i];
 
+            if (gettype($nodeId) == 'integer') {
                 $node = $this->projectNodes->firstWhere('id', $nodeId);
                 // if (!isset($csvData[$j])) {$csvData[$j] = [];}
                 if ($node->type == 1) {
@@ -56,7 +56,6 @@ class ShapesController extends Controller
                         $aux['values'] = $values;
                       }
                     } else {
-                        echo $node->distribution_shape[0]['name'];
                         switch ($node->distribution_shape[0]['name']) {
                             case 'Uniforme':
                                 $randomNumber = $this->uniformOperation(
@@ -315,8 +314,6 @@ class ShapesController extends Controller
                                     $aux['values'] = $values;
                                   }
                                   $formula[] = '(' . $randomNumberNormal . ')';
-
-                                  print_r([$randomNumberNormal,$this->valoresPorNodo]);
                                   // if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                   // $csvData[$j] = array_merge($csvData[$j], array($node->name => $randomNumberNormal));
                                 break;
@@ -358,7 +355,6 @@ class ShapesController extends Controller
                 array_push($formula, $nodeId);
             }
         }
-
         return $formula;
     }
     public function generateSimulation(Request $r)
@@ -379,21 +375,15 @@ class ShapesController extends Controller
         $csvData = [];
         $aux = null;
 
-        print_r($tierCero->formula);
-
         for ($j=0; $j < $this->simulationNumber; $j++) { 
             // code...
             for ($i = 0; $i < count($tierCero->formula); $i++) {
                 $nodeId = $tierCero->formula[$i];
-                
-                print_r(gettype($nodeId));
-
                 if (gettype($nodeId) == 'integer') {
 
                     $node = $this->projectNodes->firstWhere('id', $nodeId);
                     // if (!isset($csvData[$j])) {$csvData[$j] = [];}
                     // $csvData[$j] = array_merge($csvData[$j], array("id" => $simulationId));
-                    print_r($node->type);
                     if ($node->type == 1) {
                         if (!in_array($node->id, $this->nodesActive)) {
                           $value =
@@ -420,7 +410,6 @@ class ShapesController extends Controller
                             $aux['values'] = $values;
                           }
                         } else {
-                            echo $node->distribution_shape[0]['name'];
                             switch ($node->distribution_shape[0]['name']) {
                                 case 'Uniforme':
                                     $randomNumber = $this->uniformOperation(
@@ -679,8 +668,6 @@ class ShapesController extends Controller
                                         $aux['values'] = $values;
                                       }
                                       $formula[] = '(' . $randomNumberNormal . ')';
-
-                                      print_r([$randomNumberNormal,$this->valoresPorNodo]);
                                       // if (!isset($csvData[$j])) {$csvData[$j] = [];}
                                       // $csvData[$j] = array_merge($csvData[$j], array($node->name => $randomNumberNormal));
                                     break;
@@ -715,7 +702,8 @@ class ShapesController extends Controller
                         }
                     }else{
                         $formula2 = $this->recursiveCalculate($node);
-                        $formula[] = '(' . $formula2[0] . ')';
+
+                        $formula[] = '(' . implode('', $formula2) . ')';
                     }
 
                 }else{
@@ -723,9 +711,10 @@ class ShapesController extends Controller
                 }
             }
 
-            $operation = $formula; //$this->evaluarExpresion(implode('', $formula));
-            // $arrayToSee[] = number_format($operation,2);
-            $arrayToSee[] = $operation;
+            $operation = $this->evaluarExpresion(implode('', $formula));
+            // $operation = $formula;
+            $arrayToSee[] = number_format($operation,2);
+            // $arrayToSee[] = $operation;
 
             $formula = [];
         }
