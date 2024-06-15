@@ -54,4 +54,4 @@ Route::put('setHiddenNode', [ApiController::class, 'setHiddenNode']);
 
 Route::post('definitelyNotEval', [ApiController::class, 'definitelyNotEval']);
 
-Route::post('generateSimulation', [ApiController::class, 'generateSimulation']);
+Route::post('generateSimulation', [ShapesController::class, 'generateSimulation']);
