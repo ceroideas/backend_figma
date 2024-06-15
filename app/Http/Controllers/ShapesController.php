@@ -59,7 +59,7 @@ class ShapesController extends Controller
                                 $randomNumber = $this->uniformOperation(
                                     $node->distribution_shape[0]['min'],
                                     $node->distribution_shape[0]['max'],
-                                    $this->simulationNumber
+                                    $simulationControl
                                   );
                                   $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                   if ($index !== false) {
@@ -86,7 +86,7 @@ class ShapesController extends Controller
                                     $node->distribution_shape[0]['min'],
                                     $node->distribution_shape[0]['mode'],
                                     $node->distribution_shape[0]['max'],
-                                    $this->simulationNumber
+                                    $simulationControl
                                   );
                                   $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                   if ($index !== false) {
@@ -112,7 +112,7 @@ class ShapesController extends Controller
                                 $binomialNumber = $this->binomialOperation(
                                     $node->distribution_shape[0]['trials'],
                                     $node->distribution_shape[0]['probability'],
-                                    $this->simulationNumber
+                                    $simulationControl
                                   );
                                   $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                   if ($index !== false) {
@@ -138,7 +138,7 @@ class ShapesController extends Controller
                                 $lognormalNumber = $this->lognormalOperation(
                                     $node->distribution_shape[0]['mean'],
                                     $node->distribution_shape[0]['stDev'],
-                                    $this->simulationNumber
+                                    $simulationControl
                                   );
                                   $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                   if ($index !== false) {
@@ -163,7 +163,7 @@ class ShapesController extends Controller
                             case 'Geometric':
                                 $geometricNumber = $this->geometricalOperation(
                                     $node->distribution_shape[0]['probability'],
-                                    $this->simulationNumber
+                                    $simulationControl
                                   );
                                   $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                   if ($index !== false) {
@@ -189,7 +189,7 @@ class ShapesController extends Controller
                                 $weibullNumber = $this->weibullOperation(
                                     $node->distribution_shape[0]['form'],
                                     $node->distribution_shape[0]['scale'],
-                                    $this->simulationNumber
+                                    $simulationControl
                                   );
                                   $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                   if ($index !== false) {
@@ -215,7 +215,7 @@ class ShapesController extends Controller
                                 $betaNumber = $this->betaOperation(
                                     $node->distribution_shape[0]['alpha'],
                                     $node->distribution_shape[0]['beta'],
-                                    $this->simulationNumber
+                                    $simulationControl
                                   );
                                   $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                   if ($index !== false) {
@@ -242,7 +242,7 @@ class ShapesController extends Controller
                                     $node->distribution_shape[0]['population'],
                                     $node->distribution_shape[0]['success'],
                                     $node->distribution_shape[0]['trials'],
-                                    $this->simulationNumber
+                                    $simulationControl
                                   );
                                   $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                   if ($index !== false) {
@@ -267,7 +267,7 @@ class ShapesController extends Controller
                             case 'Poisson':
                                 $poissonNumber = $this->poissonOperation(
                                     $node->distribution_shape[0]['lamda'],
-                                    $this->simulationNumber
+                                    $simulationControl
                                   );
                                   $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                   if ($index !== false) {
@@ -293,7 +293,7 @@ class ShapesController extends Controller
                                 $randomNumberNormal = $this->normalOperation(
                                     $node->distribution_shape[0]['mean'],
                                     $node->distribution_shape[0]['stDev'],
-                                    $this->simulationNumber
+                                    $simulationControl
                                   );
                                   $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                   if ($index !== false) {
@@ -318,7 +318,7 @@ class ShapesController extends Controller
                             case 'Exponencial':
                                 $randomNumberExponential = $this->exponentialOperation(
                                     $node->distribution_shape[0]['rate'],
-                                    $this->simulationNumber
+                                    $simulationControl
                                   );
                                   $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                   if ($index !== false) {
@@ -360,6 +360,7 @@ class ShapesController extends Controller
     {
         set_time_limit(0);
         $this->simulationNumber = $r->size;
+        $simulationControl = 100;
         $project_id = $r->project_id;
         $this->nodesActive = $r->nodes_active;
         $simulationId = $r->simulationId;
@@ -376,7 +377,6 @@ class ShapesController extends Controller
 
         for ($j=0; $j < $this->simulationNumber; $j++) { 
             // code...
-            $this->simulationNumber = 100;
             for ($i = 0; $i < count($tierCero->formula); $i++) {
                 $nodeId = $tierCero->formula[$i];
                 if (gettype($nodeId) == 'integer') {
@@ -415,7 +415,7 @@ class ShapesController extends Controller
                                     $randomNumber = $this->uniformOperation(
                                         $node->distribution_shape[0]['min'],
                                         $node->distribution_shape[0]['max'],
-                                        $this->simulationNumber
+                                        $simulationControl
                                       );
                                       $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                       if ($index !== false) {
@@ -442,7 +442,7 @@ class ShapesController extends Controller
                                         $node->distribution_shape[0]['min'],
                                         $node->distribution_shape[0]['mode'],
                                         $node->distribution_shape[0]['max'],
-                                        $this->simulationNumber
+                                        $simulationControl
                                       );
                                       $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                       if ($index !== false) {
@@ -468,7 +468,7 @@ class ShapesController extends Controller
                                     $binomialNumber = $this->binomialOperation(
                                         $node->distribution_shape[0]['trials'],
                                         $node->distribution_shape[0]['probability'],
-                                        $this->simulationNumber
+                                        $simulationControl
                                       );
                                       $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                       if ($index !== false) {
@@ -494,7 +494,7 @@ class ShapesController extends Controller
                                     $lognormalNumber = $this->lognormalOperation(
                                         $node->distribution_shape[0]['mean'],
                                         $node->distribution_shape[0]['stDev'],
-                                        $this->simulationNumber
+                                        $simulationControl
                                       );
                                       $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                       if ($index !== false) {
@@ -519,7 +519,7 @@ class ShapesController extends Controller
                                 case 'Geometric':
                                     $geometricNumber = $this->geometricalOperation(
                                         $node->distribution_shape[0]['probability'],
-                                        $this->simulationNumber
+                                        $simulationControl
                                       );
                                       $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                       if ($index !== false) {
@@ -545,7 +545,7 @@ class ShapesController extends Controller
                                     $weibullNumber = $this->weibullOperation(
                                         $node->distribution_shape[0]['form'],
                                         $node->distribution_shape[0]['scale'],
-                                        $this->simulationNumber
+                                        $simulationControl
                                       );
                                       $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                       if ($index !== false) {
@@ -571,7 +571,7 @@ class ShapesController extends Controller
                                     $betaNumber = $this->betaOperation(
                                         $node->distribution_shape[0]['alpha'],
                                         $node->distribution_shape[0]['beta'],
-                                        $this->simulationNumber
+                                        $simulationControl
                                       );
                                       $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                       if ($index !== false) {
@@ -598,7 +598,7 @@ class ShapesController extends Controller
                                         $node->distribution_shape[0]['population'],
                                         $node->distribution_shape[0]['success'],
                                         $node->distribution_shape[0]['trials'],
-                                        $this->simulationNumber
+                                        $simulationControl
                                       );
                                       $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                       if ($index !== false) {
@@ -623,7 +623,7 @@ class ShapesController extends Controller
                                 case 'Poisson':
                                     $poissonNumber = $this->poissonOperation(
                                         $node->distribution_shape[0]['lamda'],
-                                        $this->simulationNumber
+                                        $simulationControl
                                       );
                                       $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                       if ($index !== false) {
@@ -649,7 +649,7 @@ class ShapesController extends Controller
                                     $randomNumberNormal = $this->normalOperation(
                                         $node->distribution_shape[0]['mean'],
                                         $node->distribution_shape[0]['stDev'],
-                                        $this->simulationNumber
+                                        $simulationControl
                                       );
                                       $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                       if ($index !== false) {
@@ -674,7 +674,7 @@ class ShapesController extends Controller
                                 case 'Exponencial':
                                     $randomNumberExponential = $this->exponentialOperation(
                                         $node->distribution_shape[0]['rate'],
-                                        $this->simulationNumber
+                                        $simulationControl
                                       );
                                       $index = array_search($node->name, array_column($this->valoresPorNodo, "name"));
                                       if ($index !== false) {
