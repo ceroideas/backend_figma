@@ -705,7 +705,7 @@ class ShapesController extends Controller
                 }
             }
 
-            $operation = evaluarExpresion(implode('', $formula));
+            $operation = $this->evaluarExpresion(implode('', $formula));
             $arrayToSee[] = number_format($operation,2);
 
             $formula = [];
