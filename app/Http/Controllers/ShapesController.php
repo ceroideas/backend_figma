@@ -374,6 +374,7 @@ class ShapesController extends Controller
                 if (gettype($nodeId) == 'integer') {
 
                     $node = Node::find($nodeId);
+                    if (!isset($csvData[$j])) {$csvData[$j] = [];}
                     $csvData[$j] = array_merge($csvData[$j], array("id" => $this->simulationId));
                     if ($node->type == 1) {
                         if (!$node->isActive || $node->isActive == false) {
@@ -391,6 +392,7 @@ class ShapesController extends Controller
                             $aux = false;
                           }
                           // $csvData[$j] = array_merge($csvData[$j], array([$node->name] => $value));
+                          if (!isset($csvData[$j])) {$csvData[$j] = [];}
                           $csvData[$j] = array_merge($csvData[$j], array($node->name => $value));
                           if (!$aux) {
                             $valoresPorNodo[] = ["name" => $node->name, "values" => [$value]];
