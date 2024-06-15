@@ -95,7 +95,7 @@ class Node extends Model
                             }
                         }
                     }else{
-                        $calculo .= $this->recursiveCalculated($node->formula,$sc,$start);
+                        $calculo .= '('.$this->recursiveCalculated($node->formula,$sc,$start).')';
                     }
                 }
 
@@ -180,25 +180,24 @@ class Node extends Model
                         }
 
                     }
-                    // $str = preg_replace($patron, $reemplazo, $calculo);
-                    $str = $calculo;
+                    $str = preg_replace($patron, $reemplazo, $calculo);
 
                     $st = 0;
 
-                    /*while($st != $count) {
+                    while($st != $count) {
                         $str = preg_replace($patron, $reemplazo, $str);
                         $str = preg_replace($patron2, $reemplazo2, $str);
                         $st++;
-                    }*/
-                    /*$valor = $this->evaluarExpresion($str);
+                    }
+                    $valor = $this->evaluarExpresion($str);
                     if ($valor !== null) {
                         $years[$start] = $valor;
                     } else {
                         $years[$start] = 0;
-                    }*/
+                    }
 
                     // $years[$start] = eval("return number_format($str,2);");
-                    $years[$start] = $str;
+                    // $years[$start] = $str;
 
                     $start++;
                 }
