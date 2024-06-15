@@ -56,6 +56,7 @@ class ShapesController extends Controller
                         $aux['values'] = $values;
                       }
                     } else {
+                        echo $node->distribution_shape[0]['name'];
                         switch ($node->distribution_shape[0]['name']) {
                             case 'Uniforme':
                                 $randomNumber = $this->uniformOperation(
