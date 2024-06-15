@@ -376,6 +376,7 @@ class ShapesController extends Controller
 
         for ($j=0; $j < $this->simulationNumber; $j++) { 
             // code...
+            $this->simulationNumber = 100;
             for ($i = 0; $i < count($tierCero->formula); $i++) {
                 $nodeId = $tierCero->formula[$i];
                 if (gettype($nodeId) == 'integer') {
