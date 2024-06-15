@@ -34,7 +34,7 @@ class ShapesController extends Controller
                       $index = array_search($node->name, array_column($valoresPorNodo, "name"));
 
                       if ($index !== false) {
-                        $aux = $valoresPorNodo[$index]
+                        $aux = $valoresPorNodo[$index];
                       }else{
                         $aux = false;
                       }
@@ -57,7 +57,7 @@ class ShapesController extends Controller
                                   );
                                   $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                   if ($index !== false) {
-                                    $aux = $valoresPorNodo[$index]
+                                    $aux = $valoresPorNodo[$index];
                                   }else{
                                     $aux = false;
                                   }
@@ -83,7 +83,7 @@ class ShapesController extends Controller
                                   );
                                   $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                   if ($index !== false) {
-                                    $aux = $valoresPorNodo[$index]
+                                    $aux = $valoresPorNodo[$index];
                                   }else{
                                     $aux = false;
                                   }
@@ -108,7 +108,7 @@ class ShapesController extends Controller
                                   );
                                   $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                   if ($index !== false) {
-                                    $aux = $valoresPorNodo[$index]
+                                    $aux = $valoresPorNodo[$index];
                                   }else{
                                     $aux = false;
                                   }
@@ -133,7 +133,7 @@ class ShapesController extends Controller
                                   );
                                   $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                   if ($index !== false) {
-                                    $aux = $valoresPorNodo[$index]
+                                    $aux = $valoresPorNodo[$index];
                                   }else{
                                     $aux = false;
                                   }
@@ -157,7 +157,7 @@ class ShapesController extends Controller
                                   );
                                   $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                   if ($index !== false) {
-                                    $aux = $valoresPorNodo[$index]
+                                    $aux = $valoresPorNodo[$index];
                                   }else{
                                     $aux = false;
                                   }
@@ -182,7 +182,7 @@ class ShapesController extends Controller
                                   );
                                   $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                   if ($index !== false) {
-                                    $aux = $valoresPorNodo[$index]
+                                    $aux = $valoresPorNodo[$index];
                                   }else{
                                     $aux = false;
                                   }
@@ -207,7 +207,7 @@ class ShapesController extends Controller
                                   );
                                   $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                   if ($index !== false) {
-                                    $aux = $valoresPorNodo[$index]
+                                    $aux = $valoresPorNodo[$index];
                                   }else{
                                     $aux = false;
                                   }
@@ -233,7 +233,7 @@ class ShapesController extends Controller
                                   );
                                   $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                   if ($index !== false) {
-                                    $aux = $valoresPorNodo[$index]
+                                    $aux = $valoresPorNodo[$index];
                                   }else{
                                     $aux = false;
                                   }
@@ -257,7 +257,7 @@ class ShapesController extends Controller
                                   );
                                   $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                   if ($index !== false) {
-                                    $aux = $valoresPorNodo[$index]
+                                    $aux = $valoresPorNodo[$index];
                                   }else{
                                     $aux = false;
                                   }
@@ -282,7 +282,7 @@ class ShapesController extends Controller
                                   );
                                   $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                   if ($index !== false) {
-                                    $aux = $valoresPorNodo[$index]
+                                    $aux = $valoresPorNodo[$index];
                                   }else{
                                     $aux = false;
                                   }
@@ -306,7 +306,7 @@ class ShapesController extends Controller
                                   );
                                   $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                   if ($index !== false) {
-                                    $aux = $valoresPorNodo[$index]
+                                    $aux = $valoresPorNodo[$index];
                                   }else{
                                     $aux = false;
                                   }
@@ -373,7 +373,7 @@ class ShapesController extends Controller
                           $index = array_search($node->name, array_column($valoresPorNodo, "name"));
 
                           if ($index !== false) {
-                            $aux = $valoresPorNodo[$index]
+                            $aux = $valoresPorNodo[$index];
                           }else{
                             $aux = false;
                           }
@@ -396,7 +396,7 @@ class ShapesController extends Controller
                                       );
                                       $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                       if ($index !== false) {
-                                        $aux = $valoresPorNodo[$index]
+                                        $aux = $valoresPorNodo[$index];
                                       }else{
                                         $aux = false;
                                       }
@@ -422,7 +422,7 @@ class ShapesController extends Controller
                                       );
                                       $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                       if ($index !== false) {
-                                        $aux = $valoresPorNodo[$index]
+                                        $aux = $valoresPorNodo[$index];
                                       }else{
                                         $aux = false;
                                       }
@@ -447,7 +447,7 @@ class ShapesController extends Controller
                                       );
                                       $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                       if ($index !== false) {
-                                        $aux = $valoresPorNodo[$index]
+                                        $aux = $valoresPorNodo[$index];
                                       }else{
                                         $aux = false;
                                       }
@@ -472,7 +472,7 @@ class ShapesController extends Controller
                                       );
                                       $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                       if ($index !== false) {
-                                        $aux = $valoresPorNodo[$index]
+                                        $aux = $valoresPorNodo[$index];
                                       }else{
                                         $aux = false;
                                       }
@@ -496,7 +496,7 @@ class ShapesController extends Controller
                                       );
                                       $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                       if ($index !== false) {
-                                        $aux = $valoresPorNodo[$index]
+                                        $aux = $valoresPorNodo[$index];
                                       }else{
                                         $aux = false;
                                       }
@@ -521,7 +521,7 @@ class ShapesController extends Controller
                                       );
                                       $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                       if ($index !== false) {
-                                        $aux = $valoresPorNodo[$index]
+                                        $aux = $valoresPorNodo[$index];
                                       }else{
                                         $aux = false;
                                       }
@@ -546,7 +546,7 @@ class ShapesController extends Controller
                                       );
                                       $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                       if ($index !== false) {
-                                        $aux = $valoresPorNodo[$index]
+                                        $aux = $valoresPorNodo[$index];
                                       }else{
                                         $aux = false;
                                       }
@@ -572,7 +572,7 @@ class ShapesController extends Controller
                                       );
                                       $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                       if ($index !== false) {
-                                        $aux = $valoresPorNodo[$index]
+                                        $aux = $valoresPorNodo[$index];
                                       }else{
                                         $aux = false;
                                       }
@@ -596,7 +596,7 @@ class ShapesController extends Controller
                                       );
                                       $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                       if ($index !== false) {
-                                        $aux = $valoresPorNodo[$index]
+                                        $aux = $valoresPorNodo[$index];
                                       }else{
                                         $aux = false;
                                       }
@@ -621,7 +621,7 @@ class ShapesController extends Controller
                                       );
                                       $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                       if ($index !== false) {
-                                        $aux = $valoresPorNodo[$index]
+                                        $aux = $valoresPorNodo[$index];
                                       }else{
                                         $aux = false;
                                       }
@@ -645,7 +645,7 @@ class ShapesController extends Controller
                                       );
                                       $index = array_search($node->name, array_column($valoresPorNodo, "name"));
                                       if ($index !== false) {
-                                        $aux = $valoresPorNodo[$index]
+                                        $aux = $valoresPorNodo[$index];
                                       }else{
                                         $aux = false;
                                       }
