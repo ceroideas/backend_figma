@@ -101,7 +101,7 @@ class ShapesController extends Controller
                                   $csvData[$j] = array_merge($csvData[$j], array($node->name => $triangularNumber));
                                 break;
                             case 'Binominal':
-                                const binomialNumber = this.binomialOperation(
+                                $binomialNumber = $this->binomialOperation(
                                     $node->distribution_shape[0]['trials'],
                                     $node->distribution_shape[0]['probability'],
                                     $simulationNumber
@@ -440,7 +440,7 @@ class ShapesController extends Controller
                                       $csvData[$j] = array_merge($csvData[$j], array($node->name => $triangularNumber));
                                     break;
                                 case 'Binominal':
-                                    const binomialNumber = this.binomialOperation(
+                                    $binomialNumber = $this->binomialOperation(
                                         $node->distribution_shape[0]['trials'],
                                         $node->distribution_shape[0]['probability'],
                                         $simulationNumber
