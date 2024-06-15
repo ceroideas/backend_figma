@@ -180,7 +180,8 @@ class Node extends Model
                         }
 
                     }
-                    /*$str = preg_replace($patron, $reemplazo, $calculo);*/
+                    // $str = preg_replace($patron, $reemplazo, $calculo);
+                    $str = $calculo;
 
                     $st = 0;
 
