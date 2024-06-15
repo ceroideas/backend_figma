@@ -357,6 +357,7 @@ class ShapesController extends Controller
         $simulationNumber = $r->size;
         $project_id = $r->project_id;
         $nodesActive = $r->nodes_active;
+        $simulationId = $r->simulationId;
 
         $project = Project::find($project_id);
         $tierCero = Node::where(['project_id'=>$project_id,'tier'=>0])->first();
