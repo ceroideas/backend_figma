@@ -238,7 +238,7 @@ class ShapesController extends Controller
                                   // $csvData[$j] = array_merge($csvData[$j], array($node->name => $betaNumber));
                                 break;
                             case 'Hypergeometric':
-                                $hypergeometricNumber = this.hypergeometricOperation(
+                                $hypergeometricNumber = $this->hypergeometricOperation(
                                     $node->distribution_shape[0]['population'],
                                     $node->distribution_shape[0]['success'],
                                     $node->distribution_shape[0]['trials'],
@@ -290,7 +290,7 @@ class ShapesController extends Controller
                                   // $csvData[$j] = array_merge($csvData[$j], array($node->name => $poissonNumber));
                                 break;
                             case 'Normal':
-                                $randomNumberNormal = this.normalOperation(
+                                $randomNumberNormal = $this->normalOperation(
                                     $node->distribution_shape[0]['mean'],
                                     $node->distribution_shape[0]['stDev'],
                                     $simulationNumber
@@ -590,7 +590,7 @@ class ShapesController extends Controller
                                       // $csvData[$j] = array_merge($csvData[$j], array($node->name => $betaNumber));
                                     break;
                                 case 'Hypergeometric':
-                                    $hypergeometricNumber = this.hypergeometricOperation(
+                                    $hypergeometricNumber = $this->hypergeometricOperation(
                                         $node->distribution_shape[0]['population'],
                                         $node->distribution_shape[0]['success'],
                                         $node->distribution_shape[0]['trials'],
@@ -642,7 +642,7 @@ class ShapesController extends Controller
                                       // $csvData[$j] = array_merge($csvData[$j], array($node->name => $poissonNumber));
                                     break;
                                 case 'Normal':
-                                    $randomNumberNormal = this.normalOperation(
+                                    $randomNumberNormal = $this->normalOperation(
                                         $node->distribution_shape[0]['mean'],
                                         $node->distribution_shape[0]['stDev'],
                                         $simulationNumber
