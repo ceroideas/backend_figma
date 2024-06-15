@@ -409,6 +409,7 @@ class ShapesController extends Controller
                         } else {
                             switch ($node->distribution_shape[0]['name']) {
                                 case 'Uniforme':
+                                    dd([$node->distribution_shape[0]['min'],$node->distribution_shape[0]['max']]);
                                     $randomNumber = $this->uniformOperation(
                                         $node->distribution_shape[0]['min'],
                                         $node->distribution_shape[0]['max'],
