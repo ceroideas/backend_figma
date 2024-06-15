@@ -17,6 +17,7 @@ class ShapesController extends Controller
         $this->valoresPorNodo = [];
         $this->nodesActive = [];
         $this->simulationNumber = null;
+        $this->projectNodes = null;
     }
     public function recursiveCalculate($node)
     {
@@ -27,7 +28,7 @@ class ShapesController extends Controller
             $nodeId = $node->formula[$i];
             if (gettype($nodeId) == 'integer') {
 
-                $node = Node::find($nodeId);
+                $node = $this->projectNodes->firstWhere('id', $nodeId);
                 // if (!isset($csvData[$j])) {$csvData[$j] = [];}
                 if ($node->type == 1) {
                     if (!in_array($node->id, $this->nodesActive)) {
@@ -365,6 +366,8 @@ class ShapesController extends Controller
         $this->nodesActive = $r->nodes_active;
         $simulationId = $r->simulationId;
 
+        $this->projectNodes = Node::where('project_id',$project_id)->get();
+
         $project = Project::find($project_id);
         $tierCero = Node::where(['project_id'=>$project_id,'tier'=>0])->first();
         
@@ -379,7 +382,7 @@ class ShapesController extends Controller
                 $nodeId = $tierCero->formula[$i];
                 if (gettype($nodeId) == 'integer') {
 
-                    $node = Node::find($nodeId);
+                    $node = $this->projectNodes->firstWhere('id', $nodeId);
                     // if (!isset($csvData[$j])) {$csvData[$j] = [];}
                     // $csvData[$j] = array_merge($csvData[$j], array("id" => $simulationId));
                     if ($node->type == 1) {
