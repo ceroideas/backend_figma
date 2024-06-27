@@ -857,29 +857,30 @@ class ShapesController extends Controller
                null; // Return null if the array is empty
     }
 
-    private function triangularOperation($min, $mode, $max, $simulationNumber) {
-        // Función para generar números aleatorios con distribución triangular
-        function triangularDistribution($simulationNumber, $low, $mode, $high) {
-            $triangularSamples = [];
-            for ($i = 0; $i < $simulationNumber; $i++) {
-                $u = mt_rand() / mt_getrandmax();
-                $f = ($mode - $low) / ($high - $low);
-                if ($u <= $f) {
-                    array_push($triangularSamples, 
-                        $low + sqrt($u * ($high - $low) * ($mode - $low))
-                    );
-                } else {
-                    array_push($triangularSamples, 
-                        $high - sqrt((1 - $u) * ($high - $low) * ($high - $mode))
-                    );
-                }
+    // Función para generar números aleatorios con distribución triangular
+    function triangularDistribution($simulationNumber, $low, $mode, $high) {
+        $triangularSamples = [];
+        for ($i = 0; $i < $simulationNumber; $i++) {
+            $u = mt_rand() / mt_getrandmax();
+            $f = ($mode - $low) / ($high - $low);
+            if ($u <= $f) {
+                array_push($triangularSamples, 
+                    $low + sqrt($u * ($high - $low) * ($mode - $low))
+                );
+            } else {
+                array_push($triangularSamples, 
+                    $high - sqrt((1 - $u) * ($high - $low) * ($high - $mode))
+                );
             }
-            return $triangularSamples;
         }
+        return $triangularSamples;
+    }
+
+    private function triangularOperation($min, $mode, $max, $simulationNumber) {
 
         // Definir parámetros de la distribución triangular
         // Generar números aleatorios con distribución triangular
-        $triangularSamples = triangularDistribution($simulationNumber, $min, $mode, $max);
+        $triangularSamples = $this->triangularDistribution($simulationNumber, $min, $mode, $max);
 
         // Retornar un valor aleatorio de los números generados
         return !empty($triangularSamples) ? 
@@ -887,26 +888,26 @@ class ShapesController extends Controller
                null; // Return null if the array is empty
     }
 
-    private function poissonOperation($lambda, $simulationNumber) {
-        // Función para generar números aleatorios con distribución de Poisson
-        function poissonDistribution($simulationNumber, $lambda) {
-            $poissonSamples = [];
-            for ($i = 0; $i < $simulationNumber; $i++) {
-                $L = exp(-$lambda);
-                $k = 0;
-                $p = 1.0;
-                do {
-                    $k++;
-                    $p *= mt_rand() / mt_getrandmax();
-                } while ($p > $L);
-                array_push($poissonSamples, $k - 1);
-            }
-            return $poissonSamples;
+    // Función para generar números aleatorios con distribución de Poisson
+    function poissonDistribution($simulationNumber, $lambda) {
+        $poissonSamples = [];
+        for ($i = 0; $i < $simulationNumber; $i++) {
+            $L = exp(-$lambda);
+            $k = 0;
+            $p = 1.0;
+            do {
+                $k++;
+                $p *= mt_rand() / mt_getrandmax();
+            } while ($p > $L);
+            array_push($poissonSamples, $k - 1);
         }
+        return $poissonSamples;
+    }
 
+    private function poissonOperation($lambda, $simulationNumber) {
         // Definir parámetros de la distribución de Poisson
         // Generar números aleatorios con distribución de Poisson
-        $poissonSamples = poissonDistribution($simulationNumber, $lambda);
+        $poissonSamples = $this->poissonDistribution($simulationNumber, $lambda);
 
         // Retornar un valor aleatorio de los números generados
         return !empty($poissonSamples) ? 
@@ -914,25 +915,25 @@ class ShapesController extends Controller
                null; // Return null if the array is empty
     }
 
-    private function binomialOperation($trials, $probability, $simulationNumber) {
-        // Función para generar números aleatorios con distribución binomial
-        function binomialDistribution($simulationNumber, $n, $p) {
-            $binomialSamples = [];
-            for ($i = 0; $i < $simulationNumber; $i++) {
-                $successes = 0;
-                for ($j = 0; $j < $n; $j++) {
-                    if ((mt_rand() / mt_getrandmax()) < $p) {
-                        $successes++;
-                    }
+    // Función para generar números aleatorios con distribución binomial
+    function binomialDistribution($simulationNumber, $n, $p) {
+        $binomialSamples = [];
+        for ($i = 0; $i < $simulationNumber; $i++) {
+            $successes = 0;
+            for ($j = 0; $j < $n; $j++) {
+                if ((mt_rand() / mt_getrandmax()) < $p) {
+                    $successes++;
                 }
-                array_push($binomialSamples, $successes);
             }
-            return $binomialSamples;
+            array_push($binomialSamples, $successes);
         }
+        return $binomialSamples;
+    }
+    private function binomialOperation($trials, $probability, $simulationNumber) {
 
         // Definir parámetros de la distribución binomial
         // Generar números aleatorios con distribución binomial
-        $binomialSamples = binomialDistribution($simulationNumber, $trials, $probability);
+        $binomialSamples = $this->binomialDistribution($simulationNumber, $trials, $probability);
 
         // Retornar un valor aleatorio de los números generados
         return !empty($binomialSamples) ? 
@@ -940,17 +941,17 @@ class ShapesController extends Controller
                null; // Return null if the array is empty
     }
 
+    // Función de densidad de probabilidad (PDF) de la distribución logarítmica normal
+    function lognormalPDF($x, $mu, $sigma) {
+        $coefficient = 1 / ($x * $sigma * sqrt(2 * M_PI));
+        $exponent = -pow((log($x) - $mu), 2) / (2 * pow($sigma, 2));
+        return $coefficient * exp($exponent);
+    }
     private function lognormalOperation($mean, $stDev) {
         // Parámetros de la distribución logarítmico normal
         $mu = log($mean); // Media logarítmica
         $sigma = $stDev / $mean; // Desviación estándar logarítmica
 
-        // Función de densidad de probabilidad (PDF) de la distribución logarítmica normal
-        function lognormalPDF($x, $mu, $sigma) {
-            $coefficient = 1 / ($x * $sigma * sqrt(2 * M_PI));
-            $exponent = -pow((log($x) - $mu), 2) / (2 * pow($sigma, 2));
-            return $coefficient * exp($exponent);
-        }
 
         // Datos para el gráfico
         $data = [];
@@ -958,7 +959,7 @@ class ShapesController extends Controller
         // Calcular datos para el gráfico
         $step = 2; // Mostrar cada 2 puntos en el eje x
         for ($x = 1; $x <= 200; $x += 0.1 * $step) {
-            $pdf = lognormalPDF($x, $mu, $sigma);
+            $pdf = $this->lognormalPDF($x, $mu, $sigma);
             array_push($data, $pdf);
         }
 
@@ -988,19 +989,19 @@ class ShapesController extends Controller
                null; // Return null if the array is empty
     }
 
-    private function weibullOperation($k, $lambda, $simulationNumber) {
-        function generateWeibullSamples($k, $lambda, $simulationNumber) {
-            $samples = [];
-            for ($i = 0; $i < $simulationNumber; $i++) {
-                $u = mt_rand() / mt_getrandmax();
-                $sample = $lambda * pow(-log(1 - $u), 1 / $k);
-                array_push($samples, $sample);
-            }
-            return $samples;
+    function generateWeibullSamples($k, $lambda, $simulationNumber) {
+        $samples = [];
+        for ($i = 0; $i < $simulationNumber; $i++) {
+            $u = mt_rand() / mt_getrandmax();
+            $sample = $lambda * pow(-log(1 - $u), 1 / $k);
+            array_push($samples, $sample);
         }
+        return $samples;
+    }
+    private function weibullOperation($k, $lambda, $simulationNumber) {
 
         // Generar muestras de la distribución de Weibull
-        $samples = generateWeibullSamples($k, $lambda, $simulationNumber);
+        $samples = $this->generateWeibullSamples($k, $lambda, $simulationNumber);
 
         // Retornar un valor aleatorio de las muestras generadas
         return !empty($samples) ? 
@@ -1026,28 +1027,28 @@ class ShapesController extends Controller
                null; // Return null if the array is empty
     }
 
-    private function hypergeometricOperation($M, $n, $N, $simulationNumber) {
-        function generateHypergeometricSamples($M, $n, $N, $simulationNumber) {
-            $samples = [];
-            for ($i = 0; $i < $simulationNumber; $i++) {
-                $successes = 0;
-                $population = array_fill(0, $M, 0);
-                foreach (range(0, $n - 1) as $j) {
-                    $population[$j] = 1;
-                }
-                shuffle($population);
-                for ($j = 0; $j < $N; $j++) {
-                    if ($population[$j] == 1) {
-                        $successes++;
-                    }
-                }
-                array_push($samples, $successes);
+    function generateHypergeometricSamples($M, $n, $N, $simulationNumber) {
+        $samples = [];
+        for ($i = 0; $i < $simulationNumber; $i++) {
+            $successes = 0;
+            $population = array_fill(0, $M, 0);
+            foreach (range(0, $n - 1) as $j) {
+                $population[$j] = 1;
             }
-            return $samples;
+            shuffle($population);
+            for ($j = 0; $j < $N; $j++) {
+                if ($population[$j] == 1) {
+                    $successes++;
+                }
+            }
+            array_push($samples, $successes);
         }
+        return $samples;
+    }
+    private function hypergeometricOperation($M, $n, $N, $simulationNumber) {
 
         // Generar muestras de la distribución hipergeométrica
-        $samples = generateHypergeometricSamples($M, $n, $N, $simulationNumber);
+        $samples = $this->generateHypergeometricSamples($M, $n, $N, $simulationNumber);
 
         // Retornar un valor aleatorio de las muestras generadas
         return !empty($samples) ? 
