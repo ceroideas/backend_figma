@@ -20,6 +20,12 @@ class ApiController extends Controller
     //
     public function migrar()
     {
+        Schema::table('nodes', function(Blueprint $table) {
+            //
+            $table->json('new_formula')->nullable();
+        });
+
+        return;
         Schema::table('projects', function(Blueprint $table) {
             //
             $table->integer('default_year')->nullable();
@@ -87,6 +93,10 @@ class ApiController extends Controller
         $p->year_from = $r->year_from;
         $p->year_to = $r->year_to;
         $p->sceneries = $r->sceneries;
+        $p->default_year = $r->default_year;
+        $p->line_color = $r->line_color;
+        $p->default_growth = $r->default_growth;
+        $p->default_growth_percentage = $r->default_growth_percentage;
         $p->status = 1;
         $p->save();
 
@@ -116,6 +126,7 @@ class ApiController extends Controller
         $n->distribution_shape = $r->distribution_shape;
         $n->unite = $r->unite;
         $n->formula = $r->formula;
+        $n->new_formula = $r->new_formula;
         $n->status = 1;
         $n->save();
 
@@ -223,6 +234,22 @@ class ApiController extends Controller
         file_put_contents($path, $decoded_image);
 
         $p->thumb = $name;
+            
+        if ($r->default_year) {
+            $p->default_year = $r->default_year;
+        }
+        if ($p->line_color) {
+            $p->line_color = $r->line_color;
+        }
+
+        if ($p->default_growth) {
+            $p->default_growth = $r->default_growth;
+        }
+
+        if ($p->default_growth_percentage) {
+            $p->default_growth_percentage = $r->default_growth_percentage;
+        }
+
         $p->save();
         
         // $p->name = $r->name;
@@ -240,6 +267,7 @@ class ApiController extends Controller
         $n->type = $r->type;
         $n->distribution_shape = $r->distribution_shape;
         $n->formula = $r->formula;
+        $n->new_formula = $r->new_formula;
         $n->unite = $r->unite;
         $n->status = $r->status ? $r->status : $n->status;
         

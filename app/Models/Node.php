@@ -18,7 +18,7 @@ class Node extends Model
         'distribution_shape' => 'array'
     ];
 
-    protected $appends = ['calculated','new_formula'];
+    protected $appends = ['calculated','old_formula'];
 
     public function sceneries()
     {
@@ -48,7 +48,7 @@ class Node extends Model
         return $val;
     }
 
-    public function getNewFormulaAttribute()
+    public function getOldFormulaAttribute()
     {
         $new_formula = [];
         if (!$this->formula) {
