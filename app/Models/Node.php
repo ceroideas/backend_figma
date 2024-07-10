@@ -15,6 +15,7 @@ class Node extends Model
 
     protected $casts = [
         'formula' => 'array',
+        'new_formula' => 'array',
         'distribution_shape' => 'array'
     ];
 
