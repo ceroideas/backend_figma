@@ -22,6 +22,15 @@ class ApiController extends Controller
     {
         Schema::table('projects', function(Blueprint $table) {
             //
+            $table->integer('default_year')->nullable();
+            $table->string('line_color')->nullable();
+            $table->integer('default_growth')->nullable();
+            $table->integer('default_growth_percentage')->nullable();
+        });
+
+        return;
+        Schema::table('projects', function(Blueprint $table) {
+            //
             $table->string('thumb')->nullable();
         });
 
