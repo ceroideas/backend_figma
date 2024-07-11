@@ -238,15 +238,15 @@ class ApiController extends Controller
         if ($r->default_year) {
             $p->default_year = $r->default_year;
         }
-        if ($p->line_color) {
+        if ($r->line_color) {
             $p->line_color = $r->line_color;
         }
 
-        if ($p->default_growth) {
+        if ($r->default_growth) {
             $p->default_growth = $r->default_growth;
         }
 
-        if ($p->default_growth_percentage) {
+        if ($r->default_growth_percentage) {
             $p->default_growth_percentage = $r->default_growth_percentage;
         }
 
