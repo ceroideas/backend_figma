@@ -22,6 +22,15 @@ class ApiController extends Controller
     {
         Schema::table('nodes', function(Blueprint $table) {
             //
+            $table->integer('default_year')->nullable();
+            $table->string('line_color')->nullable();
+            $table->integer('default_growth')->nullable();
+            $table->integer('default_growth_percentage')->nullable();
+        });
+
+        return;
+        Schema::table('nodes', function(Blueprint $table) {
+            //
             $table->json('new_formula')->nullable();
         });
 
@@ -116,6 +125,9 @@ class ApiController extends Controller
                 "type" => "static"
             ];
         }
+
+        $p = Project::find($r->project_id);
+
         $n = new Node;
         $n->project_id = $r->project_id;
         $n->node_id = $r->node_id;
@@ -127,6 +139,12 @@ class ApiController extends Controller
         $n->unite = $r->unite;
         $n->formula = $r->formula;
         $n->new_formula = $r->new_formula;
+
+        $p->default_year = $p->default_year;
+        $p->line_color = $p->line_color;
+        $p->default_growth = $p->default_growth;
+        $p->default_growth_percentage = $p->default_growth_percentage;
+
         $n->status = 1;
         $n->save();
 
@@ -270,6 +288,21 @@ class ApiController extends Controller
         $n->new_formula = $r->new_formula;
         $n->unite = $r->unite;
         $n->status = $r->status ? $r->status : $n->status;
+
+        if ($r->default_year) {
+            $n->default_year = $r->default_year;
+        }
+        if ($r->line_color) {
+            $n->line_color = $r->line_color;
+        }
+
+        if ($r->default_growth) {
+            $n->default_growth = $r->default_growth;
+        }
+
+        if ($r->default_growth_percentage) {
+            $n->default_growth_percentage = $r->default_growth_percentage;
+        }
         
         /*if ($n->isDirty('unite')) {
 
