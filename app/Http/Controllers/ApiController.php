@@ -278,14 +278,38 @@ class ApiController extends Controller
     public function updateNode($id, Request $r)
     {
         $n = Node::find($id);
-        $n->name = $r->name;
-        $n->description = $r->description;
-        $n->type = $r->type;
-        $n->distribution_shape = $r->distribution_shape;
-        $n->formula = $r->formula;
-        $n->new_formula = $r->new_formula;
-        $n->unite = $r->unite;
-        $n->status = $r->status ? $r->status : $n->status;
+
+        if ($r->name) {
+            $n->name = $r->name;
+        }
+
+        if ($r->description) {
+            $n->description = $r->description;
+        }
+
+        if ($r->type) {
+            $n->type = $r->type;
+        }
+
+        if ($r->distribution_shape) {
+            $n->distribution_shape = $r->distribution_shape;
+        }
+
+        if ($r->formula) {
+            $n->formula = $r->formula;
+        }
+
+        if ($r->new_formula) {
+            $n->new_formula = $r->new_formula;
+        }
+
+        if ($r->unite) {
+            $n->unite = $r->unite;
+        }
+
+        if ($r->status) {
+            $n->status = $r->status ? $r->status : $n->status;
+        }
 
         if ($r->default_year) {
             $n->default_year = $r->default_year;
