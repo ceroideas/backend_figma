@@ -140,15 +140,13 @@ class ApiController extends Controller
         $n->formula = $r->formula;
         $n->new_formula = $r->new_formula;
 
-        $p->default_year = $p->default_year;
-        $p->line_color = $p->line_color;
-        $p->default_growth = $p->default_growth;
-        $p->default_growth_percentage = $p->default_growth_percentage;
+        $n->default_year = $p->default_year;
+        $n->line_color = $p->line_color;
+        $n->default_growth = $p->default_growth;
+        $n->default_growth_percentage = $p->default_growth_percentage;
 
         $n->status = 1;
         $n->save();
-
-        $p = Project::find($r->project_id);
 
         $default = 0;
 
