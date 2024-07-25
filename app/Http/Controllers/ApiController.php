@@ -604,6 +604,46 @@ class ApiController extends Controller
             // Decodifica el JSON
             $data = json_decode($contenido, true);
 
+            $project = Project::find($id);
+
+            $p->user_id = $data->user_id;
+            $p->thumb = $data->thumb;
+            $p->name = $data->name;
+            $p->year_from = $data->year_from;
+            $p->year_to = $data->year_to;
+            $p->sceneries = $data->sceneries;
+            $p->default_year = $data->default_year;
+            $p->line_color = $data->line_color;
+            $p->default_growth = $data->default_growth;
+            $p->default_growth_percentage = $data->default_growth_percentage;
+
+            $p->status = $data->status;
+            $p->save();
+
+            foreach ($data->nodes as $key => $value) {
+                $n = Node::find($value->id);
+                if ($n) {
+                    $n->project_id = $value->project_id;
+                    $n->node_id = $value->node_id;
+                    $n->tier = $value->tier;
+                    $n->name = $value->name;
+                    $n->description = $value->description;
+                    $n->type = $value->type;
+                    $n->distribution_shape = $value->distribution_shape;
+                    $n->unite = $value->unite;
+                    $n->formula = $value->formula;
+                    $n->new_formula = $value->new_formula;
+
+                    $n->default_year = $value->default_year;
+                    $n->line_color = $value->line_color;
+                    $n->default_growth = $value->default_growth;
+                    $n->default_growth_percentage = $value->default_growth_percentage;
+
+                    $n->status = $value->status;
+                    $n->save();
+                }
+            }
+
             // Haz lo que necesites con los datos
             // Por ejemplo, puedes guardarlos en la base de datos o procesarlos
 
