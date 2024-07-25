@@ -591,4 +591,25 @@ class ApiController extends Controller
             return $results;
         }
     }
+
+    public function uploadProject(Request $r)
+    {
+        // Verifica si se envió un archivo
+        if ($request->hasFile('file')) {
+            $archivo = $request->file('file');
+
+            // Lee el contenido del archivo
+            $contenido = file_get_contents($archivo->getRealPath());
+
+            // Decodifica el JSON
+            $data = json_decode($contenido, true);
+
+            // Haz lo que necesites con los datos
+            // Por ejemplo, puedes guardarlos en la base de datos o procesarlos
+
+            return response()->json(['message' => 'Archivo JSON cargado correctamente', 'data' => $data]);
+        }
+
+        return response()->json(['error' => 'No se envió ningún archivo']);
+    }
 }
