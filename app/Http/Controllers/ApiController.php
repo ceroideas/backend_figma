@@ -592,7 +592,7 @@ class ApiController extends Controller
         }
     }
 
-    public function uploadProject(Request $r)
+    public function uploadProject($id,Request $r)
     {
         // Verifica si se envió un archivo
         if ($request->hasFile('file')) {
