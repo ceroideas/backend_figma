@@ -602,7 +602,7 @@ class ApiController extends Controller
             $contenido = file_get_contents($archivo->getRealPath());
 
             // Decodifica el JSON
-            $data = json_decode($contenido, true);
+            $data = json_decode($contenido);
 
             $project = Project::find($id);
 
