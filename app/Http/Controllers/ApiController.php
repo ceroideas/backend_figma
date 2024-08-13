@@ -222,7 +222,11 @@ class ApiController extends Controller
                     $start++;
                 }
 
-                $s = new Scenery;
+                $s = Scenery::where('name',$r->name)->first();
+
+                if (!$s) {
+                    $s = new Scenery;
+                }
                 $s->node_id = $n->id;
                 $s->name = $r->name;
                 $s->years = $n->id == $r->node_id ? $r->years : $years;
