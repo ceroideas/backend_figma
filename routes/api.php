@@ -31,6 +31,7 @@ Route::get('getScenery/{id}', [ApiController::class, 'getScenery']);
 Route::post('saveProject', [ApiController::class, 'saveProject']);
 Route::post('saveNode', [ApiController::class, 'saveNode']);
 Route::post('saveScenery', [ApiController::class, 'saveScenery']);
+Route::post('saveSceneryNoPropagation', [ApiController::class, 'saveSceneryNoPropagation']);
 
 Route::put('updateProject/{id}', [ApiController::class, 'updateProject']);
 Route::put('updateNode/{id}', [ApiController::class, 'updateNode']);
