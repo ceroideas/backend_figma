@@ -260,7 +260,7 @@ class ApiController extends Controller
                 $p->save();
             }
 
-            $nodes = Node::find([$r['node_id']])->get();
+            $nodes = Node::find([$r['node_id']]);
 
             foreach ($nodes as $key => $n) {
                 
