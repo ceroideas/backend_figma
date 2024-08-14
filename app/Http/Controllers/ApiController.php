@@ -260,7 +260,8 @@ class ApiController extends Controller
                 $p->save();
             }
 
-            $nodes = Node::where('id',$r['node_id'])->get();
+            // $nodes = Node::where('id',$r['node_id'])->get();
+            $nodes = Node::where('project_id',$p->id)->where('type',2)->get();
 
             foreach ($nodes as $key => $n) {
                 
