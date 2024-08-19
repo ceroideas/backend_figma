@@ -285,14 +285,17 @@ class ApiController extends Controller
                         $start++;
                     }
 
-                    $s = Scenery::where('name',$r['name'])->where('node_id',$n->id)->first();
-
-                    if (!$s) {
-                        $s = new Scenery;
-                    }
+                    $s = new Scenery;
                     $s->node_id = $n->id;
                     $s->name = $r['name'];
                     $s->years = $n->id == $r['node_id'] ? $r['years'] : $years;
+                    $s->status = 1;
+                    $s->save();
+                }else{
+                    $s = Scenery::where('name',$r->name)->where('node_id',$n->id)->first();
+                    $s->node_id = $n->id;
+                    $s->name = $r['name'];
+                    $s->years = $r['years'];
                     $s->status = 1;
                     $s->save();
                 }
