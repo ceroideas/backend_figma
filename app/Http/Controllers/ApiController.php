@@ -238,6 +238,7 @@ class ApiController extends Controller
 
     public function saveSceneryNoPropagation(Request $request)
     {
+        $iterados = [];
 
         foreach ($request->data as $key => $r) {
         
@@ -285,6 +286,10 @@ class ApiController extends Controller
                         $start++;
                     }
 
+                    if ($n->id == $r['node_id']) {
+                        $iterados[] = $r['node_id'];
+                    }
+
                     $s = new Scenery;
                     $s->node_id = $n->id;
                     $s->name = $r['name'];
@@ -292,12 +297,14 @@ class ApiController extends Controller
                     $s->status = 1;
                     $s->save();
                 }else{
-                    $s = Scenery::where('name',$r['name'])->where('node_id',$n->id)->first();
-                    $s->node_id = $n->id;
-                    $s->name = $r['name'];
-                    $s->years = $r['years'];
-                    $s->status = 1;
-                    $s->save();
+                    if (!in_array($n->id, $iterados)) {
+                        $s = Scenery::where('name',$r['name'])->where('node_id',$n->id)->first();
+                        $s->node_id = $n->id;
+                        $s->name = $r['name'];
+                        $s->years = $r['years'];
+                        $s->status = 1;
+                        $s->save();
+                    }
                 }
             }
 
