@@ -298,6 +298,7 @@ class ApiController extends Controller
                     $s->save();
                 }else{
                     if (!in_array($n->id, $iterados)) {
+                        $iterados[] = $r['node_id'];
                         $s = Scenery::where('name',$r['name'])->where('node_id',$n->id)->first();
                         $s->node_id = $n->id;
                         $s->name = $r['name'];
