@@ -320,7 +320,7 @@ class ApiController extends Controller
             mkdir(public_path() . '/projects/', 0777, true);
         }
 
-        if ($r->hasFile('thumb')) {
+        if ($r->input('thumb')) {
 
             $base64_image = $r->input('thumb'); 
             $exploded = explode(',', $base64_image);
