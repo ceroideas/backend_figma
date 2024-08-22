@@ -296,20 +296,18 @@ class ApiController extends Controller
         }
 
         // constante usar datos enviados
-
         foreach ($request->data as $key => $data) {
 
-            $scen = Scenery::where(['node_id' => $n->id, 'name' => $r['name']])->count();
+            $scen = Scenery::where(['node_id' => $data['node_id'], 'name' => $data['name']])->count();
 
             if ($scen == 0) {                
                 $s = new Scenery;
+                $s->node_id = $data['node_id'];
+                $s->name = $data['name'];
+                $s->years = $data['years'];
+                $s->status = 1;
+                $s->save();
             }
-
-            $s->node_id = $n->id;
-            $s->name = $data['name'];
-            $s->years = $data['years'];
-            $s->status = 1;
-            $s->save();
         }
     }
 
