@@ -89,7 +89,7 @@ class Node extends Model
 
                                     if ($k_year == $start) {
 
-                                        $calculo .= $v_year != 0 ? $v_year : null;
+                                        $calculo .= $v_year != 0 ? $v_year : 'null';
 
                                     }
                                 }
@@ -165,7 +165,7 @@ class Node extends Model
 
                                                 if ($k_year == $start) {
 
-                                                    $calculo .= $v_year;
+                                                    $calculo .= $v_year != 0 ? $v_year : 'null';
 
                                                 }
                                             }
