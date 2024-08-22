@@ -295,7 +295,7 @@ class ApiController extends Controller
                     $s->years = $n->id == $r['node_id'] ? $r['years'] : $years;
                     $s->status = 1;
                     // $s->save();
-                    print_r([$s->name,$s->years]);
+                    print_r([$s->node_id,$s->name,$s->years]);
                     print_r("<br>");
                     print_r("<br>");
                 }else{
@@ -307,7 +307,7 @@ class ApiController extends Controller
                         $s->years = $r['years'];
                         $s->status = 1;
                         // $s->save();
-                        print_r(['else',$s->name,$s->years]);
+                        print_r(['else',$s->node_id,$s->name,$s->years]);
                         print_r("<br>");
                         print_r("<br>");
                     }
