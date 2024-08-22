@@ -266,7 +266,7 @@ class ApiController extends Controller
 
         foreach ($nodes as $key => $n) {
             
-            $scen = Scenery::where(['node_id' => $n->id, 'name' => $r[0]['name']])->count();
+            $scen = Scenery::where(['node_id' => $n->id, 'name' => $r['name']])->count();
 
             if ($scen == 0) {
 
@@ -288,7 +288,7 @@ class ApiController extends Controller
                 
                 $s = new Scenery;
                 $s->node_id = $n->id;
-                $s->name = $r[0]['name'];
+                $s->name = $r['name'];
                 $s->years = $years;
                 $s->status = 1;
                 // $s->save();
@@ -301,7 +301,7 @@ class ApiController extends Controller
 
         foreach ($nodes as $key => $n) {
             
-            $scen = Scenery::where(['node_id' => $n->id, 'name' => $r[0]['name']])->count();
+            $scen = Scenery::where(['node_id' => $n->id, 'name' => $r['name']])->count();
 
             if ($scen == 0) {
 
