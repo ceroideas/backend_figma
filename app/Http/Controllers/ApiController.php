@@ -292,7 +292,7 @@ class ApiController extends Controller
                 $s->years = $years;
                 $s->status = 1;
                 // $s->save();
-                print_r([$s->name,'constante']);
+                print_r([$s->name,$n->id,'constante']);
                 print_r("<br>");
             }
         }
