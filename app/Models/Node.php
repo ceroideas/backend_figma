@@ -89,7 +89,7 @@ class Node extends Model
 
                                     if ($k_year == $start) {
 
-                                        $calculo .= $v_year;
+                                        $calculo .= $v_year != 0 ? $v_year : null;
 
                                     }
                                 }
@@ -113,10 +113,7 @@ class Node extends Model
     private function evaluarExpresion($expresion) {
         $language = new ExpressionLanguage();
         try {
-            if (is_infinite(@$language->evaluate($expresion))) {
-                return 0;
-            }
-            return @$language->evaluate($expresion);
+            return $language->evaluate($expresion);
         } catch (SyntaxError $e) {
             return 0;
         }
@@ -193,14 +190,12 @@ class Node extends Model
                         $str = preg_replace($patron2, $reemplazo2, $str);
                         $st++;
                     }
-                    $str = preg_replace('/\/\s*0+(\D|$)/', '/1$1', $str);
-                    $valor = $str;
-                    // @$valor = @$this->evaluarExpresion($str);
-                    // if ($valor !== null) {
-                    //     $years[$start] = $valor;
-                    // } else {
-                    //     $years[$start] = 0;
-                    // }
+                    /*$valor = $this->evaluarExpresion($str);
+                    if ($valor !== null) {
+                        $years[$start] = $valor;
+                    } else {
+                        $years[$start] = 0;
+                    }*/
 
                     // $years[$start] = eval("return number_format($str,2);");
                     $years[$start] = $str;
