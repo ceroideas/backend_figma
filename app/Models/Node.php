@@ -194,15 +194,16 @@ class Node extends Model
                         $st++;
                     }
                     $str = preg_replace('/\/\s*0+(\D|$)/', '/1$1', $str);
-                    @$valor = @$this->evaluarExpresion($str);
-                    if ($valor !== null) {
-                        $years[$start] = $valor;
-                    } else {
-                        $years[$start] = 0;
-                    }
+                    $valor = $str;
+                    // @$valor = @$this->evaluarExpresion($str);
+                    // if ($valor !== null) {
+                    //     $years[$start] = $valor;
+                    // } else {
+                    //     $years[$start] = 0;
+                    // }
 
-                    /*$years[$start] = eval("return number_format($str,2);");
-                    $years[$start] = $str;*/
+                    // $years[$start] = eval("return number_format($str,2);");
+                    $years[$start] = $str;
 
                     $start++;
                 }
