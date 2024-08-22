@@ -315,6 +315,8 @@ class ApiController extends Controller
             }
 
         }
+
+        print_r($iterados);
     }
 
     public function updateProject($id, Request $r)
