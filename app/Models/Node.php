@@ -190,6 +190,9 @@ class Node extends Model
                         $str = preg_replace($patron2, $reemplazo2, $str);
                         $st++;
                     }
+                    $pattern = "/\*null/";
+                    $replacement = "*1";
+                    $str = preg_replace($pattern, $replacement, $str);
                     /*$valor = $this->evaluarExpresion($str);
                     if ($valor !== null) {
                         $years[$start] = $valor;
