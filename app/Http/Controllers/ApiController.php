@@ -287,17 +287,18 @@ class ApiController extends Controller
 
                     if ($n->id == $r['node_id']) {
                         $iterados[] = $r['node_id'];
+                        
+                        $s = new Scenery;
+                        $s->node_id = $n->id;
+                        $s->name = $r['name'];
+                        $s->years = $n->id == $r['node_id'] ? $r['years'] : $years;
+                        $s->status = 1;
+                        // $s->save();
+                        print_r([$s->node_id,$s->name,$s->years]);
+                        print_r("<br>");
+                        print_r("<br>");
                     }
 
-                    $s = new Scenery;
-                    $s->node_id = $n->id;
-                    $s->name = $r['name'];
-                    $s->years = $n->id == $r['node_id'] ? $r['years'] : $years;
-                    $s->status = 1;
-                    // $s->save();
-                    print_r([$s->node_id,$s->name,$s->years]);
-                    print_r("<br>");
-                    print_r("<br>");
                 }else{
                     if (!in_array($n->id, $iterados)) {
                         $iterados[] = $r['node_id'];
