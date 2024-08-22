@@ -261,7 +261,6 @@ class ApiController extends Controller
                 $p->save();
             }
 
-            // $nodes = Node::where('id',$r['node_id'])->get();
             $nodes = Node::where('project_id',$p->id)->whereIn('type',[1,2])->get();
 
             foreach ($nodes as $key => $n) {
@@ -295,7 +294,10 @@ class ApiController extends Controller
                     $s->name = $r['name'];
                     $s->years = $n->id == $r['node_id'] ? $r['years'] : $years;
                     $s->status = 1;
-                    $s->save();
+                    // $s->save();
+                    print_r([$s->name,$s->years]);
+                    print_r("<br>");
+                    print_r("<br>");
                 }else{
                     if (!in_array($n->id, $iterados)) {
                         $iterados[] = $r['node_id'];
@@ -304,7 +306,10 @@ class ApiController extends Controller
                         $s->name = $r['name'];
                         $s->years = $r['years'];
                         $s->status = 1;
-                        $s->save();
+                        // $s->save();
+                        print_r(['else',$s->name,$s->years]);
+                        print_r("<br>");
+                        print_r("<br>");
                     }
                 }
             }
