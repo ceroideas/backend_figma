@@ -113,10 +113,10 @@ class Node extends Model
     private function evaluarExpresion($expresion) {
         $language = new ExpressionLanguage();
         try {
-            if (is_infinite($language->evaluate($expresion))) {
+            if (is_infinite(@$language->evaluate($expresion))) {
                 return 0;
             }
-            return $language->evaluate($expresion);
+            return @$language->evaluate($expresion);
         } catch (SyntaxError $e) {
             return 0;
         }
