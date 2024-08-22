@@ -238,84 +238,100 @@ class ApiController extends Controller
 
     public function saveSceneryNoPropagation(Request $request)
     {
-        $iterados = [];
-
-        foreach ($request->data as $key => $r) {
+        // foreach ($request->data as $key => $r) {
         
-            $n = Node::find($r['node_id']);
-            $p = Project::find($n->project_id);
+        $r = $request->data[0];
 
-            $sceneries = $p->sceneries;
-            
-            $a = 0;
+        $n = Node::find($r['node_id']);
+        $p = Project::find($n->project_id);
 
-            foreach ($sceneries as $key => $sc) {
-                if ($sc == $r['name']) {
-                    $a++;
-                }
+        $sceneries = $p->sceneries;
+        
+        $a = 0;
+
+        foreach ($sceneries as $key => $sc) {
+            if ($sc == $r['name']) {
+                $a++;
             }
-            if ($a==0) {
-                $sceneries[] = $r['name'];
-                $p->sceneries = $sceneries;
-
-                $p->save();
-            }
-
-            $nodes = Node::where('project_id',$p->id)->whereIn('type',[1,2])->get();
-
-            foreach ($nodes as $key => $n) {
-                
-                $scen = Scenery::where(['node_id' => $n->id, 'name' => $r['name']])->count();
-
-                if ($scen == 0) {
-
-                    $years = [];
-
-                    $default = 0;
-
-                    if ($n->unite) {
-                        $default = $n->unite;
-                    }
-
-                    $start = $p->year_from;
-
-                    while($start <= $p->year_to)
-                    {
-                        $years[$start] = $default;
-                        $start++;
-                    }
-
-                    if ($n->id == $r['node_id']) {
-                        $iterados[] = $r['node_id'];
-                        
-                        $s = new Scenery;
-                        $s->node_id = $n->id;
-                        $s->name = $r['name'];
-                        $s->years = $n->id == $r['node_id'] ? $r['years'] : $years;
-                        $s->status = 1;
-                        // $s->save();
-                        print_r([$s->node_id,$s->name,$s->years]);
-                        print_r("<br>");
-                        print_r("<br>");
-                    }
-
-                }else{
-                    if (!in_array($n->id, $iterados)) {
-                        $iterados[] = $r['node_id'];
-                        $s = Scenery::where('name',$r['name'])->where('node_id',$n->id)->first();
-                        $s->node_id = $n->id;
-                        $s->name = $r['name'];
-                        $s->years = $r['years'];
-                        $s->status = 1;
-                        // $s->save();
-                        print_r(['else',$s->node_id,$s->name,$s->years]);
-                        print_r("<br>");
-                        print_r("<br>");
-                    }
-                }
-            }
-
         }
+        if ($a==0) {
+            $sceneries[] = $r['name'];
+            $p->sceneries = $sceneries;
+
+            $p->save();
+        }
+        // }
+
+        $nodes = Node::where('project_id',$p->id)->where('type',2)->get(); // constantes propagar
+
+        foreach ($nodes as $key => $n) {
+            
+            $scen = Scenery::where(['node_id' => $n->id, 'name' => $r[0]['name']])->count();
+
+            if ($scen == 0) {
+
+                $years = [];
+
+                $default = 0;
+
+                if ($n->unite) {
+                    $default = $n->unite;
+                }
+
+                $start = $p->year_from;
+
+                while($start <= $p->year_to)
+                {
+                    $years[$start] = $default;
+                    $start++;
+                }
+                
+                $s = new Scenery;
+                $s->node_id = $n->id;
+                $s->name = $r[0]['name'];
+                $s->years = $years;
+                $s->status = 1;
+                // $s->save();
+                print_r([$s->name,'constante']);
+                print_r("<br>");
+            }
+        }
+
+        $nodes = Node::where('project_id',$p->id)->where('type',1)->get(); // variables usar datos propagar
+
+        foreach ($nodes as $key => $n) {
+            
+            $scen = Scenery::where(['node_id' => $n->id, 'name' => $r[0]['name']])->count();
+
+            if ($scen == 0) {
+
+                $years = [];
+
+                $default = 0;
+
+                if ($n->unite) {
+                    $default = $n->unite;
+                }
+
+                $start = $p->year_from;
+
+                while($start <= $p->year_to)
+                {
+                    $years[$start] = $default;
+                    $start++;
+                }
+                
+                $s = new Scenery;
+                $s->node_id = $n->id;
+                $s->name = $r['name'];
+                $s->years = $n->id == $r['node_id'] ? $r['years'] : $years;
+                $s->status = 1;
+                // $s->save();
+
+            }
+        }
+
+        
 
         print_r($iterados);
     }
