@@ -193,7 +193,7 @@ class Node extends Model
                         $str = preg_replace($patron2, $reemplazo2, $str);
                         $st++;
                     }
-                    $valor = $this->evaluarExpresion($str);
+                    @$valor = @$this->evaluarExpresion($str);
                     if ($valor !== null) {
                         $years[$start] = $valor;
                     } else {
