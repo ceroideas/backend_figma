@@ -193,6 +193,7 @@ class Node extends Model
                         $str = preg_replace($patron2, $reemplazo2, $str);
                         $st++;
                     }
+                    $str = preg_replace('/\/\s*0+(\D|$)/', '/1$1', $str);
                     @$valor = @$this->evaluarExpresion($str);
                     if ($valor !== null) {
                         $years[$start] = $valor;
