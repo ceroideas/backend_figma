@@ -713,7 +713,7 @@ class ShapesController extends Controller
 
             $operation = $this->evaluarExpresion(implode('', $formula));
             // $operation = $formula;
-            $arrayToSee[] = number_format($operation,2);
+            $arrayToSee[] = $operation;
             // $arrayToSee[] = $operation;
 
             $formula = [];
@@ -737,7 +737,7 @@ class ShapesController extends Controller
 
         // Generar muestras de la distribución
         $s = [];
-        for ($i = 0; $i < $simulationNumber; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             array_push($s, 
                 $min + (mt_rand() / mt_getrandmax()) * ($max - $min)
             );
@@ -823,7 +823,7 @@ class ShapesController extends Controller
 
         // Dibujar muestras de la distribución exponencial
         $s = [];
-        for ($i = 0; $i < $simulationNumber; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             array_push($s, 
                 -$rate * log(1.0 - (mt_rand() / mt_getrandmax()))
             );
@@ -860,7 +860,7 @@ class ShapesController extends Controller
     // Función para generar números aleatorios con distribución triangular
     function triangularDistribution($simulationNumber, $low, $mode, $high) {
         $triangularSamples = [];
-        for ($i = 0; $i < $simulationNumber; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $u = mt_rand() / mt_getrandmax();
             $f = ($mode - $low) / ($high - $low);
             if ($u <= $f) {
@@ -891,7 +891,7 @@ class ShapesController extends Controller
     // Función para generar números aleatorios con distribución de Poisson
     function poissonDistribution($simulationNumber, $lambda) {
         $poissonSamples = [];
-        for ($i = 0; $i < $simulationNumber; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $L = exp(-$lambda);
             $k = 0;
             $p = 1.0;
@@ -918,7 +918,7 @@ class ShapesController extends Controller
     // Función para generar números aleatorios con distribución binomial
     function binomialDistribution($simulationNumber, $n, $p) {
         $binomialSamples = [];
-        for ($i = 0; $i < $simulationNumber; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $successes = 0;
             for ($j = 0; $j < $n; $j++) {
                 if ((mt_rand() / mt_getrandmax()) < $p) {
@@ -975,7 +975,7 @@ class ShapesController extends Controller
 
         // Generar muestras de la distribución geométrica
         $samples = [];
-        for ($i = 0; $i < $simulationNumber; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $attempts = 1;
             while (mt_rand() / mt_getrandmax() >= $p) {
                 $attempts++;
@@ -991,7 +991,7 @@ class ShapesController extends Controller
 
     function generateWeibullSamples($k, $lambda, $simulationNumber) {
         $samples = [];
-        for ($i = 0; $i < $simulationNumber; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $u = mt_rand() / mt_getrandmax();
             $sample = $lambda * pow(-log(1 - $u), 1 / $k);
             array_push($samples, $sample);
@@ -1016,7 +1016,7 @@ class ShapesController extends Controller
 
         // Generar muestras de la distribución beta
         $samples = [];
-        for ($i = 0; $i < $simulationNumber; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $samples[] = pow(mt_rand() / mt_getrandmax(), $alpha) * 
                          pow(1 - mt_rand() / mt_getrandmax(), $beta);
         }
@@ -1029,7 +1029,7 @@ class ShapesController extends Controller
 
     function generateHypergeometricSamples($M, $n, $N, $simulationNumber) {
         $samples = [];
-        for ($i = 0; $i < $simulationNumber; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $successes = 0;
             $population = array_fill(0, $M, 0);
             foreach (range(0, $n - 1) as $j) {

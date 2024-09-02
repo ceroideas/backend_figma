@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\User;
 use App\Models\Node;
 use App\Models\Scenery;
 use App\Models\Simulation;
@@ -15,8 +16,51 @@ use Illuminate\Support\Facades\Schema;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
 
+use Hash;
+
 class ApiController extends Controller
 {
+    public function __construct()
+    {
+        // $this->middleware('auth:api', ['except' => ['login', 'register']]);
+    }
+
+    public function register(Request $request)
+    {
+        $data = $request->all();
+
+        $data['password'] = Hash::make($data['password']);
+
+        $user = User::create($data);
+
+        return response()->json(['status' => 'success', 'message' => 'User created'], 200);
+    }
+
+    /**
+     * Get a JWT via given credentials.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(Request $request)
+    {
+        $credentials = request(['email', 'password']);
+
+        if (! $token = auth('api')->attempt($credentials)) {
+            return response()->json(['error' => 'Credenciales Invalidas'], 401);
+        }
+
+        return $this->respondWithToken($token);
+    }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 9999
+        ]);
+    }
+
     //
     public function migrar()
     {

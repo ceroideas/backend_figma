@@ -59,3 +59,6 @@ Route::post('definitelyNotEval', [ApiController::class, 'definitelyNotEval']);
 Route::post('generateSimulation', [ShapesController::class, 'generateSimulation']);
 
 Route::post('uploadProject/{id}', [ApiController::class, 'uploadProject']);
+
+Route::post('register', [ApiController::class, 'register']);
+Route::post('login', [ApiController::class, 'login']);
