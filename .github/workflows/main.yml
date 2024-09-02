@@ -19,7 +19,7 @@ jobs:
         script: |
           cd /var/www/html/api
           git pull
-          composer install
+          composer update
           php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
           php artisan jwt:secret
           php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
