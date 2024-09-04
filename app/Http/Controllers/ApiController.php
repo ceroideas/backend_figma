@@ -17,6 +17,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 use Symfony\Component\ExpressionLanguage\SyntaxError;
 
 use Hash;
+use Auth;
 
 class ApiController extends Controller
 {
@@ -118,9 +119,9 @@ class ApiController extends Controller
         });
     }
 
-    public function getProjects($id)
+    public function getProjects()
     {
-        return Project::where('user_id',$id)->orderBy('id','desc')->get();
+        return Project::where('user_id',auth()->user()->id)->orderBy('id','desc')->get();
     }
 
     public function getProject($id)

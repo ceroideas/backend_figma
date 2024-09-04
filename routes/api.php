@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('migrar', [ApiController::class, 'migrar']);
 
-Route::get('getProjects/{id}', [ApiController::class, 'getProjects']);
+Route::get('getProjects', [ApiController::class, 'getProjects']);
 Route::get('getProject/{id}', [ApiController::class, 'getProject']);
 
 Route::get('getNode/{id}', [ApiController::class, 'getNode']);
