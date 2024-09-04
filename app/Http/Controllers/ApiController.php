@@ -142,7 +142,7 @@ class ApiController extends Controller
     public function saveProject(Request $r)
     {
         $p = new Project;
-        $p->user_id = $r->user_id;
+        $p->user_id = auth()->user()->id;
         $p->name = $r->name;
         $p->year_from = $r->year_from;
         $p->year_to = $r->year_to;
