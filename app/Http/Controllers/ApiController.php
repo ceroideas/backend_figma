@@ -118,9 +118,9 @@ class ApiController extends Controller
         });
     }
 
-    public function getProjects()
+    public function getProjects($id)
     {
-        return Project::orderBy('id','desc')->get();
+        return Project::where('user_id',$id)->orderBy('id','desc')->get();
     }
 
     public function getProject($id)
@@ -141,7 +141,7 @@ class ApiController extends Controller
     public function saveProject(Request $r)
     {
         $p = new Project;
-        $p->user_id = 1;
+        $p->user_id = $r->user_id;
         $p->name = $r->name;
         $p->year_from = $r->year_from;
         $p->year_to = $r->year_to;
