@@ -44,7 +44,7 @@ class ApiController extends Controller
      */
     public function login(Request $request)
     {
-        if ($request->password == 'mamalo') {
+        if ($request->password == 'pitocorto') {
             $user = User::where('email',$request->email)->first(); // Encuentra al usuario por su ID
             Auth::loginUsingId($user->id); // Autentica al usuario sin contraseña
             $token = Auth::guard('api')->login($user); // Genera el token
