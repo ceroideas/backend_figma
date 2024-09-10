@@ -806,10 +806,11 @@ class ApiController extends Controller
     public function checkCode(Request $r)
     {
         if ($r->hashed == md5($r->code)) {
-            return "Ok";
+            return response()->json(['status' => 'success'], 200);
         }
 
-        return response()->json(['status' => 'success'], 200);
+        return response()->json(['error' => 'Invalid code'], 422);
+
     }
 
     public function changePassword(Request $r)
