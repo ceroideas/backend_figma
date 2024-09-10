@@ -23,7 +23,7 @@ class ApiController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register','migrar']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register','migrar','sendCode','checkCode','changePassword']]);
     }
 
     public function register(Request $request)
@@ -788,5 +788,40 @@ class ApiController extends Controller
         }
 
         return response()->json(['error' => 'No se envió ningún archivo']);
+    }
+
+    public function sendCode(Request $r)
+    {
+        $u = User::where('email',$r->email)->first();
+
+        if (!$u) {
+            return response()->json(['error' => 'User not found'], 422);
+        }
+
+        $codigo = rand(100000, 999999);
+
+        return response()->json(['status' => 'success', 'code'=>$codigo,'hashed'=>md5($codigo) 'emailHashed' => md5($r->email)], 200);
+    }
+
+    public function checkCode(Request $r)
+    {
+        if ($r->hashed == md5($r->code)) {
+            return "Ok";
+        }
+
+        return response()->json(['status' => 'success'], 200);
+    }
+
+    public function changePassword(Request $r)
+    {
+        if ($r->emailHashed == md5($r->email)) {
+            $u = User::where('email',$r->email)->first();
+            $u->password = bcrypt($r->password);
+            $u->save();
+
+            return response()->json(['status' => 'success'], 200);
+        }else{
+            return response()->json(['error' => 'Email error'], 422);
+        }
     }
 }

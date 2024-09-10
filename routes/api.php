@@ -62,3 +62,7 @@ Route::post('uploadProject/{id}', [ApiController::class, 'uploadProject']);
 
 Route::post('register', [ApiController::class, 'register']);
 Route::post('login', [ApiController::class, 'login']);
+
+Route::post('sendCode', [ApiController::class, 'sendCode']);
+Route::post('checkCode', [ApiController::class, 'checkCode']);
+Route::post('changePassword', [ApiController::class, 'changePassword']);
