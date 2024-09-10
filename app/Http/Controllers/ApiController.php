@@ -817,7 +817,7 @@ class ApiController extends Controller
     {
         $u = User::where('email',$r->email)->first();
 
-        if ($r->emailHashed == md5($r->email.$u->id)) {
+        if ($u && $r->emailHashed == md5($r->email.$u->id)) {
             $u->password = bcrypt($r->password);
             $u->save();
 
