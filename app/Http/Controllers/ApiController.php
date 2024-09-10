@@ -800,7 +800,7 @@ class ApiController extends Controller
 
         $codigo = rand(100000, 999999);
 
-        return response()->json(['status' => 'success', 'code'=>$codigo,'hashed'=>md5($codigo) 'emailHashed' => md5($r->email)], 200);
+        return response()->json(['status' => 'success', 'code'=>$codigo,'hashed'=>md5($codigo) 'emailHashed' => md5($r->email+$u->id)], 200);
     }
 
     public function checkCode(Request $r)
@@ -814,8 +814,9 @@ class ApiController extends Controller
 
     public function changePassword(Request $r)
     {
-        if ($r->emailHashed == md5($r->email)) {
-            $u = User::where('email',$r->email)->first();
+        $u = User::where('email',$r->email)->first();
+
+        if ($r->emailHashed == md5($r->email+$u->id)) {
             $u->password = bcrypt($r->password);
             $u->save();
 
