@@ -66,3 +66,4 @@ Route::post('login', [ApiController::class, 'login']);
 Route::post('sendCode', [ApiController::class, 'sendCode']);
 Route::post('checkCode', [ApiController::class, 'checkCode']);
 Route::post('changePassword', [ApiController::class, 'changePassword']);
+Route::post('testEmail', [ApiController::class, 'testEmail']);

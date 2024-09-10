@@ -18,12 +18,13 @@ use Symfony\Component\ExpressionLanguage\SyntaxError;
 
 use Hash;
 use Auth;
+use Mail;
 
 class ApiController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register','migrar','sendCode','checkCode','changePassword']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register','migrar','sendCode','checkCode','changePassword','testEmail']]);
     }
 
     public function register(Request $request)
@@ -825,5 +826,14 @@ class ApiController extends Controller
         }else{
             return response()->json(['error' => 'Email error'], 422);
         }
+    }
+
+    public function testEmail(Request $r)
+    {
+        Mail::send('recover-password', [], function ($message) use($r) {
+            $message->from('noreply@ztris.com', 'Ztris');
+            $message->to($r->email, 'Fulano de tal');
+            $message->subject('Test Email');
+        });
     }
 }

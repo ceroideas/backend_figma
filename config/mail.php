@@ -35,13 +35,22 @@ return [
 
     'mailers' => [
         'smtp' => [
-            'transport' => 'smtp',
+            /*'transport' => 'smtp',
             'url' => env('MAIL_URL'),
             'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
             'username' => env('MAIL_USERNAME'),
             'password' => env('MAIL_PASSWORD'),
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),*/
+            'transport' => 'smtp',
+            'url' => env('MAIL_URL'),
+            'host' => 'smtp.emailit.com',
+            'port' => 465,
+            'encryption' => 'ssl',
+            'username' => 'emailit',
+            'password' => 'em_IAcGrQLABC3qXk2TwXe28GIyKvweKkbX',
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
         ],
