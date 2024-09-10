@@ -800,7 +800,7 @@ class ApiController extends Controller
 
         $codigo = rand(100000, 999999);
 
-        return response()->json(['status' => 'success', 'code'=>$codigo,'hashed'=>md5($codigo) 'emailHashed' => md5($r->email+$u->id)], 200);
+        return response()->json(['status' => 'success', 'code'=>$codigo,'hashed'=>md5($codigo), 'emailHashed' => md5($r->email+$u->id)], 200);
     }
 
     public function checkCode(Request $r)
