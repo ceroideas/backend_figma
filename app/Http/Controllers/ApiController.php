@@ -801,7 +801,13 @@ class ApiController extends Controller
 
         $codigo = rand(100000, 999999);
 
-        return response()->json(['status' => 'success', 'code'=>$codigo,'hashed'=>md5($codigo), 'emailHashed' => md5($r->email.$u->id)], 200);
+        Mail::send('recover-password', ['code'=>$codigo], function ($message) use($u) {
+            $message->from('noreply@ztris.com', 'Ztris');
+            $message->to($u->email, $u->name);
+            $message->subject('Recover your password');
+        });
+
+        return response()->json(['status' => 'success', 'hashed'=>md5($codigo), 'emailHashed' => md5($r->email.$u->id)], 200);
     }
 
     public function checkCode(Request $r)
