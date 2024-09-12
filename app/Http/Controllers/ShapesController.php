@@ -711,9 +711,17 @@ class ShapesController extends Controller
                 }
             }
 
+            $patron = "/([0-9]+)\\(([^)]+)\\)/";
+            $reemplazo = "$1*($2)";
+
+            $patron2 = "/\\)(?=\\()/";
+            $reemplazo2 = ")*";
+
+            $str = preg_replace($patron, $reemplazo, implode('', $formula));
+
             $pattern = "/(\/null)|(\*null)/";
             $replacement = "*1";
-            $str = preg_replace($pattern, $replacement, implode('', $formula));
+            $str = preg_replace($pattern, $replacement, $str);
             $operation = $this->evaluarExpresion($str);
             // $operation = $formula;
             $arrayToSee[] = $operation;
