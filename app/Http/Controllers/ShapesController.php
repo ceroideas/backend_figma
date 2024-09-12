@@ -711,7 +711,10 @@ class ShapesController extends Controller
                 }
             }
 
-            $operation = $this->evaluarExpresion(implode('', $formula));
+            $pattern = "/(\/null)|(\*null)/";
+            $replacement = "*1";
+            $str = preg_replace($pattern, $replacement, implode('', $formula));
+            $operation = $this->evaluarExpresion($str);
             // $operation = $formula;
             $arrayToSee[] = $operation;
             // $arrayToSee[] = $operation;
