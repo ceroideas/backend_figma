@@ -779,7 +779,7 @@ class ShapesController extends Controller
     private function normalOperation($meanOperation, $stDevOperation, $simulationNumber) {
         // Definir la media y la desviación estándar
         $mu = $meanOperation;
-        $sigma = $stDevOperation;
+        $sigma = $stDevOperation == 0 ? 1 : $stDevOperation ;
         $samples = $simulationNumber;
 
         // Generar una distribución normal
