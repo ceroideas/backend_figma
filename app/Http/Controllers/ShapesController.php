@@ -723,8 +723,8 @@ class ShapesController extends Controller
             $pattern = "/(\/null)|(\*null)/";
             $replacement = "*1";
             $str = preg_replace($pattern, $replacement, $str);
-            // $operation = $this->evaluarExpresion($str);
-            $operation = $str;
+            $operation = $this->evaluarExpresion($str);
+            // $operation = $str;
             // $operation = $formula;
             $arrayToSee[] = $operation;
             // $arrayToSee[] = $operation;
