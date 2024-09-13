@@ -718,6 +718,7 @@ class ShapesController extends Controller
             $reemplazo2 = ")*";
 
             $str = preg_replace($patron, $reemplazo, implode('', $formula));
+            $str = preg_replace($patron2, $reemplazo2, $str);
 
             $pattern = "/(\/null)|(\*null)/";
             $replacement = "*1";
