@@ -30,7 +30,7 @@ class ShapesController extends Controller
             if (gettype($nodeId) == 'integer') {
                 $node = $this->projectNodes->firstWhere('id', $nodeId);
 
-                if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
+                // if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
                 if ($node->type == 1) {
                     if (!in_array($node->id, $this->nodesActive)) {
                       $value =
