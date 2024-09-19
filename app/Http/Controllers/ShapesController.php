@@ -371,8 +371,6 @@ class ShapesController extends Controller
 
         $project = Project::find($project_id);
         $tierCero = Node::where(['project_id'=>$project_id,'tier'=>0])->first();
-
-        return $tierCero;
         
         $formula = [];
         $arrayToSee = [];
