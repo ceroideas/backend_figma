@@ -374,6 +374,24 @@ class ShapesController extends Controller
                 array_push($formula, $nodeId);
             }
         }
+
+        $patron = "/([0-9]+)\\(([^)]+)\\)/";
+        $reemplazo = "$1*($2)";
+
+        $patron2 = "/\\)(?=\\()/";
+        $reemplazo2 = ")*";
+
+        $str = preg_replace($patron, $reemplazo, implode('', $formula));
+        $str = preg_replace($patron2, $reemplazo2, $str);
+
+        $pattern = "/(\/null)|(\*null)/";
+        $replacement = "*1";
+        $str = preg_replace($pattern, $replacement, $str);
+        $operation = $this->evaluarExpresion($str);
+
+
+        if (!isset($this->csvData[$i][$newNode->name])) {$this->csvData[$i][$newNode->name] = 0;}
+        $this->csvData[$i][$newNode->name] = $operation;
         // print_r($formula);
         return $formula;
     }
