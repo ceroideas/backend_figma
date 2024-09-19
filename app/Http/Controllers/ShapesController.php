@@ -29,6 +29,7 @@ class ShapesController extends Controller
             $nodeId = $newNode->formula[$i];
             if (gettype($nodeId) == 'integer') {
                 $node = $this->projectNodes->firstWhere('id', $nodeId);
+                echo $node->name.' R <br>';
                 if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
                 if ($node->type == 1) {
                     if (!in_array($node->id, $this->nodesActive)) {
@@ -383,6 +384,7 @@ class ShapesController extends Controller
                 if (gettype($nodeId) == 'integer') {
 
                     $node = $this->projectNodes->firstWhere('id', $nodeId);
+                    echo $node->name.'<br>';
                     if (!isset($this->csvData[$j])) {$this->csvData[$j] = [];}
                     $this->csvData[$j]["id"] = $simulationId;
                     if ($node->type == 1) {
