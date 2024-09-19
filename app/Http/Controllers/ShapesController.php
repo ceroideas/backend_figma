@@ -48,7 +48,7 @@ class ShapesController extends Controller
                       }
 
                       if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
-                      $this->csvData[$i][$node->name] = $value;
+                      $this->csvData[$i][$node->name] = 'r'.$value;
                       if (!$aux) {
                         $this->valoresPorNodo[] = ["name" => $node->name, "values" => [$value]];
                       } else {
@@ -82,7 +82,7 @@ class ShapesController extends Controller
                                   }
                                   $formula[] = '(' . $randomNumber . ')';
                                   if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
-                                  $this->csvData[$i][$node->name] = $randomNumber;
+                                  $this->csvData[$i][$node->name] = 'r'.$randomNumber;
                                 break;
                             case 'Triangular':
                                 $triangularNumber = $this->triangularOperation(
@@ -109,7 +109,7 @@ class ShapesController extends Controller
                                   }
                                   $formula[] = '(' . $triangularNumber . ')';
                                   if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
-                                  $this->csvData[$i][$node->name] = $triangularNumber;
+                                  $this->csvData[$i][$node->name] = 'r'.$triangularNumber;
                                 break;
                             case 'Binominal':
                                 $binomialNumber = $this->binomialOperation(
@@ -135,7 +135,7 @@ class ShapesController extends Controller
                                   }
                                   $formula[] = '(' . $binomialNumber . ')';
                                   if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
-                                  $this->csvData[$i][$node->name] = $binomialNumber;
+                                  $this->csvData[$i][$node->name] = 'r'.$binomialNumber;
                                 break;
                             case 'Lognormal':
                                 $lognormalNumber = $this->lognormalOperation(
@@ -161,7 +161,7 @@ class ShapesController extends Controller
                                   }
                                   $formula[] = '(' . $lognormalNumber . ')';
                                   if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
-                                  $this->csvData[$i][$node->name] = $lognormalNumber;
+                                  $this->csvData[$i][$node->name] = 'r'.$lognormalNumber;
                                 break;
                             case 'Geometric':
                                 $geometricNumber = $this->geometricalOperation(
@@ -186,7 +186,7 @@ class ShapesController extends Controller
                                   }
                                   $formula[] = '(' . $geometricNumber . ')';
                                   if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
-                                  $this->csvData[$i][$node->name] = $geometricNumber;
+                                  $this->csvData[$i][$node->name] = 'r'.$geometricNumber;
                                 break;
                             case 'Weibull':
                                 $weibullNumber = $this->weibullOperation(
@@ -212,7 +212,7 @@ class ShapesController extends Controller
                                   }
                                   $formula[] = '(' . $weibullNumber . ')';
                                   if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
-                                  $this->csvData[$i][$node->name] = $weibullNumber;
+                                  $this->csvData[$i][$node->name] = 'r'.$weibullNumber;
                                 break;
                             case 'Beta':
                                 $betaNumber = $this->betaOperation(
@@ -238,7 +238,7 @@ class ShapesController extends Controller
                                   }
                                   $formula[] = '(' . $betaNumber . ')';
                                   if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
-                                  $this->csvData[$i][$node->name] = $betaNumber;
+                                  $this->csvData[$i][$node->name] = 'r'.$betaNumber;
                                 break;
                             case 'Hypergeometric':
                                 $hypergeometricNumber = $this->hypergeometricOperation(
@@ -265,7 +265,7 @@ class ShapesController extends Controller
                                   }
                                   $formula[] = '(' . $hypergeometricNumber . ')';
                                   if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
-                                  $this->csvData[$i][$node->name] = $hypergeometricNumber;
+                                  $this->csvData[$i][$node->name] = 'r'.$hypergeometricNumber;
                                 break;
                             case 'Poisson':
                                 $poissonNumber = $this->poissonOperation(
@@ -290,7 +290,7 @@ class ShapesController extends Controller
                                   }
                                   $formula[] = '(' . $poissonNumber . ')';
                                   if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
-                                  $this->csvData[$i][$node->name] = $poissonNumber;
+                                  $this->csvData[$i][$node->name] = 'r'.$poissonNumber;
                                 break;
                             case 'Normal':
                                 $randomNumberNormal = $this->normalOperation(
@@ -316,7 +316,7 @@ class ShapesController extends Controller
                                   }
                                   $formula[] = '(' . $randomNumberNormal . ')';
                                   if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
-                                  $this->csvData[$i][$node->name] = $randomNumberNormal;
+                                  $this->csvData[$i][$node->name] = 'r'.$randomNumberNormal;
                                 break;
                             case 'Exponencial':
                                 $randomNumberExponential = $this->exponentialOperation(
@@ -341,7 +341,7 @@ class ShapesController extends Controller
                                   }
                                   $formula[] = '(' . $randomNumberExponential . ')';
                                   if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
-                                  $this->csvData[$i][$node->name] = $randomNumberExponential;
+                                  $this->csvData[$i][$node->name] = 'r'.$randomNumberExponential;
                                 break;
                             default:
                                 break;
@@ -367,7 +367,7 @@ class ShapesController extends Controller
 
 
                     if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
-                    $this->csvData[$i][$node->name] = $operation;
+                    $this->csvData[$i][$node->name] = 'r'.$operation;
                 }
 
             }else{
@@ -439,7 +439,7 @@ class ShapesController extends Controller
                             $aux = false;
                           }
                           if (!isset($this->csvData[$j][$node->name])) {$this->csvData[$j][$node->name] = 0;}
-                          $this->csvData[$j][$node->name] = $value;
+                          $this->csvData[$j][$node->name] = 'n'.$value;
                           if (!$aux) {
                             $this->valoresPorNodo[] = ["name" => $node->name, "values" => [$value]];
                           } else {
@@ -473,7 +473,7 @@ class ShapesController extends Controller
                                       }
                                       $formula[] = '(' . $randomNumber . ')';
                                       if (!isset($this->csvData[$j][$node->name])) {$this->csvData[$j][$node->name] = 0;}
-                                      $this->csvData[$j][$node->name] = $randomNumber;
+                                      $this->csvData[$j][$node->name] = 'n'.$randomNumber;
                                     break;
                                 case 'Triangular':
                                     $triangularNumber = $this->triangularOperation(
@@ -500,7 +500,7 @@ class ShapesController extends Controller
                                       }
                                       $formula[] = '(' . $triangularNumber . ')';
                                       if (!isset($this->csvData[$j][$node->name])) {$this->csvData[$j][$node->name] = 0;}
-                                      $this->csvData[$j][$node->name] = $triangularNumber;
+                                      $this->csvData[$j][$node->name] = 'n'.$triangularNumber;
                                     break;
                                 case 'Binominal':
                                     $binomialNumber = $this->binomialOperation(
@@ -526,7 +526,7 @@ class ShapesController extends Controller
                                       }
                                       $formula[] = '(' . $binomialNumber . ')';
                                       if (!isset($this->csvData[$j][$node->name])) {$this->csvData[$j][$node->name] = 0;}
-                                      $this->csvData[$j][$node->name] = $binomialNumber;
+                                      $this->csvData[$j][$node->name] = 'n'.$binomialNumber;
                                     break;
                                 case 'Lognormal':
                                     $lognormalNumber = $this->lognormalOperation(
@@ -552,7 +552,7 @@ class ShapesController extends Controller
                                       }
                                       $formula[] = '(' . $lognormalNumber . ')';
                                       if (!isset($this->csvData[$j][$node->name])) {$this->csvData[$j][$node->name] = 0;}
-                                      $this->csvData[$j][$node->name] = $lognormalNumber;
+                                      $this->csvData[$j][$node->name] = 'n'.$lognormalNumber;
                                     break;
                                 case 'Geometric':
                                     $geometricNumber = $this->geometricalOperation(
@@ -577,7 +577,7 @@ class ShapesController extends Controller
                                       }
                                       $formula[] = '(' . $geometricNumber . ')';
                                       if (!isset($this->csvData[$j][$node->name])) {$this->csvData[$j][$node->name] = 0;}
-                                      $this->csvData[$j][$node->name] = $geometricNumber;
+                                      $this->csvData[$j][$node->name] = 'n'.$geometricNumber;
                                     break;
                                 case 'Weibull':
                                     $weibullNumber = $this->weibullOperation(
@@ -603,7 +603,7 @@ class ShapesController extends Controller
                                       }
                                       $formula[] = '(' . $weibullNumber . ')';
                                       if (!isset($this->csvData[$j][$node->name])) {$this->csvData[$j][$node->name] = 0;}
-                                      $this->csvData[$j][$node->name] = $weibullNumber;
+                                      $this->csvData[$j][$node->name] = 'n'.$weibullNumber;
                                     break;
                                 case 'Beta':
                                     $betaNumber = $this->betaOperation(
@@ -629,7 +629,7 @@ class ShapesController extends Controller
                                       }
                                       $formula[] = '(' . $betaNumber . ')';
                                       if (!isset($this->csvData[$j][$node->name])) {$this->csvData[$j][$node->name] = 0;}
-                                      $this->csvData[$j][$node->name] = $betaNumber;
+                                      $this->csvData[$j][$node->name] = 'n'.$betaNumber;
                                     break;
                                 case 'Hypergeometric':
                                     $hypergeometricNumber = $this->hypergeometricOperation(
@@ -656,7 +656,7 @@ class ShapesController extends Controller
                                       }
                                       $formula[] = '(' . $hypergeometricNumber . ')';
                                       if (!isset($this->csvData[$j][$node->name])) {$this->csvData[$j][$node->name] = 0;}
-                                      $this->csvData[$j][$node->name] = $hypergeometricNumber;
+                                      $this->csvData[$j][$node->name] = 'n'.$hypergeometricNumber;
                                     break;
                                 case 'Poisson':
                                     $poissonNumber = $this->poissonOperation(
@@ -681,7 +681,7 @@ class ShapesController extends Controller
                                       }
                                       $formula[] = '(' . $poissonNumber . ')';
                                       if (!isset($this->csvData[$j][$node->name])) {$this->csvData[$j][$node->name] = 0;}
-                                      $this->csvData[$j][$node->name] = $poissonNumber;
+                                      $this->csvData[$j][$node->name] = 'n'.$poissonNumber;
                                     break;
                                 case 'Normal':
                                     $randomNumberNormal = $this->normalOperation(
@@ -707,7 +707,7 @@ class ShapesController extends Controller
                                       }
                                       $formula[] = '(' . $randomNumberNormal . ')';
                                       if (!isset($this->csvData[$j][$node->name])) {$this->csvData[$j][$node->name] = 0;}
-                                      $this->csvData[$j][$node->name] = $randomNumberNormal;
+                                      $this->csvData[$j][$node->name] = 'n'.$randomNumberNormal;
                                     break;
                                 case 'Exponencial':
                                     $randomNumberExponential = $this->exponentialOperation(
@@ -732,7 +732,7 @@ class ShapesController extends Controller
                                       }
                                       $formula[] = '(' . $randomNumberExponential . ')';
                                       if (!isset($this->csvData[$j][$node->name])) {$this->csvData[$j][$node->name] = 0;}
-                                      $this->csvData[$j][$node->name] = $randomNumberExponential;
+                                      $this->csvData[$j][$node->name] = 'n'.$randomNumberExponential;
                                     break;
                                 default:
                                     break;
@@ -758,7 +758,7 @@ class ShapesController extends Controller
 
 
                         if (!isset($this->csvData[$j][$node->name])) {$this->csvData[$j][$node->name] = 0;}
-                        $this->csvData[$j][$node->name] = $operation;
+                        $this->csvData[$j][$node->name] = 'n'.$operation;
                     }
 
                 }else{
