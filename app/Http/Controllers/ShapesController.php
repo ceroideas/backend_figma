@@ -23,6 +23,7 @@ class ShapesController extends Controller
     }
     public function recursiveCalculate($newNode)
     {
+        $this->csvData[$i]["recursiva"] = 1;
         $formula = [];
         $aux = null;
         for ($i = 0; $i < count($newNode->formula); $i++) {
