@@ -29,7 +29,7 @@ class ShapesController extends Controller
             $nodeId = $newNode->formula[$i];
             if (gettype($nodeId) == 'integer') {
                 $node = $this->projectNodes->firstWhere('id', $nodeId);
-                echo $node->name.' R <br>';
+
                 if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
                 if ($node->type == 1) {
                     if (!in_array($node->id, $this->nodesActive)) {
@@ -350,6 +350,24 @@ class ShapesController extends Controller
                 }else{
                     $formula2 = $this->recursiveCalculate($node);
                     $formula[] = '(' . implode('', $formula2) . ')';
+
+                    $patron = "/([0-9]+)\\(([^)]+)\\)/";
+                    $reemplazo = "$1*($2)";
+
+                    $patron2 = "/\\)(?=\\()/";
+                    $reemplazo2 = ")*";
+
+                    $str = preg_replace($patron, $reemplazo, implode('', $formula2));
+                    $str = preg_replace($patron2, $reemplazo2, $str);
+
+                    $pattern = "/(\/null)|(\*null)/";
+                    $replacement = "*1";
+                    $str = preg_replace($pattern, $replacement, $str);
+                    $operation = $this->evaluarExpresion($str);
+
+
+                    if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
+                    $this->csvData[$i][$node->name] = $operation;
                 }
 
             }else{
@@ -384,7 +402,7 @@ class ShapesController extends Controller
                 if (gettype($nodeId) == 'integer') {
 
                     $node = $this->projectNodes->firstWhere('id', $nodeId);
-                    echo $node->name.'<br>';
+
                     if (!isset($this->csvData[$j])) {$this->csvData[$j] = [];}
                     $this->csvData[$j]["id"] = $simulationId;
                     if ($node->type == 1) {
@@ -705,6 +723,24 @@ class ShapesController extends Controller
                     }else{
                         $formula2 = $this->recursiveCalculate($node);
                         $formula[] = '(' . implode('', $formula2) . ')';
+
+                        $patron = "/([0-9]+)\\(([^)]+)\\)/";
+                        $reemplazo = "$1*($2)";
+
+                        $patron2 = "/\\)(?=\\()/";
+                        $reemplazo2 = ")*";
+
+                        $str = preg_replace($patron, $reemplazo, implode('', $formula2));
+                        $str = preg_replace($patron2, $reemplazo2, $str);
+
+                        $pattern = "/(\/null)|(\*null)/";
+                        $replacement = "*1";
+                        $str = preg_replace($pattern, $replacement, $str);
+                        $operation = $this->evaluarExpresion($str);
+
+
+                        if (!isset($this->csvData[$i][$node->name])) {$this->csvData[$i][$node->name] = 0;}
+                        $this->csvData[$i][$node->name] = $operation;
                     }
 
                 }else{
