@@ -425,6 +425,8 @@ class ShapesController extends Controller
                             $aux = false;
                           }
                           // csvData
+                          if (!isset($this->csvData[$j])) {$this->csvData[$j] = [$node->name => 0];}
+                          $this->csvData[$j] = array_merge($this->csvData[$j], [$node->name => 0]);
                           if (!$aux) {
                             $this->valoresPorNodo[] = ["name" => $node->name, "values" => [$value]];
                           } else {
