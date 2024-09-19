@@ -407,8 +407,8 @@ class ShapesController extends Controller
 
                     $node = $this->projectNodes->firstWhere('id', $nodeId);
 
-                    if (!isset($this->csvData[$j])) {$this->csvData[$j] = ['id' => $this->simulationId];}
-                    $this->csvData[$j] = array_merge($this->csvData[$j], ['id' => $this->simulationId]);
+                    if (!isset($this->csvData[$j])) {$this->csvData[$j] = ['id' => $simulationId];}
+                    $this->csvData[$j] = array_merge($this->csvData[$j], ['id' => $simulationId]);
                     if ($node->type == 1) {
                         if (!in_array($node->id, $this->nodesActive)) {
                           $value =
