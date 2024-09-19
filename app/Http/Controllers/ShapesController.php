@@ -785,7 +785,7 @@ class ShapesController extends Controller
             // $arrayToSee[] = $operation;
 
             if (!isset($this->csvData[$j][$tierCero->name])) {$this->csvData[$j][$tierCero->name] = 0;}
-            $this->csvData[$j][$tierCero->name] = $operation;
+            $this->csvData[$j][$tierCero->name] = 't'.$operation;
 
             $formula = [];
         }
