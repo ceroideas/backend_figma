@@ -391,7 +391,7 @@ class ShapesController extends Controller
 
 
         if (!isset($this->csvData[$i][$newNode->name])) {$this->csvData[$i][$newNode->name] = 0;}
-        $this->csvData[$i][$newNode->name] = $operation;
+        $this->csvData[$i][$newNode->name] = 'rr'.$operation;
         // print_r($formula);
         return $formula;
     }
