@@ -27,6 +27,11 @@ class ApiController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register','migrar','sendCode','checkCode','changePassword','testEmail']]);
     }
 
+    public function listUsers()
+    {
+        return User::all();
+    }
+
     public function register(Request $request)
     {
         $data = $request->all();
