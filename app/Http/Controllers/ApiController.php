@@ -24,7 +24,7 @@ class ApiController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register','migrar','sendCode','checkCode','changePassword','testEmail']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register','migrar','sendCode','checkCode','changePassword','testEmail','listUsers']]);
     }
 
     public function listUsers()
