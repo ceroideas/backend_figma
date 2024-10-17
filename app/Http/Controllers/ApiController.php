@@ -88,13 +88,13 @@ class ApiController extends Controller
             $table->integer('default_growth_percentage')->nullable();
         });
 
-        return;
+        
         Schema::table('nodes', function(Blueprint $table) {
             //
             $table->json('new_formula')->nullable();
         });
 
-        return;
+        
         Schema::table('projects', function(Blueprint $table) {
             //
             $table->integer('default_year')->nullable();
@@ -103,13 +103,13 @@ class ApiController extends Controller
             $table->integer('default_growth_percentage')->nullable();
         });
 
-        return;
+        
         Schema::table('projects', function(Blueprint $table) {
             //
             $table->string('thumb')->nullable();
         });
 
-        return;
+        
         Schema::table('nodes', function(Blueprint $table) {
             //
             $table->integer('hidden_table')->nullable();
