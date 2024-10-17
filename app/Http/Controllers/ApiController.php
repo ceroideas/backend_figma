@@ -79,7 +79,6 @@ class ApiController extends Controller
     //
     public function migrar()
     {
-        return User::all();
         Schema::table('nodes', function(Blueprint $table) {
             //
             $table->integer('default_year')->nullable();
