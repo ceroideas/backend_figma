@@ -144,6 +144,107 @@ class ApiController extends Controller
         return Project::with('nodes','nodes.sceneries')->where('id',$id)->first();
     }
 
+
+    public function updateProject2($id, Request $r)
+    {
+        $p = Project::find($id);
+
+
+            
+
+        $nodes = Node::where('project_id',$p->id)/*->where('type',1)*/->get();
+        foreach ($nodes as $key => $node) {
+            $scen = Scenery::where(['node_id' => $node->id])->get();
+            $default = 0;
+            if ($node->unite) {
+                $default = $node->unite;
+               
+            }
+
+            $years = [];
+/*             foreach ($scen as $key => $one_scenarie) {
+                $start = $r->year_from;
+
+                while($start <= $r->year_to)
+                {
+                    $years[$start] = $one_scenarie->years[$start] ?? $default;
+                    $start++;
+                }
+
+                $one_scenarie->name = $r->sceneries[$key];
+                $one_scenarie->years = $years;
+            } */
+
+             foreach ($r->sceneries_data as $key => $scenerie_data) {
+                $start = $r->year_from;
+                if(isset($scen[$scenerie_data["id"]])){
+
+                
+
+                while($start <= $r->year_to)
+                {
+                    $years[$start] = $scen[$scenerie_data["id"]]->years[$start] ?? $default;
+                    $start++;
+                }
+
+                $scen[$scenerie_data["id"]]->name = $scenerie_data["name"];
+                $scen[$scenerie_data["id"]]->years = $years;
+                $scen[$scenerie_data["id"]]->save();
+
+                }else {
+                              
+                     if (isset($scen[$key])) {
+                        $scen[$key]->delete();  
+                    } 
+
+            
+                    $newScenery = new Scenery();
+                    $newScenery->node_id = $node->id;
+                    $newScenery->name = $scenerie_data["name"];
+
+                    
+                    while ($start <= $r->year_to) {
+                        $years[$start] = $default;
+                        $start++;
+                    }
+               
+                    $newScenery->years = $years;
+
+                
+                     $newScenery->save(); 
+                }
+            }
+
+           
+            
+        }
+        
+        
+         $p->name = $r->name;
+         $p->year_from = $r->year_from;
+         $p->year_to = $r->year_to;
+         $p->sceneries = $r->sceneries;
+         $p->status = $r->status ? $r->status : $p->status;
+         if ($r->default_year) {
+            $p->default_year = $r->default_year;
+        }
+        if ($r->line_color) {
+            $p->line_color = $r->line_color;
+        }
+
+        if ($r->default_growth) {
+            $p->default_growth = $r->default_growth;
+        }
+
+        if ($r->default_growth_percentage) {
+            $p->default_growth_percentage = $r->default_growth_percentage;
+        } 
+
+         $p->save(); 
+
+         return "succes";
+    }
+
     public function getNode($id)
     {
         return Node::with('sceneries')->where('id',$id)->first();
