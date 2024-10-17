@@ -79,7 +79,7 @@ class ApiController extends Controller
     //
     public function migrar()
     {
-        Schema::table('nodes', function(Blueprint $table) {
+        /*Schema::table('nodes', function(Blueprint $table) {
             //
             $table->integer('default_year')->nullable();
             $table->string('line_color')->nullable();
@@ -113,7 +113,7 @@ class ApiController extends Controller
             //
             $table->integer('hidden_table')->nullable();
             $table->integer('hidden_node')->nullable();
-        });
+        });*/
         Schema::dropIfExists('simulations');
         Schema::create('simulations', function (Blueprint $table) {
             $table->id();
