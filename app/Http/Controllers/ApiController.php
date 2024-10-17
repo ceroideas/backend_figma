@@ -79,8 +79,7 @@ class ApiController extends Controller
     //
     public function migrar()
     {
-        return User::all();
-        Schema::table('nodes', function(Blueprint $table) {
+        /*Schema::table('nodes', function(Blueprint $table) {
             //
             $table->integer('default_year')->nullable();
             $table->string('line_color')->nullable();
@@ -88,13 +87,13 @@ class ApiController extends Controller
             $table->integer('default_growth_percentage')->nullable();
         });
 
-        return;
+        
         Schema::table('nodes', function(Blueprint $table) {
             //
             $table->json('new_formula')->nullable();
         });
 
-        return;
+        
         Schema::table('projects', function(Blueprint $table) {
             //
             $table->integer('default_year')->nullable();
@@ -103,18 +102,18 @@ class ApiController extends Controller
             $table->integer('default_growth_percentage')->nullable();
         });
 
-        return;
+        
         Schema::table('projects', function(Blueprint $table) {
             //
             $table->string('thumb')->nullable();
         });
 
-        return;
+        
         Schema::table('nodes', function(Blueprint $table) {
             //
             $table->integer('hidden_table')->nullable();
             $table->integer('hidden_node')->nullable();
-        });
+        });*/
         Schema::dropIfExists('simulations');
         Schema::create('simulations', function (Blueprint $table) {
             $table->id();
