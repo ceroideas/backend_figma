@@ -241,7 +241,7 @@ class ApiController extends Controller
 
          $p->save(); 
 
-         return "succes";
+         return;
     }
 
     public function getNode($id)
