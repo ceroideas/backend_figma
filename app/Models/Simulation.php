@@ -11,7 +11,8 @@ class Simulation extends Model
 
     protected $casts = [
         'nodes' => 'array',
-        'samples' => 'array'
+        'samples' => 'array',
+        'operation_data' => 'array'
     ];
 
     public function getSimulationAttribute($value)

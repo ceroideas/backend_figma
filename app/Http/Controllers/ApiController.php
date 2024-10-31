@@ -706,16 +706,58 @@ class ApiController extends Controller
             }
         }
     }
+    public function simulationChart($samples)
+    {
+
+        $muestras = $samples; 
+    
+        // Asegúrate de que haya datos en las muestras
+        if (empty($muestras)) {
+            return []; // O manejar el caso vacío
+        }
+    
+        // Ordenar las muestras
+        sort($muestras);
+    
+        // Define los percentiles que deseas calcular
+        $percentiles = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+        $values = [];
+    
+        // Calcular los percentiles
+        foreach ($percentiles as $percentil) {
+            $index = floor(($percentil / 100) * (count($muestras) - 1));
+            $values[] = $muestras[$index]; // Asegúrate de que no accedas a un índice fuera de rango
+        }
+    
+        return $values; // Devuelve los valores de los percentiles
+    }
 
     public function getSimulations($id)
     {
         return Simulation::where('project_id',$id)->get();
     }
 
-    public function getSimulation($id)
-    {
-        return Simulation::find($id);
-    }
+    // public function getSimulation($id)
+    // {
+    //     $simulation = Simulation::find($id);
+
+    //     return $simulation;
+    // }
+
+//     public function getSimulations($id)
+// {
+//     return Simulation::where('project_id', $id)->get()->makeHidden(['samples']);
+// }
+
+public function getSimulation($id)
+{
+    return Simulation::find($id)->makeHidden(['samples']);
+}
+
+
+
+
+
 
     public function saveSimulation(Request $r)
     {
@@ -728,6 +770,7 @@ class ApiController extends Controller
         $s->nodes = $r->nodes;
         $s->samples = $r->samples;
         $s->csvData = $r->csvData;
+       
         $s->save();
 
         if (!file_exists(public_path() . '/simulations/')) {
@@ -760,6 +803,7 @@ class ApiController extends Controller
         $s->nodes = $r->nodes ? $r->nodes : $s->nodes;
         $s->samples = $r->samples ? $r->samples : $s->samples;
         $s->csvData = $r->csvData ? $r->csvData : $s->csvData;
+        $s->operation_data = $this->simulationChart($r->samples ? $r->samples : $s->samples);
         $s->save();
 
         if (!file_exists(public_path() . '/simulations/')) {
