@@ -739,7 +739,9 @@ class ApiController extends Controller
 
     public function getSimulations($id)
     {
-        return Simulation::where('project_id',$id)->get()->makeHidden(['samples']);
+        return Simulation::where('project_id', $id)
+            ->select('id', 'project_id', 'name', 'description', 'steps', 'color', 'nodes', 'simulation', 'csvData', 'created_at', 'updated_at')
+            ->get();
     }
 
     // public function getSimulation($id)
@@ -756,7 +758,8 @@ class ApiController extends Controller
 
 public function getSimulation($id)
 {
-    return Simulation::find($id)->makeHidden(['samples']);
+    return Simulation::find($id)->select('id', 'project_id', 'name', 'description', 'steps', 'color', 'nodes', 'simulation', 'csvData', 'created_at', 'updated_at')
+    ->get();
 }
 
 
