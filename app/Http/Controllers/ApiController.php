@@ -758,10 +758,9 @@ class ApiController extends Controller
 
 public function getSimulation($id)
 {
-    return Simulation::where('id', $id)
-        ->select('id', 'project_id', 'name', 'description', 'steps', 'color', 'nodes', 'simulation', 'csvData')
-        ->first(); // Usa first() para obtener un solo resultado
+    return Simulation::find($id)->makeHidden(['samples']);
 }
+
 
 
 
