@@ -135,6 +135,7 @@ class ApiController extends Controller
         Schema::table('simulations', function (Blueprint $table) {
             $table->longText('operation_data')->nullable(); 
         });
+        return;
     }
 
     public function getProjects()
