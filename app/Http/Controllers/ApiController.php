@@ -740,7 +740,7 @@ class ApiController extends Controller
     public function getSimulations($id)
     {
         return Simulation::where('project_id', $id)
-            ->select('id', 'project_id', 'name', 'description', 'steps', 'color', 'nodes', 'simulation', 'csvData', 'created_at', 'updated_at')
+            ->select('id', 'project_id', 'name', 'description', 'steps', 'color', 'nodes', 'simulation', 'csvData')
             ->get();
     }
 
