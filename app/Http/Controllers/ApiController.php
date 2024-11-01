@@ -114,22 +114,26 @@ class ApiController extends Controller
             $table->integer('hidden_table')->nullable();
             $table->integer('hidden_node')->nullable();
         });*/
-        Schema::dropIfExists('simulations');
-        Schema::create('simulations', function (Blueprint $table) {
-            $table->id();
-            $table->integer('project_id')->nullable();
-            $table->string('name')->nullable();
-            $table->text('description')->nullable();
-            $table->integer('steps')->nullable();
-            $table->string('color')->nullable();
+        // Schema::dropIfExists('simulations');
+        // Schema::create('simulations', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->integer('project_id')->nullable();
+        //     $table->string('name')->nullable();
+        //     $table->text('description')->nullable();
+        //     $table->integer('steps')->nullable();
+        //     $table->string('color')->nullable();
 
-            $table->string('nodes')->nullable();
-            $table->longText('samples')->nullable();
-            $table->string('simulation')->nullable();
+        //     $table->string('nodes')->nullable();
+        //     $table->longText('samples')->nullable();
+        //     $table->string('simulation')->nullable();
 
-            $table->longText('csvData')->nullable();
+        //     $table->longText('csvData')->nullable();
 
-            $table->timestamps();
+        //     $table->timestamps();
+        // });
+
+        Schema::table('simulations', function (Blueprint $table) {
+            $table->longText('operation_data')->nullable(); 
         });
     }
 
