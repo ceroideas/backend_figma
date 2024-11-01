@@ -739,7 +739,7 @@ class ApiController extends Controller
 
     public function getSimulations($id)
     {
-        return Simulation::where('project_id',$id)->get();
+        return Simulation::where('project_id',$id)->get()->makeHidden(['samples']);
     }
 
     // public function getSimulation($id)
