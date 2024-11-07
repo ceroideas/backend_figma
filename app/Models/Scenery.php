@@ -12,4 +12,12 @@ class Scenery extends Model
     protected $casts = [
         'years' => 'array'
     ];
+
+    protected $appends = ['dynamic_years'];
+
+
+    public function getDynamicYearsAttribute()
+    {
+        return [];
+    }
 }
