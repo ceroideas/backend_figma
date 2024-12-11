@@ -135,10 +135,10 @@ class ApiController extends Controller
         // Schema::table('simulations', function (Blueprint $table) {
         //     $table->longText('operation_data')->nullable(); 
         // });
-        // Schema::table('sceneries', function (Blueprint $table) {
+        Schema::table('sceneries', function (Blueprint $table) {
        
-        //     $table->json('dynamic_years')->nullable();
-        // });
+            $table->json('dynamic_years')->nullable();
+        });
         return;
     }
 
