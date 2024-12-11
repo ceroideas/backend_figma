@@ -132,8 +132,12 @@ class ApiController extends Controller
         //     $table->timestamps();
         // });
 
-        Schema::table('simulations', function (Blueprint $table) {
-            $table->longText('operation_data')->nullable(); 
+        // Schema::table('simulations', function (Blueprint $table) {
+        //     $table->longText('operation_data')->nullable(); 
+        // });
+        Schema::table('sceneries', function (Blueprint $table) {
+       
+            $table->json('dynamic_years')->nullable();
         });
         return;
     }
@@ -255,6 +259,7 @@ class ApiController extends Controller
     }
 
     public function getScenery($id)
+        
     {
         return Scenery::find($id);
     }
@@ -322,6 +327,9 @@ class ApiController extends Controller
         foreach ($p->sceneries as $key => $sc) {
 
             $years = [];
+            $dinamyc_years = [];
+            $start = $p->year_from;
+            $default_start = $p->default_year;
 
             $start = $p->year_from;
 
@@ -330,14 +338,29 @@ class ApiController extends Controller
                 $years[$start] = $default;
                 $start++;
             }
+            while($default_start <= $p->year_to ){
+                if ($default_start == $p->default_year) {
+                    $default_start++;  
+                    continue;
+                }
+            
+                $dinamyc_year = new \stdClass();  
+                $dinamyc_year->year = $default_start;
+                $dinamyc_year->formula = [];
+                array_push($dinamyc_years, $dinamyc_year);
+                $default_start++;
+              
+            }
 
             $s = new Scenery;
             $s->node_id = $n->id;
             $s->name = $sc;
             $s->years = $years;
+            $s->dynamic_years = $dinamyc_years;
             $s->status = 1;
             $s->save();
         }
+
 
         return redirect('api/getNode/'.$n->id);
     }
@@ -372,6 +395,7 @@ class ApiController extends Controller
             if ($scen == 0) {
 
                 $years = [];
+                $dinamyc_years = [];
 
                 $default = 0;
 
@@ -380,11 +404,25 @@ class ApiController extends Controller
                 }
 
                 $start = $p->year_from;
+                $default_start = $p->default_year;
 
                 while($start <= $p->year_to)
                 {
                     $years[$start] = $default;
                     $start++;
+                }
+                while($default_start <= $p->year_to ){
+                    if ($default_start == $p->default_year) {
+                        $default_start++;  
+                        continue;
+                    }
+                
+                    $dinamyc_year = new \stdClass();  
+                    $dinamyc_year->year = $default_start;
+                    $dinamyc_year->formula = [];
+                    array_push($dinamyc_years, $dinamyc_year);
+                    $default_start++;
+                  
                 }
 
                 $s = Scenery::where('name',$r->name)->where('node_id',$n->id)->first();
@@ -395,6 +433,7 @@ class ApiController extends Controller
                 $s->node_id = $n->id;
                 $s->name = $r->name;
                 $s->years = $n->id == $r->node_id ? $r->years : $years;
+                $s->dynamic_years = $dinamyc_years;
                 $s->status = 1;
                 $s->save();
             }
@@ -613,6 +652,7 @@ class ApiController extends Controller
         $s = Scenery::find($id);
         // $s->name = $r->name;
         $s->years = $r->years;
+        $s->dynamic_years = isset($r->dynamic_years) ? $r->dynamic_years : $s->dynamic_years ;
         $s->status = isset($r->status) ? $r->status : $s->status;
         $s->save();
     }

@@ -21,6 +21,19 @@ class Node extends Model
 
     protected $appends = ['calculated','old_formula'];
 
+   
+
+    function evaluarExpresion($expresion) { 
+        $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) { return 'pow(' . $matches[1] . ',' . $matches[2] . ')'; }, $expresion);  
+        try { 
+            $resultado = eval('return ' . $expresion . ';'); 
+            return $resultado; 
+        } 
+        catch (ParseError $e) { 
+            return 0; 
+        } 
+    }
+
     public function sceneries()
     {
         return $this->hasMany('App\Models\Scenery');
@@ -110,14 +123,6 @@ class Node extends Model
         return $calculo;
     }
 
-    private function evaluarExpresion($expresion) {
-        $language = new ExpressionLanguage();
-        try {
-            return $language->evaluate($expresion);
-        } catch (SyntaxError $e) {
-            return 0;
-        }
-    }
 
     public function getCalculatedAttribute()
     {
@@ -193,6 +198,7 @@ class Node extends Model
                     $pattern = "/(\/null)|(\*null)/";
                     $replacement = "*1";
                     $str = preg_replace($pattern, $replacement, $str);
+                 
                     $valor = $this->evaluarExpresion($str);
                     if ($valor !== null) {
                         $years[$start] = $valor;

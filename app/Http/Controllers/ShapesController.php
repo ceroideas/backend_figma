@@ -821,6 +821,11 @@ class ShapesController extends Controller
         return ["arrayToSee"=>$arrayToSee,"csvData"=>$this->csvData];
     }
 
+    public function convertirExponente($expresion) {
+      return preg_replace('/(\d+)\s*\^\s*(\d+)/', 'pow($1,$2)', $expresion);
+  
+  }
+
     private function evaluarExpresion($expresion) {
         $language = new ExpressionLanguage();
         try {
