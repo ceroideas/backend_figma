@@ -19,7 +19,11 @@ jobs:
             cd /var/www/html/api
             git pull
             composer update
+            php artisan cache:clear
+            php artisan config:clear
+            php artisan route:clear
+            php artisan view:clear
+            php artisan migrate
             # php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
             # php artisan jwt:secret
             # php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
-            php artisan migrate
