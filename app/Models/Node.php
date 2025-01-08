@@ -24,22 +24,22 @@ class Node extends Model
    
 
     function evaluarExpresion($expresion) {
-        // Reemplazar exponentes en la expresión con pow()
+       
         $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) {
             return 'pow(' . $matches[1] . ',' . $matches[2] . ')';
         }, $expresion);
     
-        // Validar la expresión para permitir solo caracteres seguros (números, operadores y paréntesis)
-        if (!preg_match('/^[0-9+\-*/()., pow]*$/', $expresion)) {
-            return 0; // Retorna 0 si la expresión contiene caracteres no permitidos
+       
+        if (!preg_match('/^[0-9+\-*/()., pow\-]*$/', $expresion)) {
+            return 0; 
         }
     
         try {
-            // Evaluar la expresión en un entorno controlado
-            $resultado = eval('return ' . $expresion . ';');
+         
+            $resultado = eval('return ' . '3 + 5 * 2' . ';');
             return $resultado;
-        } catch (Throwable $e) { // Captura ParseError y otros errores
-            return 0; // Retorna 0 en caso de error
+        } catch (Throwable $e) { 
+            return 0; 
         }
     }
 
