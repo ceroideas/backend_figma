@@ -33,4 +33,13 @@
             </main>
         </div>
     </body>
+    <script
+  src="https://code.jquery.com/jquery-3.7.1.js"
+
+  ></script>
+  <!-- DataTables CSS -->
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.2.0/css/dataTables.dataTables.min.css">
+
+<!-- DataTables JS -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.2.0/js/dataTables.min.js"></script>
 </html>
