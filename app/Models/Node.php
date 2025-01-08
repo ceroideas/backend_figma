@@ -36,30 +36,27 @@ class Node extends Model
     // }
 
     function evaluarExpresion($expresion) {
-        
-        // $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) {
-        //     return 'pow(' . $matches[1] . ',' . $matches[2] . ')';
-        // }, $expresion);
-    
        
-        // if (!preg_match('/^[0-9+\-*/()., pow]*$/', $expresion)) {
-        //     return 42; 
-        // }
+        if (!preg_match('/^[0-9\+\-\*\/\^\(\)\s]+$/', $expresion)) {
+            return 0; 
+        }
     
-        // try {
+      
+        $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) {
+            return 'pow(' . $matches[1] . ',' . $matches[2] . ')';
+        }, $expresion);
+    
+        try {
            
-        //     $resultado = eval('return ' . $expresion . ';');
-        //     if ($resultado === false || $resultado === null) {
-            
-        //         return 42;
-        //     }
-        //     return $resultado;
-        // } catch (Throwable $e) { 
-        //     return 42; 
-        // }
-
-        return 0;
+            $resultado = eval('return ' . $expresion . ';');
+            return $resultado;
+        } catch (ParseError $e) {
+          
+            \Log::error("Error en eval: " . $e->getMessage());
+            return 0; // Devuelve 0 en caso de error
+        }
     }
+    
     
 
     public function sceneries()
