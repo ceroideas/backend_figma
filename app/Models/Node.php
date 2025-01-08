@@ -23,48 +23,41 @@ class Node extends Model
 
    
 
+    // function evaluarExpresion($expresion) { 
+    //     $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) { return 'pow(' . $matches[1] . ',' . $matches[2] . ')'; }, $expresion);  
+    //     try { 
+    //         $resultado = eval('return ' . $expresion . ';'); 
+    //         return $resultado; 
+    //     } 
+    //     catch (ParseError $e) { 
+    //         return 0; 
+    //     } 
+    // }
+
     function evaluarExpresion($expresion) {
-       
+        
         $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) {
             return 'pow(' . $matches[1] . ',' . $matches[2] . ')';
         }, $expresion);
     
        
-        if (!preg_match('/^[0-9+\-*/()., pow\-]*$/', $expresion)) {
-            return 0; 
+        if (!preg_match('/^[0-9+\-*/()., pow]*$/', $expresion)) {
+            return 42; 
         }
     
         try {
-         
-            $resultado = eval('return ' . '3 + 5 * 2' . ';');
+           
+            $resultado = eval('return ' . $expresion . ';');
+            if ($resultado === false || $resultado === null) {
+            
+                return 42;
+            }
             return $resultado;
         } catch (Throwable $e) { 
-            return 0; 
+            return 42; 
         }
     }
-
-
-    // function evaluarExpresion($expresion) {
-    //     // Validar que la expresión solo tenga caracteres permitidos
-    //     if (!preg_match('/^[0-9\+\-\*\/\^\(\)\s]+$/', $expresion)) {
-    //         return 0; // Retorna 0 si hay caracteres no permitidos
-    //     }
     
-    //     // Reemplazar potencias (^) por pow()
-    //     $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) {
-    //         return 'pow(' . $matches[1] . ',' . $matches[2] . ')';
-    //     }, $expresion);
-    
-    //     try {
-    //         // Evalúa la expresión matemática
-    //         $resultado = eval('return ' . $expresion . ';');
-    //         return $resultado;
-    //     } catch (ParseError $e) {
-    //         // Log del error
-    //         \Log::error("Error en eval: " . $e->getMessage());
-    //         return 0; // Devuelve 0 en caso de error
-    //     }
-    // }
 
     public function sceneries()
     {
