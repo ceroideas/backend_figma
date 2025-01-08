@@ -36,26 +36,28 @@ class Node extends Model
 
     function evaluarExpresion($expresion) {
         
-        $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) {
-            return 'pow(' . $matches[1] . ',' . $matches[2] . ')';
-        }, $expresion);
+        // $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) {
+        //     return 'pow(' . $matches[1] . ',' . $matches[2] . ')';
+        // }, $expresion);
     
        
-        if (!preg_match('/^[0-9+\-*/()., pow]*$/', $expresion)) {
-            return 42; 
-        }
+        // if (!preg_match('/^[0-9+\-*/()., pow]*$/', $expresion)) {
+        //     return 42; 
+        // }
     
-        try {
+        // try {
            
-            $resultado = eval('return ' . $expresion . ';');
-            if ($resultado === false || $resultado === null) {
+        //     $resultado = eval('return ' . $expresion . ';');
+        //     if ($resultado === false || $resultado === null) {
             
-                return 42;
-            }
-            return $resultado;
-        } catch (Throwable $e) { 
-            return 42; 
-        }
+        //         return 42;
+        //     }
+        //     return $resultado;
+        // } catch (Throwable $e) { 
+        //     return 42; 
+        // }
+
+        return 0;
     }
     
 
