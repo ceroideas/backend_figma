@@ -24,38 +24,38 @@ class Node extends Model
 
    
 
-    // function evaluarExpresion($expresion) { 
-    //     $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) { return 'pow(' . $matches[1] . ',' . $matches[2] . ')'; }, $expresion);  
-    //     try { 
-    //         $resultado = eval('return ' . $expresion . ';'); 
-    //         return $resultado; 
-    //     } 
-    //     catch (ParseError $e) { 
-    //         return 0; 
-    //     } 
-    // }
-
-    function evaluarExpresion($expresion) {
-       
-        if (!preg_match('/^[0-9\+\-\*\/\^\(\)\s]+$/', $expresion)) {
+    function evaluarExpresion($expresion) { 
+        $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) { return 'pow(' . $matches[1] . ',' . $matches[2] . ')'; }, $expresion);  
+        try { 
+            $resultado = eval('return ' . $expresion . ';'); 
+            return $resultado; 
+        } 
+        catch (ParseError $e) { 
             return 0; 
-        }
+        } 
+    }
+
+    // function evaluarExpresion($expresion) {
+       
+    //     if (!preg_match('/^[0-9\+\-\*\/\^\(\)\s]+$/', $expresion)) {
+    //         return 0; 
+    //     }
     
       
-        $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) {
-            return 'pow(' . $matches[1] . ',' . $matches[2] . ')';
-        }, $expresion);
+    //     $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) {
+    //         return 'pow(' . $matches[1] . ',' . $matches[2] . ')';
+    //     }, $expresion);
     
-        try {
+    //     try {
            
-            $resultado = eval('return ' . $expresion . ';');
-            return $resultado;
-        } catch (ParseError $e) {
+    //         $resultado = eval('return ' . $expresion . ';');
+    //         return $resultado;
+    //     } catch (ParseError $e) {
           
-            \Log::error("Error en eval: " . $e->getMessage());
-            return 0; // Devuelve 0 en caso de error
-        }
-    }
+    //         \Log::error("Error en eval: " . $e->getMessage());
+    //         return 0; 
+    //     }
+    // }
     
     
 
