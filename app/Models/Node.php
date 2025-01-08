@@ -24,26 +24,47 @@ class Node extends Model
    
 
     function evaluarExpresion($expresion) {
-        // Validar que la expresión solo tenga caracteres permitidos
-        if (!preg_match('/^[0-9\+\-\*\/\^\(\)\s]+$/', $expresion)) {
-            return 0; // Retorna 0 si hay caracteres no permitidos
-        }
-    
-        // Reemplazar potencias (^) por pow()
+        // Reemplazar exponentes en la expresión con pow()
         $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) {
             return 'pow(' . $matches[1] . ',' . $matches[2] . ')';
         }, $expresion);
     
+        // Validar la expresión para permitir solo caracteres seguros (números, operadores y paréntesis)
+        if (!preg_match('/^[0-9+\-*/()., pow]*$/', $expresion)) {
+            return 0; // Retorna 0 si la expresión contiene caracteres no permitidos
+        }
+    
         try {
-            // Evalúa la expresión matemática
+            // Evaluar la expresión en un entorno controlado
             $resultado = eval('return ' . $expresion . ';');
             return $resultado;
-        } catch (ParseError $e) {
-            // Log del error
-            \Log::error("Error en eval: " . $e->getMessage());
-            return 0; // Devuelve 0 en caso de error
+        } catch (Throwable $e) { // Captura ParseError y otros errores
+            return 0; // Retorna 0 en caso de error
         }
     }
+
+
+    // function evaluarExpresion($expresion) {
+    //     // Validar que la expresión solo tenga caracteres permitidos
+    //     if (!preg_match('/^[0-9\+\-\*\/\^\(\)\s]+$/', $expresion)) {
+    //         return 0; // Retorna 0 si hay caracteres no permitidos
+    //     }
+    
+    //     // Reemplazar potencias (^) por pow()
+    //     $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) {
+    //         return 'pow(' . $matches[1] . ',' . $matches[2] . ')';
+    //     }, $expresion);
+    
+    //     try {
+    //         // Evalúa la expresión matemática
+    //         $resultado = eval('return ' . $expresion . ';');
+    //         return $resultado;
+    //     } catch (ParseError $e) {
+    //         // Log del error
+    //         \Log::error("Error en eval: " . $e->getMessage());
+    //         return 0; // Devuelve 0 en caso de error
+    //     }
+    // }
 
     public function sceneries()
     {
