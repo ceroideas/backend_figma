@@ -19,7 +19,8 @@ class Node extends Model
         'distribution_shape' => 'array'
     ];
 
-    protected $appends = ['calculated','old_formula'];
+    // protected $appends = ['calculated','old_formula'];
+    protected $appends = [];
 
    
 
