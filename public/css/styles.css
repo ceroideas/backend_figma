@@ -24,3 +24,6 @@
     font-weight: 700 !important;
     color: #000f55 !important;
 }
+.justify-items-center {
+    justify-items: center !important;
+}
