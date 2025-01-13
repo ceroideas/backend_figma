@@ -27,3 +27,6 @@
 .justify-items-center {
     justify-items: center !important;
 }
+.p-3 {
+    padding: 5px !important;
+}
