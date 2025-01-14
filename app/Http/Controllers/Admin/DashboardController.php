@@ -88,5 +88,42 @@ class DashboardController extends Controller
       
         return view('admin.project', compact('project', 'user'));
     }
+
+    public function simulation($id)
+    {
+        $format = 'F j, Y - g:i A';
+    
+      
+        $simulationCollection = DB::table('simulations')->where('id', $id)->first();
+    
+      
+        $carbonCreatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $simulationCollection->created_at);
+        $simulationCollection->created_at = $carbonCreatedDate->format($format);
+    
+        $carbonUpdatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $simulationCollection->updated_at);
+        $simulationCollection->updated_at = $carbonUpdatedDate->format($format);
+    
+      
+        $simulation = json_decode(json_encode($simulationCollection), true);
+    
+      
+        $projectCollection = DB::table('projects')
+            ->where('id', $simulationCollection->project_id)
+            ->select('id', 'name', 'created_at', 'updated_at')
+            ->first();
+    
+      
+        $carbonCreatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $projectCollection->created_at);
+        $projectCollection->created_at = $carbonCreatedDate->format($format);
+    
+        $carbonUpdatedDate = Carbon::createFromFormat('Y-m-d H:i:s', $projectCollection->updated_at);
+        $projectCollection->updated_at = $carbonUpdatedDate->format($format);
+    
+      
+        $project = json_decode(json_encode($projectCollection), true);
+    
+      
+        return view('admin.simulation', compact('simulation', 'project'));
+    }
     
 }
