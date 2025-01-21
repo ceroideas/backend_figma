@@ -18,7 +18,7 @@ jobs:
           script: |
             cd /var/www/html/api
             git pull
-            composer update
+            composer inatall
             php artisan cache:clear
              #php artisan config:clear
             php artisan route:clear

@@ -63,6 +63,13 @@ class ApiController extends Controller
         if (! $token = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Credenciales Invalidas'], 401);
         }
+        $user = auth('api')->user();
+        if (!$user->is_enabled) {
+            return response()->json(['error' => 'Account is disabled. Please contact support.'], 403);
+        }
+        $user = auth('api')->user();  
+        $user->last_login_at = now(); 
+        $user->save();
 
         return $this->respondWithToken($token);
     }

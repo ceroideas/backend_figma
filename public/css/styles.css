@@ -30,3 +30,44 @@
 .p-3 {
     padding: 5px !important;
 }
+.table-actions {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+}
+.pointer {
+    cursor: pointer;
+}
+.bg-blue {
+    background-color: #000f55 !important;
+    color: white !important;
+}
+.footer {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+.success-message {
+    display: flex;
+    align-items: center;
+    background-color: #d4edda;
+    border-left: 4px solid #28a745;
+    color: #155724;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.success-icon {
+    font-size: 20px;
+    margin-right: 10px;
+    color: #28a745;
+    font-weight: bold;
+}
+
+.success-text {
+    font-size: 16px;
+    margin: 0;
+    font-weight: 500;
+}

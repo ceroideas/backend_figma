@@ -16,6 +16,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Last time seen</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -25,9 +26,14 @@
                     <td>{{ $user['id'] }}</td>
                     <td>{{ $user['name'] }}</td>
                     <td>{{ $user['email'] }}</td>
+                    <td>{{ $user['last_login_at'] }}</td>
                     <td>
-                    <button class="btn btn-primary" onclick="window.location.href='{{ route('admin.user', ['id' => $user['id']]) }}'">See</button>
-
+                    <div class="table-actions">
+                    <i class="pointer fa-regular fa-eye"  onclick="window.location.href='{{ route('admin.user', ['id' => $user['id']]) }}'"></i>
+                    <i class="pointer fa-regular fa-pen-to-square" onclick="window.location.href='{{ route('admin.update-user', ['id' => $user['id']]) }}'"></i>
+                    <i class="pointer fa-regular fa-trash-can" onclick="confirmDelete({{ $user['id'] }})"></i>
+                    </div>
+                   
                     </td>
                 </tr>
                 @endforeach
@@ -46,5 +52,11 @@
             $('#users-table').DataTable();
         });
         var variableLaravel = @json($users); 
-        console.log(variableLaravel);
+        var url = @json($angularAppUrl);
+        console.log(variableLaravel, url);
+        function confirmDelete(userId) 
+        { if (confirm('Are you sure you want to delete this user? This action cannot be undone.')) 
+            { window.location.href = '/admin/delete-user/' + userId; 
+
+            } }
     </script>
