@@ -37,7 +37,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/users', [DashboardController::class, 'users'])->name('admin.users');
     Route::get('/user/{id}', [DashboardController::class, 'user'])->name('admin.user');
     Route::get('/update-user/{id}', [DashboardController::class, 'editUser'])->name('admin.update-user');
-    Route::get('/admin/delete-user/{id}', [DashboardController::class, 'deleteUser'])->name('admin.delete-user');
+    Route::delete('/delete-user/{id}', [DashboardController::class, 'deleteUser'])->name('admin.delete-user');
     Route::put('/users/{id}', [DashboardController::class, 'updateUser'])->name('admin.update');
     Route::get('/projects', [DashboardController::class, 'projects'])->name('admin.projects');
     Route::get('/project/{id}', [DashboardController::class, 'project'])->name('admin.project');
