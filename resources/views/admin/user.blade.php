@@ -47,15 +47,23 @@
                 <ul class="space-y-4">
                 <li class="flex items-center">
                         <span class="bg-green-100 text-red-600 px-4 py-2 rounded-full">Last Login</span>
-                        <span class="ml-4 text-gray-600"> {{$user['last_login_at']}}  </span>
+                        <span class="ml-4 text-gray-600"> {{$user['last_login_at2']}}  </span>
                     </li>
                     <li class="flex items-center">
                         <span class="bg-blue-100 text-green-600  px-4 py-2 rounded-full">Created Profile</span>
-                        <span class="ml-4 text-gray-600"> {{$user['created_at']}} </span>
+                        <span class="ml-4 text-gray-600"> {{$user['created_at2']}} </span>
                     </li>
                     <li class="flex items-center">
                         <span class="bg-green-100 px-4 py-2 rounded-full">Updated Profile</span>
-                        <span class="ml-4 text-gray-600"> {{$user['updated_at']}}  </span>
+                        <span class="ml-4 text-gray-600"> {{$user['updated_at2']}}  </span>
+                    </li>
+                    <li class="flex items-center">
+                        <span class="bg-green-100 px-4 py-2 rounded-full">Last Project Created</span>
+                        <span class="ml-4 text-gray-600"> {{$user['last_project_created_at']}}  </span>
+                    </li>
+                    <li class="flex items-center">
+                        <span class="bg-green-100 px-4 py-2 rounded-full">Last Project Updated</span>
+                        <span class="ml-4 text-gray-600"> {{$user['last_project_created_at']}}  </span>
                     </li>
 
                 </ul>

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -67,21 +68,39 @@ class DashboardController extends Controller
 
     public function user($id)
     {
-        $format = 'F j, Y - g:i A';
-        $userCollection = DB::table('users')->where('id', $id)->first();
-        $userCollection->created_at = Carbon::createFromFormat('Y-m-d H:i:s', $userCollection->created_at)->format($format);
-        $userCollection->updated_at = Carbon::createFromFormat('Y-m-d H:i:s', $userCollection->updated_at)->format($format);
-        if ($userCollection->last_login_at) {
-            $userCollection->last_login_at = Carbon::createFromFormat('Y-m-d H:i:s', $userCollection->last_login_at)->format($format);
-        } else {
-            $userCollection->last_login_at = 'Date not available';
+        $format = 'F j, Y - g:i A'; 
+        $user = User::find($id);
+    
+        if (!$user) {
+            return redirect()->back()->with('error', 'Usuario no encontrado.');
         }
-        $userCollection->role = $userCollection->is_admin == 1 ? 'Admin' : 'User';
-        $userCollection->enabled = $userCollection->is_enabled == 1 ? 'Yes' : 'No';
-
-        $user = json_decode(json_encode($userCollection), true);
+    
+        
+        $user->created_at2 = Carbon::parse($user->created_at)->format($format);
+        $user->updated_at2 = Carbon::parse($user->updated_at)->format($format);
+    
+      
+        $user->last_login_at2 = $user->last_login_at
+            ? Carbon::parse($user->last_login_at)->format($format)
+            : 'Date not available';
+    
+        $user->role = $user->is_admin == 1 ? 'Admin' : 'User';
+        $user->enabled = $user->is_enabled == 1 ? 'Yes' : 'No';
+    
+       
+        $lastCreatedDate = $user->projects()->max('created_at');
+        $user->last_project_created_at = $lastCreatedDate
+            ? Carbon::createFromFormat('Y-m-d H:i:s', $lastCreatedDate)->format($format)
+            : 'Date not available';
+            $lastUpdatedDate = $user->projects()->max('updated_at');
+            $user->last_project_updated_at = $lastUpdatedDate
+                ? Carbon::createFromFormat('Y-m-d H:i:s', $lastUpdatedDate)->format($format)
+                : 'Date not available';
+    
         return view('admin.user', compact('user'));
     }
+    
+    
     public function deleteUser($id)
     {
         DB::table('users')->where('id', $id)->delete();

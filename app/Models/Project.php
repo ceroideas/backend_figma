@@ -56,4 +56,8 @@ class Project extends Model
     {
         return url('/projects',$value);
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
