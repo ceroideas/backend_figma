@@ -64,8 +64,8 @@
         $('#users-table').DataTable();
     });
     var variableLaravel = @json($users);
-    var url = @json($angularAppUrl);
-    console.log(variableLaravel, url);
+
+    console.log(variableLaravel);
 
     function confirmDelete(userId) {
         Swal.fire({

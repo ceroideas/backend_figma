@@ -71,3 +71,15 @@
     margin: 0;
     font-weight: 500;
 }
+.select2-selection {
+    height: 35px !important;
+    border-radius: 0.5rem !important;
+    border-style: solid !important;
+    border-color: #e5e7eb !important  ;
+}
+.select2-selection__rendered {
+    margin-top: 3px !important;
+}
+.select2-selection__arrow {
+    margin-top: 3px !important;
+}

@@ -41,6 +41,8 @@ Route::prefix('admin')->group(function () {
     Route::put('/users/{id}', [DashboardController::class, 'updateUser'])->name('admin.update');
     Route::get('/projects', [DashboardController::class, 'projects'])->name('admin.projects');
     Route::get('/project/{id}', [DashboardController::class, 'project'])->name('admin.project');
+    Route::put('/project/{id}', [DashboardController::class, 'updateProject'])->name('admin.project-update');
+    Route::get('/update-project/{id}', [DashboardController::class, 'editProject'])->name('admin.update-project');
     Route::get('/simulations', [DashboardController::class, 'simulations'])->name('admin.simulations');
     Route::get('/simulation/{id}', [DashboardController::class, 'simulation'])->name('admin.simulation');
     Route::put('/user/{id}/enable', [DashboardController::class, 'toggleEnable'])->name('admin.toggle-enable');

@@ -33,6 +33,14 @@
                         <label class="block text-gray-600">Number of simulations</label>
                         <p class="bg-gray-50 p-3 rounded-lg border"> 4</p>
                     </div>
+                    <div>
+                        <label class="block text-gray-600">Number of nodes</label>
+                        <p class="bg-gray-50 p-3 rounded-lg border">  {{$project['nodes_count']}} </p>
+                    </div>
+                    <div>
+                        <label class="block text-gray-600">Number of simulations</label>
+                        <p class="bg-gray-50 p-3 rounded-lg border">  {{$project['simulation_count']}} </p>
+                    </div>
 
                 </div>
 
@@ -46,6 +54,7 @@
                         <span class="bg-green-100 text-green-600 px-4 py-2 rounded-full">Updated Project</span>
                         <span class="ml-4 text-gray-600"> {{ $project['updated_at'] }} </span>
                     </li>
+                    
                 </ul>
             </main>
             <main class="col-span-1 md:col-span-2 bg-white p-6 shadow-md rounded-lg">
@@ -61,11 +70,7 @@
                     </div>
                     <div>
                         <label class="block text-gray-600">Role</label>
-                        <p class="bg-gray-50 p-3 rounded-lg border">Administrator</p>
-                    </div>
-                    <div>
-                        <label class="block text-gray-600">Phone Number</label>
-                        <p class="bg-gray-50 p-3 rounded-lg border">+123 456 7890</p>
+                        <p class="bg-gray-50 p-3 rounded-lg border"> {{$user['role']}}</p>
                     </div>
                 </div>
 
@@ -77,7 +82,7 @@
                     </li>
                     <li class="flex items-center">
                         <span class="bg-green-100 text-green-600 px-4 py-2 rounded-full">Updated Profile</span>
-                        <span class="ml-4 text-gray-600"> {{ $user['created_at'] }} </span>
+                        <span class="ml-4 text-gray-600"> {{ $user['updated_at'] }} </span>
                     </li>
                 </ul>
             </main>
@@ -111,7 +116,7 @@
   ],
   datasets: [{
     label: 'My First Dataset',
-    data: [300, 150, ],
+    data: [project.constants_count, project.variables_count ],
     backgroundColor: [
       'rgb(255, 99, 132)',
       'rgb(54, 162, 235)',
