@@ -1,5 +1,14 @@
 <x-app-layout>
-
+@if (session('success'))
+    <div style="position: relative; top: 20px;" class="success-message">
+        <div class="success-icon">
+            ✔
+        </div>
+        <p class="success-text">
+            {{ session('success') }}
+        </p>
+    </div>
+    @endif
 
     <div class="py-12">
         <div class=" mx-auto sm:px-6 lg:px-9">
@@ -36,7 +45,12 @@
                             <td>
                                 <div class="table-actions">
                                     <i class="pointer fa-regular fa-eye" onclick="window.location.href='{{ route('admin.project', ['id' => $project['id']]) }}'"></i>
-                                    <i class="pointer fa-regular fa-pen-to-square" onclick="window.location.href='{{ route('admin.update-project', ['id' => $project['id']]) }}'"></i>
+                                    <i class="pointer fa-regular fa-pen-to-square" onclick="window.location.href='{{ route('admin.update-project', ['id' => $project['id']]) }}'"></i>                              
+                                     <i class="pointer fa-regular fa-trash-can" onclick="confirmDelete({{ $project['id'] }})"></i>
+                                    <form id="delete-form-{{ $project['id'] }}" action="{{ route('admin.delete-project', ['id' => $project['id']]) }}" method="POST" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -58,4 +72,20 @@
     });
     var variableLaravel = @json($projects);
     console.log(variableLaravel);
+    function confirmDelete(userId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "¡This action cannot be undone!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(`delete-form-${userId}`).submit();
+            }
+        });
+    }
 </script>

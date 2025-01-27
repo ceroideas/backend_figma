@@ -30,10 +30,6 @@
                         <div style="width: 50%; margin: auto;"> <canvas id="myChart"></canvas> </div>
                     </div>
                     <div>
-                        <label class="block text-gray-600">Number of simulations</label>
-                        <p class="bg-gray-50 p-3 rounded-lg border"> 4</p>
-                    </div>
-                    <div>
                         <label class="block text-gray-600">Number of nodes</label>
                         <p class="bg-gray-50 p-3 rounded-lg border">  {{$project['nodes_count']}} </p>
                     </div>

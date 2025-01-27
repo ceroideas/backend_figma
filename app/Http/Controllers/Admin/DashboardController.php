@@ -111,9 +111,56 @@ class DashboardController extends Controller
 
     public function deleteUser($id)
     {
-        DB::table('users')->where('id', $id)->delete();
-        return redirect()->route('admin.users')->with('success', 'User deleted successfully.');
+      
+        DB::beginTransaction();
+    
+        try {
+         
+            $projects = DB::table('projects')->where('user_id', $id)->get();
+    
+            foreach ($projects as $project) {
+              
+                DB::table('nodes')->where('project_id', $project->id)->delete();
+    
+              
+                DB::table('simulations')->where('project_id', $project->id)->delete();
+    
+               
+                DB::table('projects')->where('id', $project->id)->delete();
+            }
+    
+          
+            DB::table('users')->where('id', $id)->delete();
+    
+            
+            DB::commit();
+    
+            return redirect()->route('admin.users')->with('success', 'User and all related data deleted successfully.');
+        } catch (\Exception $e) {
+           
+            DB::rollBack();
+    
+            return redirect()->route('admin.users')->with('error', 'There was a problem deleting the user and their related data.');
+        }
     }
+    
+
+    public function deleteProject($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            DB::table('nodes')->where('project_id', $id)->delete();
+            DB::table('simulations')->where('project_id', $id)->delete();
+            DB::table('projects')->where('id', $id)->delete();
+            DB::commit();
+            return redirect()->route('admin.projects')->with('success', 'Project and all related data deleted successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('admin.projects')->with('error', 'There was a problem deleting the project and its related data.');
+        }
+    }
+
 
     public function editUser($id)
     {
