@@ -66,13 +66,27 @@ class DashboardController extends Controller
     {
         $simulationsColletion = DB::table('simulations')
             ->join('projects', 'simulations.project_id', '=', 'projects.id')
-            ->select('simulations.*', 'projects.name as project_name')
+            ->select('simulations.id', 'simulations.project_id', 'simulations.name', 'simulations.steps', 'simulations.execution_time',  'simulations.created_at', 'simulations.updated_at', 'projects.name as project_name', DB::raw('LENGTH(simulations.csvdata) / 1048576 as csvDataSize'))
             ->orderBy('simulations.id')
             ->get();
-
+    
         $simulations = json_decode(json_encode($simulationsColletion), true);
+    
+        // Transform execution time to minutes if it exceeds 60 seconds
+        foreach ($simulations as &$simulation) {
+            if ($simulation['execution_time'] >= 60) {
+                $minutes = floor($simulation['execution_time'] / 60);
+                $seconds = $simulation['execution_time'] % 60;
+                $simulation['execution_time'] = "{$minutes}m {$seconds}s";
+            } else {
+                $simulation['execution_time'] = "{$simulation['execution_time']}s";
+            }
+        }
+    
         return view('admin.simulations', compact('simulations'));
     }
+    
+
 
     public function user($id)
     {
@@ -111,39 +125,39 @@ class DashboardController extends Controller
 
     public function deleteUser($id)
     {
-      
+
         DB::beginTransaction();
-    
+
         try {
-         
+
             $projects = DB::table('projects')->where('user_id', $id)->get();
-    
+
             foreach ($projects as $project) {
-              
+
                 DB::table('nodes')->where('project_id', $project->id)->delete();
-    
-              
+
+
                 DB::table('simulations')->where('project_id', $project->id)->delete();
-    
-               
+
+
                 DB::table('projects')->where('id', $project->id)->delete();
             }
-    
-          
+
+
             DB::table('users')->where('id', $id)->delete();
-    
-            
+
+
             DB::commit();
-    
+
             return redirect()->route('admin.users')->with('success', 'User and all related data deleted successfully.');
         } catch (\Exception $e) {
-           
+
             DB::rollBack();
-    
+
             return redirect()->route('admin.users')->with('error', 'There was a problem deleting the user and their related data.');
         }
     }
-    
+
 
     public function deleteProject($id)
     {
@@ -158,6 +172,19 @@ class DashboardController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('admin.projects')->with('error', 'There was a problem deleting the project and its related data.');
+        }
+    }
+    public function deleteSimulation($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            DB::table('simulations')->where('id', $id)->delete();
+            DB::commit();
+            return redirect()->route('admin.simulations')->with('success', 'Simulation deleted successfully.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->route('admin.simulations')->with('error', 'There was a problem deleting the simulation.');
         }
     }
 
