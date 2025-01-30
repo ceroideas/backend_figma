@@ -83,3 +83,30 @@
 .select2-selection__arrow {
     margin-top: 3px !important;
 }
+
+.gap-custom {
+    gap: 150px;
+}
+.text-6xl {
+    font-size: 80px !important;
+    color: #000f55 !important ;
+}
+.text-lg-custom {
+    font-size: 22px !important;
+    color: #000f55 !important ;
+}
+.text-2xl {
+    font-size: 20px !important;
+    color: #000f55 !important ;
+}
+.card-container {
+    height: 450px; /* Tamaño fijo para la tarjeta */
+}
+
+.chart-container {
+    margin-top: 7px;
+    position: relative;
+    height: 80% !important;
+    width: 100% !important;
+    min-height: 370px; /* Evita que se haga demasiado pequeño */
+}

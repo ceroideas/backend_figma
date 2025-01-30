@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Project;
+use App\Models\Simulation;
 
 class DashboardController extends Controller
 {
@@ -15,10 +17,70 @@ class DashboardController extends Controller
     //     $this->middleware('admin');
     // }
 
-    public function index()
-    {
-        return view('admin.dashboard');
+    public function getActiveUsersPerDay($year, $month) {
+        // Verifica que los valores sean correctos
+       
+    
+       
+        $startOfMonth = Carbon::create($month, $year, 1)->startOfMonth();
+        $endOfMonth = Carbon::create($month, $year, 1)->endOfMonth();
+        
+        $activeUsers = DB::table('user_logins')
+            ->select(DB::raw('DATE(login_time) as date'), DB::raw('count(distinct user_id) as count'))
+            ->whereBetween('login_time', [$startOfMonth, $endOfMonth])
+            ->groupBy(DB::raw('DATE(login_time)'))
+            ->get();
+    
+        // Crear un arreglo con todos los días del mes
+        $daysOfMonth = [];
+        for ($date = $startOfMonth; $date <= $endOfMonth; $date->addDay()) {
+            $formattedDate = $date->format('Y-m-d');
+            $daysOfMonth[$formattedDate] = 0;
+        }
+    
+        // Rellenar los días con los datos de usuarios activos
+        foreach ($activeUsers as $user) {
+            $daysOfMonth[$user->date] = $user->count;
+        }
+        
+        return response()->json($daysOfMonth);
     }
+
+    public function getUpdatedProjectsPerDay($year, $month) {
+        // Verifica que los valores sean correctos
+        $startOfMonth = Carbon::create($month, $year, 1)->startOfMonth();
+        $endOfMonth = Carbon::create($month, $year, 1)->endOfMonth();
+    
+        // Obtener la cantidad de proyectos actualizados por día
+        $updatedProjects = DB::table('projects')
+            ->select(DB::raw('DATE(updated_at) as date'), DB::raw('count(id) as count'))
+            ->whereBetween('updated_at', [$startOfMonth, $endOfMonth])
+            ->groupBy(DB::raw('DATE(updated_at)'))
+            ->get();
+    
+        // Crear un arreglo con todos los días del mes inicializados en 0
+        $daysOfMonth = [];
+        for ($date = $startOfMonth; $date <= $endOfMonth; $date->addDay()) {
+            $formattedDate = $date->format('Y-m-d');
+            $daysOfMonth[$formattedDate] = 0;
+        }
+    
+        // Rellenar los días con los datos de proyectos actualizados
+        foreach ($updatedProjects as $project) {
+            $daysOfMonth[$project->date] = $project->count;
+        }
+    
+        return response()->json($daysOfMonth);
+    }
+    
+    public function index() {
+        $usersCount = User::count();
+        $projectsCount = Project::count();
+        $simulationsCount = Simulation::count();
+    
+        return view('admin.dashboard', compact('usersCount', 'projectsCount', 'simulationsCount'));
+    }
+    
 
     public function users()
     {
@@ -370,4 +432,5 @@ class DashboardController extends Controller
 
         return view('admin.simulation', compact('simulation', 'project'));
     }
+    
 }

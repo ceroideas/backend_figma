@@ -48,6 +48,10 @@ Route::prefix('admin')->group(function () {
     Route::get('/simulations', [DashboardController::class, 'simulations'])->name('admin.simulations');
     Route::get('/simulation/{id}', [DashboardController::class, 'simulation'])->name('admin.simulation');
     Route::put('/user/{id}/enable', [DashboardController::class, 'toggleEnable'])->name('admin.toggle-enable');
+
+    Route::get('/get-active-users/{year}/{month}', [DashboardController::class, 'getActiveUsersPerDay']);
+    Route::get('/get-active-projects/{year}/{month}', [DashboardController::class, 'getUpdatedProjectsPerDay']);
+
 });
 
 require __DIR__.'/auth.php';

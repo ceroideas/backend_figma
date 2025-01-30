@@ -71,6 +71,11 @@ class ApiController extends Controller
         $user->last_login_at = now(); 
         $user->save();
 
+        DB::table('user_logins')->insert([
+            'user_id' => auth('api')->user()->id,
+            'login_time' => now(),
+        ]);
+
         return $this->respondWithToken($token);
     }
 
