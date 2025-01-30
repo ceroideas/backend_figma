@@ -33,7 +33,7 @@
 
 
                 <div style="height: 450px !important; display: flex; justify-content: space-between; width: 100%; gap: 30px;" class="flex">
-                    <div class="bg-white dark:bg-gray-800 shadow-lg sm:rounded-lg p-6 card-container">
+                    <div style="flex: 1;" class="bg-white dark:bg-gray-800 shadow-lg sm:rounded-lg p-6 card-container">
                         <div>
                             <label for="yearSelect" class="  text-gray-600">Year</label>
 
@@ -62,7 +62,7 @@
                         </div>
                         <canvas id="activeUsersChart" class="chart-container"></canvas>
                     </div>
-                    <div class="bg-white dark:bg-gray-800 shadow-lg sm:rounded-lg p-6 card-container">
+                    <div style="flex: 1;" class="bg-white dark:bg-gray-800 shadow-lg sm:rounded-lg p-6 card-container">
                     <div>
                             <label for="yearSelect" class="  text-gray-600">Year</label>
 
@@ -149,7 +149,7 @@
 
 
     function fetchData(month, year) {
-        fetch(`/admin/get-active-users/${month}/${year}`)
+        fetch(`/api/public/admin/get-active-users/${month}/${year}`)
             .then(response => response.json())
             .then(data => {
                 console.log('Datos recibidos:', data);
@@ -159,7 +159,7 @@
     }
 
     function fetchDataProject(month, year) {
-        fetch(`/admin/get-active-projects/${month}/${year}`)
+        fetch(`/api/public/admin/get-active-projects/${month}/${year}`)
             .then(response => response.json())
             .then(data => {
                 console.log('Datos recibidos:', data);
