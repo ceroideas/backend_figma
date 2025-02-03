@@ -1,9 +1,10 @@
 <?php
-
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ShapesController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,5 +69,18 @@ Route::post('sendCode', [ApiController::class, 'sendCode']);
 Route::post('checkCode', [ApiController::class, 'checkCode']);
 Route::post('changePassword', [ApiController::class, 'changePassword']);
 Route::post('testEmail', [ApiController::class, 'testEmail']);
+
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return response()->json(['message' => 'Email verified successfully.']);
+})->middleware(['auth:sanctum', 'signed'])->name('verification.verify');
+
+Route::post('/email/resend', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return response()->json(['message' => 'Verification link sent.']);
+})->middleware(['auth:sanctum']);
+
+
 
 Route::get('list-users', [ApiController::class, 'listUsers']);

@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Providers;
-
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -14,6 +15,12 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         //
+    ];
+
+    protected $listen = [
+        Registered::class => [
+            SendEmailVerificationNotification::class,
+        ],
     ];
 
     /**

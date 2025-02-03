@@ -47,25 +47,25 @@ class DashboardController extends Controller
     }
 
     public function getUpdatedProjectsPerDay($year, $month) {
-        // Verifica que los valores sean correctos
+     
         $startOfMonth = Carbon::create($month, $year, 1)->startOfMonth();
         $endOfMonth = Carbon::create($month, $year, 1)->endOfMonth();
     
-        // Obtener la cantidad de proyectos actualizados por día
+     
         $updatedProjects = DB::table('projects')
             ->select(DB::raw('DATE(updated_at) as date'), DB::raw('count(id) as count'))
             ->whereBetween('updated_at', [$startOfMonth, $endOfMonth])
             ->groupBy(DB::raw('DATE(updated_at)'))
             ->get();
     
-        // Crear un arreglo con todos los días del mes inicializados en 0
+       
         $daysOfMonth = [];
         for ($date = $startOfMonth; $date <= $endOfMonth; $date->addDay()) {
             $formattedDate = $date->format('Y-m-d');
             $daysOfMonth[$formattedDate] = 0;
         }
     
-        // Rellenar los días con los datos de proyectos actualizados
+     
         foreach ($updatedProjects as $project) {
             $daysOfMonth[$project->date] = $project->count;
         }

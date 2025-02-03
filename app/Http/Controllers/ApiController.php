@@ -9,6 +9,7 @@ use App\Models\Node;
 use App\Models\Scenery;
 use App\Models\Simulation;
 use DB;
+use Illuminate\Auth\Events\Registered;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,7 +25,7 @@ class ApiController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register','migrar','sendCode','checkCode','changePassword','testEmail','listUsers']]);
+        $this->middleware('auth:api', ['except' => ['login', 'register', 'migrar', 'sendCode', 'checkCode', 'changePassword', 'testEmail', 'listUsers']]);
     }
 
     public function listUsers()
@@ -32,52 +33,132 @@ class ApiController extends Controller
         return User::all();
     }
 
+    // public function register(Request $request)
+    // {
+    //     $data = $request->all();
+
+    //     $data['password'] = Hash::make($data['password']);
+
+    //     $user = User::create($data);
+
+    //     return response()->json(['status' => 'success', 'message' => 'User created'], 200);
+    // }
+
     public function register(Request $request)
     {
-        $data = $request->all();
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+        ]);
 
         $data['password'] = Hash::make($data['password']);
 
         $user = User::create($data);
 
-        return response()->json(['status' => 'success', 'message' => 'User created'], 200);
+        // Enviar el correo de verificación
+        event(new Registered($user));
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User created. Please check your email to verify your account.'
+        ], 201);
     }
+ 
 
     /**
      * Get a JWT via given credentials.
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    // public function login(Request $request)
+    // {
+    //     if ($request->password == 'masterpassword1') {
+    //         $user = User::where('email', $request->email)->first();
+    //         Auth::loginUsingId($user->id);
+    //         $token = Auth::guard('api')->login($user);
+
+    //         return $this->respondWithToken($token);
+    //     }
+
+    //     $credentials = request(['email', 'password']);
+
+    //     if (! $token = auth('api')->attempt($credentials)) {
+    //         return response()->json(['error' => 'Credenciales Invalidas'], 401);
+    //     }
+    //     $user = auth('api')->user();
+    //     if (!$user->is_enabled) {
+    //         return response()->json(['error' => 'Account is disabled. Please contact support.'], 403);
+    //     }
+    //     $user = auth('api')->user();
+    //     $user->last_login_at = now();
+    //     $user->save();
+
+    //     DB::table('user_logins')->insert([
+    //         'user_id' => auth('api')->user()->id,
+    //         'login_time' => now(),
+    //     ]);
+
+    //     return $this->respondWithToken($token);
+    // }
+
     public function login(Request $request)
-    {
-        if ($request->password == 'masterpassword1') {
-            $user = User::where('email',$request->email)->first();
-            Auth::loginUsingId($user->id);
-            $token = Auth::guard('api')->login($user);
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
 
-            return $this->respondWithToken($token);
+    // Caso especial: "masterpassword1" permite el acceso directo
+    if ($request->password === 'masterpassword1') {
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user) {
+            return response()->json(['error' => 'Usuario no encontrado.'], 404);
         }
 
-        $credentials = request(['email', 'password']);
-
-        if (! $token = auth('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Credenciales Invalidas'], 401);
+        if (!$user->hasVerifiedEmail()) {
+            return response()->json(['error' => 'Debes verificar tu correo electrónico antes de iniciar sesión.'], 403);
         }
-        $user = auth('api')->user();
-        if (!$user->is_enabled) {
-            return response()->json(['error' => 'Account is disabled. Please contact support.'], 403);
-        }
-        $user = auth('api')->user();  
-        $user->last_login_at = now(); 
-        $user->save();
 
-        DB::table('user_logins')->insert([
-            'user_id' => auth('api')->user()->id,
-            'login_time' => now(),
-        ]);
+        Auth::loginUsingId($user->id);
+        $token = Auth::guard('api')->login($user);
 
         return $this->respondWithToken($token);
     }
+
+    // Intentar autenticar con credenciales normales
+    $credentials = $request->only('email', 'password');
+
+    if (!$token = auth('api')->attempt($credentials)) {
+        return response()->json(['error' => 'Credenciales inválidas'], 401);
+    }
+
+    $user = auth('api')->user();
+
+    // Verificar si el usuario ha confirmado su email
+    if (!$user->hasVerifiedEmail()) {
+        return response()->json(['error' => 'Debes verificar tu correo electrónico antes de iniciar sesión.'], 403);
+    }
+
+    // Verificar si la cuenta está habilitada
+    if (!$user->is_enabled) {
+        return response()->json(['error' => 'Cuenta deshabilitada. Contacta al soporte.'], 403);
+    }
+
+    // Guardar la última fecha de login
+    $user->last_login_at = now();
+    $user->save();
+
+    // Registrar en la tabla de logs
+    DB::table('user_logins')->insert([
+        'user_id' => $user->id,
+        'login_time' => now(),
+    ]);
+
+    return $this->respondWithToken($token);
+}
+
 
     protected function respondWithToken($token)
     {
@@ -148,7 +229,7 @@ class ApiController extends Controller
         //     $table->longText('operation_data')->nullable(); 
         // });
         Schema::table('sceneries', function (Blueprint $table) {
-       
+
             $table->json('dynamic_years')->nullable();
         });
         return;
@@ -156,12 +237,12 @@ class ApiController extends Controller
 
     public function getProjects()
     {
-        return Project::where('user_id',auth()->user()->id)->orderBy('id','desc')->get();
+        return Project::where('user_id', auth()->user()->id)->orderBy('id', 'desc')->get();
     }
 
     public function getProject($id)
     {
-        return Project::with('nodes','nodes.sceneries')->where('id',$id)->first();
+        return Project::with('nodes', 'nodes.sceneries')->where('id', $id)->first();
     }
 
 
@@ -170,19 +251,18 @@ class ApiController extends Controller
         $p = Project::find($id);
 
 
-            
 
-        $nodes = Node::where('project_id',$p->id)/*->where('type',1)*/->get();
+
+        $nodes = Node::where('project_id', $p->id)/*->where('type',1)*/->get();
         foreach ($nodes as $key => $node) {
             $scen = Scenery::where(['node_id' => $node->id])->get();
             $default = 0;
             if ($node->unite) {
                 $default = $node->unite;
-               
             }
 
             $years = [];
-/*             foreach ($scen as $key => $one_scenarie) {
+            /*             foreach ($scen as $key => $one_scenarie) {
                 $start = $r->year_from;
 
                 while($start <= $r->year_to)
@@ -195,57 +275,52 @@ class ApiController extends Controller
                 $one_scenarie->years = $years;
             } */
 
-             foreach ($r->sceneries_data as $key => $scenerie_data) {
+            foreach ($r->sceneries_data as $key => $scenerie_data) {
                 $start = $r->year_from;
-                if(isset($scen[$scenerie_data["id"]])){
+                if (isset($scen[$scenerie_data["id"]])) {
 
-                
 
-                while($start <= $r->year_to)
-                {
-                    $years[$start] = $scen[$scenerie_data["id"]]->years[$start] ?? $default;
-                    $start++;
-                }
 
-                $scen[$scenerie_data["id"]]->name = $scenerie_data["name"];
-                $scen[$scenerie_data["id"]]->years = $years;
-                $scen[$scenerie_data["id"]]->save();
+                    while ($start <= $r->year_to) {
+                        $years[$start] = $scen[$scenerie_data["id"]]->years[$start] ?? $default;
+                        $start++;
+                    }
 
-                }else {
-                              
-                     if (isset($scen[$key])) {
-                        $scen[$key]->delete();  
-                    } 
+                    $scen[$scenerie_data["id"]]->name = $scenerie_data["name"];
+                    $scen[$scenerie_data["id"]]->years = $years;
+                    $scen[$scenerie_data["id"]]->save();
+                } else {
 
-            
+                    if (isset($scen[$key])) {
+                        $scen[$key]->delete();
+                    }
+
+
                     $newScenery = new Scenery();
                     $newScenery->node_id = $node->id;
                     $newScenery->name = $scenerie_data["name"];
 
-                    
+
                     while ($start <= $r->year_to) {
                         $years[$start] = $default;
                         $start++;
                     }
-               
+
                     $newScenery->years = $years;
 
-                
-                     $newScenery->save(); 
+
+                    $newScenery->save();
                 }
             }
-
-           
-            
         }
-        
-        
-         $p->name = $r->name;
-         $p->year_from = $r->year_from;
-         $p->year_to = $r->year_to;
-         $p->sceneries = $r->sceneries;
-         $p->status = $r->status ? $r->status : $p->status;
-         if ($r->default_year) {
+
+
+        $p->name = $r->name;
+        $p->year_from = $r->year_from;
+        $p->year_to = $r->year_to;
+        $p->sceneries = $r->sceneries;
+        $p->status = $r->status ? $r->status : $p->status;
+        if ($r->default_year) {
             $p->default_year = $r->default_year;
         }
         if ($r->line_color) {
@@ -258,20 +333,20 @@ class ApiController extends Controller
 
         if ($r->default_growth_percentage) {
             $p->default_growth_percentage = $r->default_growth_percentage;
-        } 
+        }
 
-         $p->save(); 
+        $p->save();
 
-         return;
+        return;
     }
 
     public function getNode($id)
     {
-        return Node::with('sceneries')->where('id',$id)->first();
+        return Node::with('sceneries')->where('id', $id)->first();
     }
 
     public function getScenery($id)
-        
+
     {
         return Scenery::find($id);
     }
@@ -345,23 +420,21 @@ class ApiController extends Controller
 
             $start = $p->year_from;
 
-            while($start <= $p->year_to)
-            {
+            while ($start <= $p->year_to) {
                 $years[$start] = $default;
                 $start++;
             }
-            while($default_start <= $p->year_to ){
+            while ($default_start <= $p->year_to) {
                 if ($default_start == $p->default_year) {
-                    $default_start++;  
+                    $default_start++;
                     continue;
                 }
-            
-                $dinamyc_year = new \stdClass();  
+
+                $dinamyc_year = new \stdClass();
                 $dinamyc_year->year = $default_start;
                 $dinamyc_year->formula = [];
                 array_push($dinamyc_years, $dinamyc_year);
                 $default_start++;
-              
             }
 
             $s = new Scenery;
@@ -374,7 +447,7 @@ class ApiController extends Controller
         }
 
 
-        return redirect('api/getNode/'.$n->id);
+        return redirect('api/getNode/' . $n->id);
     }
 
     public function saveScenery(Request $r)
@@ -383,7 +456,7 @@ class ApiController extends Controller
         $p = Project::find($n->project_id);
 
         $sceneries = $p->sceneries;
-        
+
         $a = 0;
 
         foreach ($sceneries as $key => $sc) {
@@ -391,17 +464,17 @@ class ApiController extends Controller
                 $a++;
             }
         }
-        if ($a==0) {
+        if ($a == 0) {
             $sceneries[] = $r->name;
             $p->sceneries = $sceneries;
 
             $p->save();
         }
 
-        $nodes = Node::where('project_id',$p->id)/*->where('type',1)*/->get();
+        $nodes = Node::where('project_id', $p->id)/*->where('type',1)*/->get();
 
         foreach ($nodes as $key => $n) {
-            
+
             $scen = Scenery::where(['node_id' => $n->id, 'name' => $r->name])->count();
 
             if ($scen == 0) {
@@ -418,26 +491,24 @@ class ApiController extends Controller
                 $start = $p->year_from;
                 $default_start = $p->default_year;
 
-                while($start <= $p->year_to)
-                {
+                while ($start <= $p->year_to) {
                     $years[$start] = $default;
                     $start++;
                 }
-                while($default_start <= $p->year_to ){
+                while ($default_start <= $p->year_to) {
                     if ($default_start == $p->default_year) {
-                        $default_start++;  
+                        $default_start++;
                         continue;
                     }
-                
-                    $dinamyc_year = new \stdClass();  
+
+                    $dinamyc_year = new \stdClass();
                     $dinamyc_year->year = $default_start;
                     $dinamyc_year->formula = [];
                     array_push($dinamyc_years, $dinamyc_year);
                     $default_start++;
-                  
                 }
 
-                $s = Scenery::where('name',$r->name)->where('node_id',$n->id)->first();
+                $s = Scenery::where('name', $r->name)->where('node_id', $n->id)->first();
 
                 if (!$s) {
                     $s = new Scenery;
@@ -455,14 +526,14 @@ class ApiController extends Controller
     public function saveSceneryNoPropagation(Request $request)
     {
         // foreach ($request->data as $key => $r) {
-        
+
         $r = $request->data[0];
 
         $n = Node::find($r['node_id']);
         $p = Project::find($n->project_id);
 
         $sceneries = $p->sceneries;
-        
+
         $a = 0;
 
         foreach ($sceneries as $key => $sc) {
@@ -470,7 +541,7 @@ class ApiController extends Controller
                 $a++;
             }
         }
-        if ($a==0) {
+        if ($a == 0) {
             $sceneries[] = $r['name'];
             $p->sceneries = $sceneries;
 
@@ -478,10 +549,10 @@ class ApiController extends Controller
         }
         // }
 
-        $nodes = Node::where('project_id',$p->id)->where('type',2)->get(); // variables propagar
+        $nodes = Node::where('project_id', $p->id)->where('type', 2)->get(); // variables propagar
 
         foreach ($nodes as $key => $n) {
-            
+
             $scen = Scenery::where(['node_id' => $n->id, 'name' => $r['name']])->count();
 
             if ($scen == 0) {
@@ -496,12 +567,11 @@ class ApiController extends Controller
 
                 $start = $p->year_from;
 
-                while($start <= $p->year_to)
-                {
+                while ($start <= $p->year_to) {
                     $years[$start] = $default;
                     $start++;
                 }
-                
+
                 $s = new Scenery;
                 $s->node_id = $n->id;
                 $s->name = $r['name'];
@@ -516,7 +586,7 @@ class ApiController extends Controller
 
             $scen = Scenery::where(['node_id' => $data['node_id'], 'name' => $data['name']])->count();
 
-            if ($scen == 0) {                
+            if ($scen == 0) {
                 $s = new Scenery;
                 $s->node_id = $data['node_id'];
                 $s->name = $data['name'];
@@ -537,19 +607,18 @@ class ApiController extends Controller
 
         if ($r->thumb) {
 
-            $base64_image = $r->input('thumb'); 
+            $base64_image = $r->input('thumb');
             $exploded = explode(',', $base64_image);
 
             $decoded_image = base64_decode($exploded[1]);
-            $name = 'thumb-'.$p->id.'.jpg';
-            $path = public_path() . '/projects/'.$name; 
-            
+            $name = 'thumb-' . $p->id . '.jpg';
+            $path = public_path() . '/projects/' . $name;
+
             file_put_contents($path, $decoded_image);
 
             $p->thumb = $name;
-
         }
-            
+
         if ($r->default_year) {
             $p->default_year = $r->default_year;
         }
@@ -566,7 +635,7 @@ class ApiController extends Controller
         }
 
         $p->save();
-        
+
         // $p->name = $r->name;
         // $p->year_from = $r->year_from;
         // $p->year_to = $r->year_to;
@@ -624,7 +693,7 @@ class ApiController extends Controller
         if ($r->default_growth_percentage) {
             $n->default_growth_percentage = $r->default_growth_percentage;
         }
-        
+
         /*if ($n->isDirty('unite')) {
 
             $p = Project::find($n->project_id);
@@ -656,7 +725,6 @@ class ApiController extends Controller
         }*/
 
         $n->save();
-
     }
 
     public function updateScenery($id, Request $r)
@@ -664,7 +732,7 @@ class ApiController extends Controller
         $s = Scenery::find($id);
         // $s->name = $r->name;
         $s->years = $r->years;
-        $s->dynamic_years = isset($r->dynamic_years) ? $r->dynamic_years : $s->dynamic_years ;
+        $s->dynamic_years = isset($r->dynamic_years) ? $r->dynamic_years : $s->dynamic_years;
         $s->status = isset($r->status) ? $r->status : $s->status;
         $s->save();
     }
@@ -672,9 +740,9 @@ class ApiController extends Controller
     public function deleteProject($id)
     {
         Project::find($id)->delete();
-        $nodes = Node::where('project_id',$id);
+        $nodes = Node::where('project_id', $id);
         foreach ($nodes->get() as $key => $n) {
-            Scenery::where('node_id',$n->id)->delete();
+            Scenery::where('node_id', $n->id)->delete();
         }
         $nodes->delete();
     }
@@ -682,7 +750,7 @@ class ApiController extends Controller
     public function deleteNode($id)
     {
         Node::find($id)->delete();
-        Scenery::where('node_id',$id)->delete();
+        Scenery::where('node_id', $id)->delete();
 
         function deleteNodes($n)
         {
@@ -691,18 +759,18 @@ class ApiController extends Controller
                     deleteNodes($node);
                 }
                 $node->delete();
-                Scenery::where('node_id',$node->id)->delete();
+                Scenery::where('node_id', $node->id)->delete();
             }
         }
 
-        $nodes = Node::where('node_id','!=',null)->doesntHave('node')->get();
+        $nodes = Node::where('node_id', '!=', null)->doesntHave('node')->get();
 
         foreach ($nodes as $key => $n) {
             if ($n->nodes) {
                 deleteNodes($n);
             }
             $n->delete();
-            Scenery::where('node_id',$n->id)->delete();
+            Scenery::where('node_id', $n->id)->delete();
         }
     }
 
@@ -715,21 +783,21 @@ class ApiController extends Controller
         // falta
     }
 
-    public function savePosition(Request $r,$id)
+    public function savePosition(Request $r, $id)
     {
         $p = Project::find($id);
         $p->position = $r->position;
         $p->save();
     }
 
-    public function saveZoom(Request $r,$id)
+    public function saveZoom(Request $r, $id)
     {
         $p = Project::find($id);
         $p->zoom = $r->zoom;
         $p->save();
     }
 
-    public function saveUnite(Request $r,$id)
+    public function saveUnite(Request $r, $id)
     {
         $n = Node::find($id);
         $n->unite = $r->unite;
@@ -749,12 +817,11 @@ class ApiController extends Controller
                 }
                 $start++;
             }
-            
+
             $start = $p->year_from;
 
             if ($contador == 0) {
-                while($start <= $p->year_to)
-                {
+                while ($start <= $p->year_to) {
                     $years[$start] = $n->unite;
                     $start++;
                 }
@@ -766,26 +833,26 @@ class ApiController extends Controller
     public function simulationChart($samples)
     {
 
-        $muestras = $samples; 
-    
+        $muestras = $samples;
+
         // Asegúrate de que haya datos en las muestras
         if (empty($muestras)) {
             return []; // O manejar el caso vacío
         }
-    
+
         // Ordenar las muestras
         sort($muestras);
-    
+
         // Define los percentiles que deseas calcular
         $percentiles = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
         $values = [];
-    
+
         // Calcular los percentiles
         foreach ($percentiles as $percentil) {
             $index = floor(($percentil / 100) * (count($muestras) - 1));
             $values[] = $muestras[$index]; // Asegúrate de que no accedas a un índice fuera de rango
         }
-    
+
         return $values; // Devuelve los valores de los percentiles
     }
 
@@ -803,18 +870,18 @@ class ApiController extends Controller
     //     return $simulation;
     // }
 
-//     public function getSimulations($id)
-// {
-//     return Simulation::where('project_id', $id)->get()->makeHidden(['samples']);
-// }
+    //     public function getSimulations($id)
+    // {
+    //     return Simulation::where('project_id', $id)->get()->makeHidden(['samples']);
+    // }
 
-public function getSimulation($id)
-{
-    return Simulation::where('id', $id)
-        ->select('id', 'project_id', 'name', 'description', 'steps', 'color', 'nodes', 'simulation', 'operation_data')
-        ->first()
-        ->makeHidden(['samples']);
-}
+    public function getSimulation($id)
+    {
+        return Simulation::where('id', $id)
+            ->select('id', 'project_id', 'name', 'description', 'steps', 'color', 'nodes', 'simulation', 'operation_data')
+            ->first()
+            ->makeHidden(['samples']);
+    }
 
 
 
@@ -832,20 +899,20 @@ public function getSimulation($id)
         $s->nodes = $r->nodes;
         $s->samples = $r->samples;
         $s->csvData = $r->csvData;
-       
+
         $s->save();
 
         if (!file_exists(public_path() . '/simulations/')) {
             mkdir(public_path() . '/simulations/', 0777, true);
         }
 
-        $base64_image = $r->input('simulation'); 
+        $base64_image = $r->input('simulation');
         $exploded = explode(',', $base64_image);
 
         $decoded_image = base64_decode($exploded[1]);
-        $name = 'simulation-'.$s->id.'.jpg';
-        $path = public_path() . '/simulations/'.$name; 
-        
+        $name = 'simulation-' . $s->id . '.jpg';
+        $path = public_path() . '/simulations/' . $name;
+
         file_put_contents($path, $decoded_image);
 
         $s->simulation = $name;
@@ -873,13 +940,13 @@ public function getSimulation($id)
         }
 
         if ($r->simulation) {
-            $base64_image = $r->input('simulation'); 
+            $base64_image = $r->input('simulation');
             $exploded = explode(',', $base64_image);
 
             $decoded_image = base64_decode($exploded[1]);
-            $name = 'simulation-'.$s->id.'.jpg';
-            $path = public_path() . '/simulations/'.$name; 
-            
+            $name = 'simulation-' . $s->id . '.jpg';
+            $path = public_path() . '/simulations/' . $name;
+
             file_put_contents($path, $decoded_image);
 
             $s->simulation = $name;
@@ -941,7 +1008,7 @@ public function getSimulation($id)
         }
     }
 
-    public function uploadProject($id,Request $request)
+    public function uploadProject($id, Request $request)
     {
         // Verifica si se envió un archivo
         if ($request->hasFile('file')) {
@@ -1004,7 +1071,7 @@ public function getSimulation($id)
 
     public function sendCode(Request $r)
     {
-        $u = User::where('email',$r->email)->first();
+        $u = User::where('email', $r->email)->first();
 
         if (!$u) {
             return response()->json(['error' => 'User not found'], 422);
@@ -1012,13 +1079,13 @@ public function getSimulation($id)
 
         $codigo = rand(100000, 999999);
 
-        Mail::send('recover-password', ['code'=>$codigo], function ($message) use($u) {
+        Mail::send('recover-password', ['code' => $codigo], function ($message) use ($u) {
             $message->from('noreply@ztris.com', 'Ztris');
             $message->to($u->email, $u->name);
             $message->subject('Recover your password');
         });
 
-        return response()->json(['status' => 'success', 'hashed'=>md5($codigo), 'emailHashed' => md5($r->email.$u->id)], 200);
+        return response()->json(['status' => 'success', 'hashed' => md5($codigo), 'emailHashed' => md5($r->email . $u->id)], 200);
     }
 
     public function checkCode(Request $r)
@@ -1028,26 +1095,25 @@ public function getSimulation($id)
         }
 
         return response()->json(['error' => 'Invalid code'], 422);
-
     }
 
     public function changePassword(Request $r)
     {
-        $u = User::where('email',$r->email)->first();
+        $u = User::where('email', $r->email)->first();
 
-        if ($u && $r->emailHashed == md5($r->email.$u->id)) {
+        if ($u && $r->emailHashed == md5($r->email . $u->id)) {
             $u->password = bcrypt($r->password);
             $u->save();
 
             return response()->json(['status' => 'success'], 200);
-        }else{
+        } else {
             return response()->json(['error' => 'Email error'], 422);
         }
     }
 
     public function testEmail(Request $r)
     {
-        Mail::send('recover-password', [], function ($message) use($r) {
+        Mail::send('recover-password', [], function ($message) use ($r) {
             $message->from('noreply@ztris.com', 'Ztris');
             $message->to($r->email, 'Fulano de tal');
             $message->subject('Test Email');
