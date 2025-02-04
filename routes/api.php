@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ShapesController;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,15 +72,48 @@ Route::post('changePassword', [ApiController::class, 'changePassword']);
 Route::post('testEmail', [ApiController::class, 'testEmail']);
 
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
-    return response()->json(['message' => 'Email verified successfully.']);
-})->middleware(['auth:sanctum', 'signed'])->name('verification.verify');
+Route::get('/verify-email/{code}', function ($code) {
+    $user = User::where('email_verification_code', $code)->first();
 
-Route::post('/email/resend', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
-    return response()->json(['message' => 'Verification link sent.']);
-})->middleware(['auth:sanctum']);
+    if (!$user) {
+        return redirect('http:///209.38.31.107/#/login?status=error&message=Invalid verification code');
+    }
+
+    // Marcar el email como verificado
+    $user->email_verified_at = now();
+    $user->email_verification_code = null;
+    $user->save();
+
+    // Redirigir al login del frontend con un mensaje de éxito
+    return redirect('http:///209.38.31.107/#/login?status=success&message=Email successfully verified');
+});
+
+
+Route::post('/resend-verification', function (Request $request) {
+    $user = User::where('email', $request->email)->first();
+
+    if (!$user) {
+        return response()->json(['message' => 'User not found'], 404);
+    }
+
+    if ($user->email_verified_at) {
+        return response()->json(['message' => 'Email already verified'], 200);
+    }
+
+    // Generar nuevo código
+    $newCode = md5(uniqid());
+    $user->email_verification_code = $newCode;
+    $user->save();
+
+    // Enviar correo con el nuevo código
+    Mail::send('verify-email', ['user' => $user], function ($message) use ($user) {
+        $message->from('noreply@ztris.com', 'Ztris');
+        $message->to($user->email, $user->name);
+        $message->subject('Verify your email');
+    });
+
+    return response()->json(['message' => 'Verification email sent successfully'], 200);
+});
 
 
 

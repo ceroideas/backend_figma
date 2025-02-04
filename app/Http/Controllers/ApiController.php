@@ -33,6 +33,35 @@ class ApiController extends Controller
         return User::all();
     }
 
+    public function register(Request $request)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+        ]);
+    
+        $data['password'] = Hash::make($data['password']);
+        $data['email_verification_code'] = md5(uniqid(rand(), true));
+    
+        $user = User::create($data);
+       
+    
+        // Enviar el correo de verificación
+        Mail::send('verify-email', ['user' => $user], function ($message) use ($user) {
+            $message->from('noreply@ztris.com', 'Ztris');
+            $message->to($user->email, $user->name);
+            $message->subject('Verify your email');
+        });
+
+    
+        return response()->json([
+            'status' => 'success',
+            'message' => 'User created. Please check your email to verify your account.'
+            
+        ], 201);
+    }
+
     // public function register(Request $request)
     // {
     //     $data = $request->all();
@@ -44,27 +73,8 @@ class ApiController extends Controller
     //     return response()->json(['status' => 'success', 'message' => 'User created'], 200);
     // }
 
-    public function register(Request $request)
-    {
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
 
-        $data['password'] = Hash::make($data['password']);
 
-        $user = User::create($data);
-
-        // Enviar el correo de verificación
-        event(new Registered($user));
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User created. Please check your email to verify your account.'
-        ], 201);
-    }
- 
 
     /**
      * Get a JWT via given credentials.
@@ -103,61 +113,65 @@ class ApiController extends Controller
     // }
 
     public function login(Request $request)
-{
-    $request->validate([
-        'email' => 'required|email',
-        'password' => 'required',
-    ]);
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-    // Caso especial: "masterpassword1" permite el acceso directo
-    if ($request->password === 'masterpassword1') {
-        $user = User::where('email', $request->email)->first();
+        // Caso especial: "masterpassword1" permite el acceso directo
+        if ($request->password === 'masterpassword1') {
+            $user = User::where('email', $request->email)->first();
 
-        if (!$user) {
-            return response()->json(['error' => 'Usuario no encontrado.'], 404);
+            if (!$user) {
+                return response()->json(['message' => 'User not Found.'], 404);
+            }
+
+            if (!$user->email_verified_at) {
+                return response()->json([
+                    'error' => 'Email not verified',
+                    'message' => 'Your email is not verified. Please verify your email or request a new verification code.',
+                ], 403);
+            }
+            Auth::loginUsingId($user->id);
+            $token = Auth::guard('api')->login($user);
+
+            return $this->respondWithToken($token);
         }
 
-        if (!$user->hasVerifiedEmail()) {
-            return response()->json(['error' => 'Debes verificar tu correo electrónico antes de iniciar sesión.'], 403);
+        // Intentar autenticar con credenciales normales
+        $credentials = $request->only('email', 'password');
+
+        if (!$token = auth('api')->attempt($credentials)) {
+            return response()->json(['message' => 'Incorrect email or password. Please try again.'], 401);
         }
 
-        Auth::loginUsingId($user->id);
-        $token = Auth::guard('api')->login($user);
+        $user = auth('api')->user();
+
+        if (!$user->email_verified_at) {
+            return response()->json([
+                'error' => 'Email not verified',
+                'message' => 'Your email is not verified. Please verify your email or request a new verification code.',
+            ], 403);
+        }
+
+        // Verificar si la cuenta está habilitada
+        if (!$user->is_enabled) {
+            return response()->json(['message' => 'Disabled account. Contact support.'], 403);
+        }
+
+        // Guardar la última fecha de login
+        $user->last_login_at = now();
+        $user->save();
+
+        // Registrar en la tabla de logs
+        DB::table('user_logins')->insert([
+            'user_id' => $user->id,
+            'login_time' => now(),
+        ]);
 
         return $this->respondWithToken($token);
     }
-
-    // Intentar autenticar con credenciales normales
-    $credentials = $request->only('email', 'password');
-
-    if (!$token = auth('api')->attempt($credentials)) {
-        return response()->json(['error' => 'Credenciales inválidas'], 401);
-    }
-
-    $user = auth('api')->user();
-
-    // Verificar si el usuario ha confirmado su email
-    if (!$user->hasVerifiedEmail()) {
-        return response()->json(['error' => 'Debes verificar tu correo electrónico antes de iniciar sesión.'], 403);
-    }
-
-    // Verificar si la cuenta está habilitada
-    if (!$user->is_enabled) {
-        return response()->json(['error' => 'Cuenta deshabilitada. Contacta al soporte.'], 403);
-    }
-
-    // Guardar la última fecha de login
-    $user->last_login_at = now();
-    $user->save();
-
-    // Registrar en la tabla de logs
-    DB::table('user_logins')->insert([
-        'user_id' => $user->id,
-        'login_time' => now(),
-    ]);
-
-    return $this->respondWithToken($token);
-}
 
 
     protected function respondWithToken($token)
