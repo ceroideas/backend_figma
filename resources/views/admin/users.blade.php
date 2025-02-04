@@ -18,7 +18,7 @@
 
                 </div>
 
-                <a href="http://209.38.31.107/#/register" target="_blank" class="px-6 py-2 rounded-lg bg-blue">Register User</a>
+                <a href="http://app.ztris.com/#/register" target="_blank" class="px-6 py-2 rounded-lg bg-blue">Register User</a>
 
                 <table id="users-table" class="display table-style" style="width:100%">
                     <thead>
