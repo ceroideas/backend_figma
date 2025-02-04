@@ -11,18 +11,9 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div  class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link class="menu-boton" :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                         {{ __('Dashboard') }}
-                    </x-nav-link>
-                    <x-nav-link class="menu-boton"  :href="route('admin.users')" :active="request()->routeIs('admin.users')" >
-                        Users
-                    </x-nav-link>
-                    <x-nav-link class="menu-boton"  :href="route('admin.projects')" :active="request()->routeIs('admin.projects')" >
-                        Projects
-                    </x-nav-link>
-                    <x-nav-link class="menu-boton"  :href="route('admin.simulations')" :active="request()->routeIs('admin.simulations')" >
-                        Simulations
                     </x-nav-link>
                 </div>
             </div>
@@ -84,7 +75,8 @@
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
             <div class="px-4">
-
+                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
+                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">
