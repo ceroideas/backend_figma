@@ -76,7 +76,7 @@ Route::get('/verify-email/{code}', function ($code) {
     $user = User::where('email_verification_code', $code)->first();
 
     if (!$user) {
-        return redirect('http:///209.38.31.107/#/login?status=error&message=Invalid verification code');
+        return redirect('http://209.38.31.107/#/login?status=error&message=Invalid verification code');
     }
 
     // Marcar el email como verificado
@@ -85,7 +85,7 @@ Route::get('/verify-email/{code}', function ($code) {
     $user->save();
 
     // Redirigir al login del frontend con un mensaje de éxito
-    return redirect('http:///209.38.31.107/#/login?status=success&message=Email successfully verified');
+    return redirect('http://209.38.31.107/#/login?status=success&message=Email successfully verified');
 });
 
 
