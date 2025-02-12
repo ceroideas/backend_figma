@@ -247,7 +247,7 @@ class ApiController extends Controller
         //     $table->json('dynamic_years')->nullable();
         // });
         User::Where('email', 'miguel@anlak.es')->update(['is_admin' => 1]);
-        User::Where('email', 'mscesar2012@hotmail.com')->update(['is_admin' => 1]);
+      
         return;
     }
 
