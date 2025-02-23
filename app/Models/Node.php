@@ -24,15 +24,14 @@ class Node extends Model
 
    
 
-    function evaluarExpresion($expresion) { 
-        $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) { return 'pow(' . $matches[1] . ',' . $matches[2] . ')'; }, $expresion);  
-        try { 
-            $resultado = eval('return ' . $expresion . ';'); 
-            return $resultado; 
-        } 
-        catch (ParseError $e) { 
-            return 0; 
-        } 
+    function evaluarExpresion($expresion) {
+        $language = new ExpressionLanguage();
+        try {
+            return $language->evaluate($expresion);
+        } catch (\Exception $e) {
+            error_log("Error al evaluar la expresión: " . $expresion . " - " . $e->getMessage());
+            return null; // Devuelve null en caso de error
+        }
     }
 
     // function evaluarExpresion($expresion) {
