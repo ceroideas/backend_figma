@@ -205,10 +205,16 @@ public function convertirExponente($expresion) {
 }
 
 function evaluarExpresion($expresion) {
+
+    try {
+        $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) { 
+            return 'pow(' . $matches[1] . ',' . $matches[2] . ')'; 
+        }, $expresion);
+    } catch (SyntaxError $e) {
+      return 0;
+    }   
     
-    $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) { 
-        return 'pow(' . $matches[1] . ',' . $matches[2] . ')'; 
-    }, $expresion);
+
 
    
     if (preg_match('/^[0-9+\-*/().,\\s]*$/', $expresion)) { 
