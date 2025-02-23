@@ -204,30 +204,40 @@ public function convertirExponente($expresion) {
 
 }
 
-function evaluarExpresion($expresion) {
+// function evaluarExpresion($expresion) {
   
-    $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) { 
-        return 'pow(' . $matches[1] . ',' . $matches[2] . ')'; 
-    }, $expresion);
+//     $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) { 
+//         return 'pow(' . $matches[1] . ',' . $matches[2] . ')'; 
+//     }, $expresion);
 
    
-    if (preg_match('#^[0-9+\-*/().,\s=!><&|?:^]+$#', $expresion)) { 
-        try {
+//     if (preg_match('#^[0-9+\-*/().,\s=!><&|?:^]+$#', $expresion)) { 
+//         try {
            
-            $resultado = @eval('return ' . $expresion . ';');
-            if ($resultado === false) {
-                throw new Exception("Error en la evaluación de la expresión.");
-            }
-            return $resultado;
-        } catch (ParseError $e) {
-            error_log("Error de parseo: " . $e->getMessage());
-            return "Error en la expresión: la sintaxis no es válida.";
-        } catch (Exception $e) {
-            error_log("Error de evaluación: " . $e->getMessage());
-            return "Error en la expresión.";
-        }
-    } else {
-        return "La expresión contiene caracteres inválidos.";
+//             $resultado = @eval('return ' . $expresion . ';');
+//             if ($resultado === false) {
+//                 throw new Exception("Error en la evaluación de la expresión.");
+//             }
+//             return $resultado;
+//         } catch (ParseError $e) {
+//             error_log("Error de parseo: " . $e->getMessage());
+//             return "Error en la expresión: la sintaxis no es válida.";
+//         } catch (Exception $e) {
+//             error_log("Error de evaluación: " . $e->getMessage());
+//             return "Error en la expresión.";
+//         }
+//     } else {
+//         return "La expresión contiene caracteres inválidos.";
+//     }
+// }
+
+function evaluarExpresion($expresion) {
+    $language = new ExpressionLanguage();
+    try {
+        return $language->evaluate($expresion);
+    } catch (\Exception $e) {
+        error_log("Error al evaluar la expresión: " . $expresion . " - " . $e->getMessage());
+        return null; // Devuelve null en caso de error
     }
 }
 }
