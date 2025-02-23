@@ -204,14 +204,22 @@ public function convertirExponente($expresion) {
 
 }
 
-function evaluarExpresion($expresion) { 
-    $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) { return 'pow(' . $matches[1] . ',' . $matches[2] . ')'; }, $expresion);  
-    try { 
-        $resultado = eval('return ' . $expresion . ';'); 
-        return $resultado; 
-    } 
-    catch (ParseError $e) { 
-        return 0; 
-    } 
+function evaluarExpresion($expresion) {
+   
+    $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) { 
+        return 'pow(' . $matches[1] . ',' . $matches[2] . ')'; 
+    }, $expresion);
+
+   
+    if (preg_match('/^[0-9+\-*/().,\s]*$/', $expresion)) {
+        try {
+            $resultado = eval('return ' . $expresion . ';');
+            return $resultado;
+        } catch (ParseError $e) {
+            return "Error en la expresión: " . $e->getMessage();
+        }
+    } else {
+        return "La expresión contiene caracteres inválidos.";
+    }
 }
 }
