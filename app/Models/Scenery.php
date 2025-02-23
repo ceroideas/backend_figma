@@ -211,7 +211,8 @@ function evaluarExpresion($expresion) {
     }, $expresion);
 
    
-    if (preg_match('/^[0-9+\-*/().,\s]*$/', $expresion)) { 
+   
+    if (preg_match('#^[0-9+\-*/().,\s]*$#', $expresion)) { 
         try {
           
             $resultado = @eval('return ' . $expresion . ';');
@@ -231,5 +232,5 @@ function evaluarExpresion($expresion) {
     } else {
         return "La expresión contiene caracteres inválidos.";
     }
-}
+} 
 }
