@@ -205,18 +205,28 @@ public function convertirExponente($expresion) {
 }
 
 function evaluarExpresion($expresion) {
-   
+    
     $expresion = preg_replace_callback('/(\d+)\s*\^\s*(\d+)/', function($matches) { 
         return 'pow(' . $matches[1] . ',' . $matches[2] . ')'; 
     }, $expresion);
 
    
-    if (preg_match('/^[0-9+\-*/().,\s]*$/', $expresion)) {
+    if (preg_match('/^[0-9+\-*/().,\\s]*$/', $expresion)) { 
         try {
-            $resultado = eval('return ' . $expresion . ';');
+           
+            $resultado = @eval('return ' . $expresion . ';');
+            if ($resultado === false) {
+                throw new Exception("Error en la evaluación de la expresión.");
+            }
             return $resultado;
         } catch (ParseError $e) {
-            return "Error en la expresión: " . $e->getMessage();
+          
+            error_log("Error de parseo: " . $e->getMessage());
+            return "Error en la expresión.";
+        } catch (Exception $e) {
+          
+            error_log("Error de evaluación: " . $e->getMessage());
+            return "Error en la expresión.";
         }
     } else {
         return "La expresión contiene caracteres inválidos.";
